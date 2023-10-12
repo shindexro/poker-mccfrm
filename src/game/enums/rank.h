@@ -1,4 +1,5 @@
-enum class Suit {
+enum class Suit
+{
     Two,
     Three,
     Four,
