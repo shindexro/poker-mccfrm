@@ -1,7 +1,10 @@
-enum class Suit
+namespace Enums
 {
-    Diamonds,
-    Clubs,
-    Hearts,
-    Spades
-};
+    enum class Suit
+    {
+        Diamonds,
+        Clubs,
+        Hearts,
+        Spades
+    };
+}
