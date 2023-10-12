@@ -1,4 +1,4 @@
-enum class Suit
+enum class Rank
 {
     Two,
     Three,
