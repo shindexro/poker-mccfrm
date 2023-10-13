@@ -1,9 +1,6 @@
 #ifndef __CLASS_DECK_H__
 #define __CLASS_DECK_H__
 
-#include <string>
-#include <stdexcept>
-
 using namespace std;
 
 class Deck
