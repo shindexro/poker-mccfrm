@@ -1,6 +1,10 @@
 project (game)
 
-add_library(${PROJECT_NAME} src/card.cpp src/deck.cpp)
+add_library(${PROJECT_NAME}
+    src/card.cpp
+    src/deck.cpp
+    src/hand.cpp
+)
 add_library(sub::game ALIAS ${PROJECT_NAME})
 
 target_include_directories( ${PROJECT_NAME}
