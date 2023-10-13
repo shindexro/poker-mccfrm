@@ -1,0 +1,47 @@
+#include "game/deck.h"
+
+Deck::Deck(ulong removedCards = 0)
+{
+    this->removedCards = removedCards;
+    for (int i = 0; i < 52; i++)
+    {
+        cards[i] = 1ul < i;
+    }
+    position = 0;
+}
+
+int Deck::NumRemainingCards()
+{
+    return 52 - position;
+}
+
+void Deck::Shuffle(int from = 0)
+{
+    for (int i = from; i < 52 - 1; i++)
+    {
+        int n = from + (rand() % (52 - from));
+        ulong temp = cards[i];
+        cards[i] = cards[n];
+        cards[n] = temp;
+    }
+}
+
+ulong Deck::Draw_(int count)
+{
+    ulong hand = 0;
+    for (int i = 0; i < count; i++)
+    {
+        while ((cards[position] & removedCards) != 0)
+        {
+            position++;
+        }
+        hand |= cards[position];
+        position++;
+    }
+    return hand;
+}
+
+ulong Deck::Draw(int pos)
+{
+    return cards[pos];
+}
