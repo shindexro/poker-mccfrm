@@ -4,6 +4,7 @@ add_library(${PROJECT_NAME}
     src/card.cpp
     src/deck.cpp
     src/hand.cpp
+    src/hand_strength.cpp
 )
 add_library(sub::game ALIAS ${PROJECT_NAME})
 
