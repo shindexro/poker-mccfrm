@@ -170,6 +170,15 @@ public:
         return (int)rank * 4 + (int)suit;
     }
 
+    string ToString()
+    {
+        char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
+        char suits[] = {'♠', '♥', '♦', '♣'};
+        string s = {ranks[(int)rank],
+                    suits[(int)suit]};
+        return s;
+    }
+
 private:
     const static int rankPrimes[];
     const static int suitPrimes[];
