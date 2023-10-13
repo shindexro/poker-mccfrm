@@ -165,6 +165,11 @@ public:
         return c.PrimeRank() * c.PrimeSuit();
     }
 
+    int Index()
+    {
+        return (int)rank * 4 + (int)suit;
+    }
+
 private:
     const static int rankPrimes[];
     const static int suitPrimes[];
