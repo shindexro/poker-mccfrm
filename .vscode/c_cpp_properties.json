@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/src/game/include"
+                "${workspaceFolder}/src/**"
             ],
             "defines": [],
             "cStandard": "c17",
