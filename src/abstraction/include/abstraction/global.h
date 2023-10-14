@@ -1,6 +1,7 @@
 #ifndef __CLASS_GLOBAL_H__
 #define __CLASS_GLOBAL_H__
 
+#include "tables/hand_indexer.h"
 #include <vector>
 
 using namespace std;
@@ -42,12 +43,12 @@ public:
     static HandIndexer indexer_2_3_1;
     static HandIndexer indexer_2_3_1_1;
     static HandIndexer indexer_2_5_2;
-    static Evaluator handEvaluator;
+    // static Evaluator handEvaluator;
 
-    static ConcurrentDictionary<string, Infoset> nodeMap = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
-    static ConcurrentDictionary<string, Infoset> nodeMapBaseline = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
+    // static ConcurrentDictionary<string, Infoset> nodeMap = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
+    // static ConcurrentDictionary<string, Infoset> nodeMapBaseline = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
 
-    static ThreadLocal<Deck> Deck = new ThreadLocal<Deck>(() = > new Deck());
+    // static ThreadLocal<Deck> Deck = new ThreadLocal<Deck>(() = > new Deck());
 };
 
 #endif
