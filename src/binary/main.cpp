@@ -69,11 +69,11 @@ private:
         Global::indexer_2_3_1.Initialise();
         cout << Global::indexer_2_3_1.roundSize[2] << " non-isomorphic hands found" << endl;
 
-        cout << "Creating 2 & 3 card index... " << endl;
+        cout << "Creating 2 & 3 & 1 & 1 card index... " << endl;
         cardsPerRound = vector<int>({2, 3, 1, 1});
         Global::indexer_2_3_1_1.Construct(cardsPerRound);
         Global::indexer_2_3_1_1.Initialise();
-        cout << Global::indexer_2_3_1_1.roundSize[1] << " non-isomorphic hands found" << endl;
+        cout << Global::indexer_2_3_1_1.roundSize[3] << " non-isomorphic hands found" << endl;
     }
 
     // static void CalculateInformationAbstraction()
