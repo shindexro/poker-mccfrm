@@ -1,5 +1,5 @@
-#ifndef __CLASS_EHS_TABLE_H__
-#define __CLASS_EHS_TABLE_H__
+#ifndef __CLASS_HAND_INDEXER_H__
+#define __CLASS_HAND_INDEXER_H__
 
 #include <vector>
 #include <stdexcept>
@@ -35,7 +35,8 @@ public:
     vector<int> permutations;
     vector<long> roundSize;
 
-    HandIndexer(vector<int> &cardsPerRound);
+    HandIndexer();
+    void Construct(vector<int> &cardsPerRound);
     static void Initialise();
 
     void CreatePublicFlopHands();
@@ -46,8 +47,8 @@ public:
 
 private:
     const static int MAX_GROUP_INDEX = 0x1000000;
-    const int ROUND_SHIFT = 4;
-    const int ROUND_MASK = 0xf;
+    const static int ROUND_SHIFT = 4;
+    const static int ROUND_MASK = 0xf;
 
     static int nthUnset[1 << RANKS][RANKS];
     static bool equal[1 << (SUITS - 1)][SUITS];
@@ -56,6 +57,14 @@ private:
     static int indexToRankSet[RANKS + 1][1 << RANKS];
     static vector<vector<int>> suitPermutations;
     static long nCrGroups[MAX_GROUP_INDEX][SUITS + 1];
+
+    // static vector<vector<int>> nthUnset;
+    // static vector<vector<bool>> equal;
+    // static vector<vector<int>> nCrRanks;
+    // static vector<int> rankSetToIndex;
+    // static vector<vector<int>> indexToRankSet;
+    // static vector<vector<int>> suitPermutations;
+    // static vector<vector<long>> nCrGroups;
 
     vector<int> roundStart;
     vector<vector<int>> permutationToConfiguration;

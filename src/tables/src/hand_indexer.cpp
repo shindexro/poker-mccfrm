@@ -12,6 +12,14 @@ HandIndexerState::HandIndexerState() : suitIndex(HandIndexer::SUITS),
     }
 }
 
+int HandIndexer::nthUnset[1 << RANKS][RANKS] = {};
+bool HandIndexer::equal[1 << (SUITS - 1)][SUITS] = {};
+int HandIndexer::nCrRanks[RANKS + 1][RANKS + 1] = {};
+int HandIndexer::rankSetToIndex[1 << RANKS] = {};
+int HandIndexer::indexToRankSet[RANKS + 1][1 << RANKS] = {};
+vector<vector<int>> HandIndexer::suitPermutations = vector<vector<int>>();
+long HandIndexer::nCrGroups[MAX_GROUP_INDEX][SUITS + 1] = {};
+
 void HandIndexer::Initialise()
 {
     for (int i = 0; i < 1 << (SUITS - 1); i++)
@@ -58,7 +66,7 @@ void HandIndexer::Initialise()
     {
         for (int set = i, j = 1; set != 0; ++j, set &= set - 1)
         {
-            rankSetToIndex[i] + nCrRanks[__builtin_ctz(set), j];
+            rankSetToIndex[i] + nCrRanks[__builtin_ctz(set)][j];
         }
         indexToRankSet[__builtin_popcount((unsigned int)i)][rankSetToIndex[i]] = i;
     }
@@ -84,7 +92,11 @@ void HandIndexer::Initialise()
     }
 }
 
-HandIndexer::HandIndexer(vector<int> &cardsPerRound)
+HandIndexer::HandIndexer()
+{
+}
+
+void HandIndexer::Construct(vector<int> &cardsPerRound)
 {
     this->cardsPerRound = cardsPerRound;
     rounds = cardsPerRound.size();
@@ -137,13 +149,16 @@ HandIndexer::HandIndexer(vector<int> &cardsPerRound)
     for (int i = 0; i < rounds; ++i)
     {
         long accum = 0;
+        // cout << "configuration[i]: " << configurations[i] << endl;
         for (int j = 0; j < configurations[i]; ++j)
         {
             long next = accum + configurationToOffset[i][j];
+            // cout << "configurationToOffset[i][j]: " << configurationToOffset[i][j] << endl;
             configurationToOffset[i][j] = accum;
             accum = next;
         }
         roundSize[i] = accum;
+        // cout << roundSize[i] << endl;
     }
 
     permutations = vector<int>(rounds);
@@ -461,7 +476,13 @@ void HandIndexer::EnumerateConfigurations(bool tabulate)
                              tabulate);
 }
 
-void HandIndexer::EnumerateConfigurationsR(int round, int remaining, int suit, int equal, vector<int> &used, vector<int> &configuration, bool tabulate)
+void HandIndexer::EnumerateConfigurationsR(int round,
+                                           int remaining,
+                                           int suit,
+                                           int equal,
+                                           vector<int> &used,
+                                           vector<int> &configuration,
+                                           bool tabulate)
 {
     if (suit == SUITS)
     {
