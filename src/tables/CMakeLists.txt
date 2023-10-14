@@ -2,6 +2,7 @@ project (table)
 
 add_library(${PROJECT_NAME}
     src/ehs_table.cpp
+    src/hand_indexer.cpp
 )
 add_library(sub::table ALIAS ${PROJECT_NAME})
 
