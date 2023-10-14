@@ -33,46 +33,42 @@ public:
 private:
     static void CreateIndexers()
     {
+        HandIndexer::Initialise();
+        vector<int> cardsPerRound;
+
         cout << "Creating 2 card index... " << endl;
-        vector<int> cardsPerRound({2});
+        cardsPerRound = vector<int>({2});
         Global::indexer_2.Construct(cardsPerRound);
-        Global::indexer_2.Initialise();
         cout << Global::indexer_2.roundSize[0] << " non-isomorphic hands found" << endl;
 
         cout << "Creating 2 & 3 card index... " << endl;
         cardsPerRound = vector<int>({2, 3});
         Global::indexer_2_3.Construct(cardsPerRound);
-        Global::indexer_2_3.Initialise();
         cout << Global::indexer_2_3.roundSize[1] << " non-isomorphic hands found" << endl;
 
         cout << "Creating 2 & 4 card index... " << endl;
         cardsPerRound = vector<int>({2, 4});
         Global::indexer_2_4.Construct(cardsPerRound);
-        Global::indexer_2_4.Initialise();
         cout << Global::indexer_2_4.roundSize[1] << " non-isomorphic hands found" << endl;
 
         cout << "Creating 2 & 5 card index... " << endl;
         cardsPerRound = vector<int>({2, 5});
         Global::indexer_2_5.Construct(cardsPerRound);
-        Global::indexer_2_5.Initialise();
         cout << Global::indexer_2_5.roundSize[1] << " non-isomorphic hands found" << endl;
 
         cout << "Creating 2 & 5 & 2 card index... " << endl;
         cardsPerRound = vector<int>({2, 5, 2});
         Global::indexer_2_5_2.Construct(cardsPerRound);
-        Global::indexer_2_5_2.Initialise();
         cout << Global::indexer_2_5_2.roundSize[2] << " non-isomorphic hands found" << endl;
 
         cout << "Creating 2 & 3 & 1 card index... " << endl;
         cardsPerRound = vector<int>({2, 3, 1});
         Global::indexer_2_3_1.Construct(cardsPerRound);
-        Global::indexer_2_3_1.Initialise();
         cout << Global::indexer_2_3_1.roundSize[2] << " non-isomorphic hands found" << endl;
 
         cout << "Creating 2 & 3 & 1 & 1 card index... " << endl;
         cardsPerRound = vector<int>({2, 3, 1, 1});
         Global::indexer_2_3_1_1.Construct(cardsPerRound);
-        Global::indexer_2_3_1_1.Initialise();
         cout << Global::indexer_2_3_1_1.roundSize[3] << " non-isomorphic hands found" << endl;
     }
 
