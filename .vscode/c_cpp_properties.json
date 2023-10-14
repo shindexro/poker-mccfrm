@@ -5,7 +5,12 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src/**",
-                "${workspaceFolder}/src/abstraction/include"
+                "${workspaceFolder}/src/abstraction/**",
+                "${workspaceFolder}/src/enums/**",
+                "${workspaceFolder}/src/game/**",
+                "${workspaceFolder}/src/tables/**",
+                "${workspaceFolder}/src/abstraction/include",
+                "${workspaceFolder}/src/tables/include"
             ],
             "defines": [],
             "cStandard": "c17",
