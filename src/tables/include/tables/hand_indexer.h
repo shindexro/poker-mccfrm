@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <stdexcept>
+#include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -14,6 +16,7 @@ public:
     vector<int> suitMultiplier;
     int round;
     int permutationIndex;
+    int permutationMultiplier;
     vector<int> usedRanks;
 
     HandIndexerState();
@@ -38,7 +41,7 @@ public:
     void CreatePublicFlopHands();
     long IndexAll(vector<int> &cards, vector<long> &indices);
     long IndexLast(vector<int> &cards);
-    long IndexNextRound(HandIndexerState state, vector<int> &cards);
+    long IndexNextRound(HandIndexerState &state, vector<int> &cards);
     bool Unindex(int round, long index, vector<int> &cards);
 
 private:
@@ -72,6 +75,7 @@ private:
     void EnumeratePermutations(bool tabulate);
     void EnumeratePermutationsR(int round, int remaining, int suit, vector<int> &used, vector<int> &count, bool tabulate);
     void TabulatePermutations(int round, vector<int> &count);
+    void CountPermutations(int round, vector<int> &count);
 };
 
 #endif
