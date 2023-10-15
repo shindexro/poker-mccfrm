@@ -2,24 +2,18 @@
 #define __CLASS_HAND_H__
 
 #include "game/card.h"
+#include "game/hand_strength.h"
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
+#include <numeric>
+#include <map>
+#include <stdexcept>
 
 using namespace std;
 
-enum HandRanking
-{
-    HighCard,
-    Pair,
-    TwoPair,
-    ThreeOfAKind,
-    Straight,
-    Flush,
-    FullHouse,
-    FourOfAKind,
-    StraightFlush,
-};
+class HandStrength;
 
 class Hand
 {
@@ -28,6 +22,8 @@ public:
 
     Hand();
     Hand(ulong bitmap);
+
+    HandStrength GetStrength();
     void PrintColoredCards(string &end);
     string ToString();
 };
