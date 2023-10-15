@@ -9,7 +9,8 @@ HandIndexer Global::indexer_2_5;
 HandIndexer Global::indexer_2_3_1;
 HandIndexer Global::indexer_2_3_1_1;
 HandIndexer Global::indexer_2_5_2;
-// Evaluator handEvaluator;
+
+Evaluator Global::handEvaluator;
 
 // ConcurrentDictionary<string, Infoset> nodeMap = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
 // ConcurrentDictionary<string, Infoset> nodeMapBaseline = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
