@@ -25,7 +25,7 @@ public:
     static void Main()
     {
         CreateIndexers();
-        // Global::handEvaluator = Evaluator();
+        Global::handEvaluator = Evaluator();
         // CalculateInformationAbstraction();
         // Train();
     }
