@@ -1,6 +1,6 @@
 #include "game/deck.h"
 
-Deck::Deck(ulong removedCards = 0)
+Deck::Deck(ulong removedCards)
 {
     this->removedCards = removedCards;
     for (int i = 0; i < 52; i++)
@@ -15,7 +15,7 @@ int Deck::NumRemainingCards()
     return 52 - position;
 }
 
-void Deck::Shuffle(int from = 0)
+void Deck::Shuffle(int from)
 {
     for (int i = from; i < 52 - 1; i++)
     {
