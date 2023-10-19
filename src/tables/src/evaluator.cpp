@@ -11,8 +11,8 @@ Evaluator::Evaluator()
         return;
 
     bool fiveCards = true;
-    bool sixCards = false;
-    bool sevenCards = false;
+    bool sixCards = true;
+    bool sevenCards = true;
 
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
