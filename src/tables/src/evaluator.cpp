@@ -11,8 +11,8 @@ Evaluator::Evaluator()
         return;
 
     bool fiveCards = true;
-    bool sixCards = true;
-    bool sevenCards = true;
+    bool sixCards = false;
+    bool sevenCards = false;
 
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
@@ -28,6 +28,7 @@ Evaluator::Evaluator()
         handRankMap = unordered_map<ulong, ulong>((uint)(minHashMapSize * loadFactor));
         if (fiveCards)
         {
+            cout << "Generating new five card lookup table (52C5 = 2,598,960)" << endl;
             GenerateFiveCardTable();
         }
         if (sixCards)
@@ -50,7 +51,7 @@ Evaluator::Evaluator()
     chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
-    cout << "Time difference = " << elapsed << "[s]" << endl;
+    cout << "Time taken to generate lookup table: " << elapsed << "[s]" << endl;
     loaded = true;
 }
 
