@@ -7,6 +7,7 @@
                 "${workspaceFolder}/src/**",
                 "${workspaceFolder}/src/abstraction/**",
                 "${workspaceFolder}/src/enums/**",
+                "/usr/local/boost_1_83_0",
                 "${workspaceFolder}/src/game/**",
                 "${workspaceFolder}/src/tables/**",
                 "${workspaceFolder}/src/abstraction/include",
