@@ -132,7 +132,7 @@ void Evaluator::GenerateFiveCardTable()
         }
         else
         {
-            handRankMap[bitmap] = equivalence->ToULong();
+            handRankMap[bitmap] = (ulong)(equivalence - uniqueHandStrengths.begin());
         }
     }
 }
