@@ -87,9 +87,10 @@ void Evaluator::GenerateFiveCardTable()
     auto handBitmaps = vector<ulong>();
     do
     {
-        ulong bitmap;
+        ulong bitmap = 0ul;
         for (int i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
+        handBitmaps.push_back(bitmap);
     } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
 
     // Calculate hand strength of each hand

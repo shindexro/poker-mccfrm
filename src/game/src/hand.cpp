@@ -26,7 +26,9 @@ Hand::Hand(ulong bitmap)
 HandStrength Hand::GetStrength()
 {
     if (cards.size() != 5)
+    {
         throw invalid_argument("Failed to determine hand strength because card count is not 5.");
+    }
 
     HandStrength strength = HandStrength();
     strength.kickers = vector<int>();
