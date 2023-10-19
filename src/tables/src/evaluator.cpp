@@ -65,16 +65,16 @@ int Evaluator::Evaluate(ulong bitmap)
 
 void Evaluator::SaveToFile(string &fileName)
 {
-    using var fileStream = File.Create(fileName);
-    BinaryFormatter bf = new BinaryFormatter();
-    bf.Serialize(fileStream, handRankMap);
+    // using var fileStream = File.Create(fileName);
+    // BinaryFormatter bf = new BinaryFormatter();
+    // bf.Serialize(fileStream, handRankMap);
 }
 
 void Evaluator::LoadFromFile(string &fileName)
 {
-    using var fileStream = File.OpenRead(fileName);
-    var binForm = new BinaryFormatter();
-    handRankMap = (HashMap)binForm.Deserialize(fileStream);
+    // using var fileStream = File.OpenRead(fileName);
+    // var binForm = new BinaryFormatter();
+    // handRankMap = (HashMap)binForm.Deserialize(fileStream);
 }
 
 void Evaluator::GenerateFiveCardTable()
@@ -90,13 +90,13 @@ void Evaluator::GenerateFiveCardTable()
         ulong bitmap;
         for (int i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
-    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end(), less<int>()));
+    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
 
     // Calculate hand strength of each hand
-    auto handStrengths = new unordered_map<ulong, HandStrength>();
+    auto handStrengths = unordered_map<ulong, HandStrength>();
     cout << "Calculating hand strength (" << handBitmaps.size() << ")" << endl;
 
-    for (ulong bitmap : handBitmaps)
+    for (auto bitmap : handBitmaps)
     {
         Hand hand = Hand(bitmap);
         handStrengths[bitmap] = hand.GetStrength();
@@ -108,7 +108,8 @@ void Evaluator::GenerateFiveCardTable()
 
     for (auto [bitmap, strength] : handStrengths)
     {
-        Utilities::BinaryInsert(uniqueHandStrengths, strength.Value);
+        auto insert_it = lower_bound(uniqueHandStrengths.begin(), uniqueHandStrengths.end(), strength);
+        uniqueHandStrengths.insert(insert_it, strength);
     }
 
     cout << uniqueHandStrengths.size() << " unique hand strengths" << endl;
@@ -120,12 +121,14 @@ void Evaluator::GenerateFiveCardTable()
     {
         Hand hand = Hand(bitmap);
         HandStrength strength = hand.GetStrength();
-        auto equivalence = Utilities::BinarySearch(uniqueHandStrengths, strength);
-        if (equivalence == null)
+        auto equivalence = lower_bound(uniqueHandStrengths.begin(), uniqueHandStrengths.end(), strength);
+        if (equivalence == uniqueHandStrengths.end() || equivalence->Compare(strength) != 0)
+        {
             throw invalid_argument(hand.ToString() + " hand not found");
+        }
         else
         {
-            handRankMap[bitmap] = (ulong)equivalence;
+            handRankMap[bitmap] = equivalence->ToULong();
         }
     }
 }
@@ -151,7 +154,7 @@ void Evaluator::GenerateSixCardTable()
                 subsetBitmap |= 1ul << card;
                 subsetValues.push_back(handRankMap[subsetBitmap]);
             }
-        } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end(), less<int>()));
+        } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end()));
 
         ulong bitmap;
         for (int i = 0; i < comboSize; i++)
@@ -159,7 +162,7 @@ void Evaluator::GenerateSixCardTable()
 
         handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
 
-    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end(), less<int>()));
+    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
 }
 
 void Evaluator::GenerateSevenCardTable()
@@ -183,7 +186,7 @@ void Evaluator::GenerateSevenCardTable()
                 subsetBitmap |= 1ul << card;
                 subsetValues.push_back(handRankMap[subsetBitmap]);
             }
-        } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end(), less<int>()));
+        } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end()));
 
         ulong bitmap;
         for (int i = 0; i < comboSize; i++)
@@ -191,7 +194,7 @@ void Evaluator::GenerateSevenCardTable()
 
         handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
 
-    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end(), less<int>()));
+    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
 }
 
 void Evaluator::GenerateMonteCarloMap(int iterations)
@@ -226,7 +229,7 @@ void Evaluator::GenerateMonteCarloMap(int iterations)
         }
 
         monteCarloMap[bitmap] = evaluationSum / (ulong)iterations;
-    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end(), less<int>()));
+    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
 
     for (auto [k, v] : monteCarloMap)
     {
@@ -238,9 +241,43 @@ void Evaluator::GenerateMonteCarloMap(int iterations)
     }
 }
 
-template <class RandIt, class Compare>
-bool next_combination(RandIt first, RandIt mid, RandIt last, Compare comp)
+template <typename Iterator>
+inline bool next_combination(const Iterator first, Iterator k, const Iterator last)
 {
-    std::sort(mid, last, std::tr1::bind(comp, std::tr1::placeholders::_2, std::tr1::placeholders::_1));
-    return std::next_permutation(first, last, comp);
+    /* Credits: Thomas Draper */
+    // http://stackoverflow.com/a/5097100/8747
+    if ((first == last) || (first == k) || (last == k))
+        return false;
+    Iterator itr1 = first;
+    Iterator itr2 = last;
+    ++itr1;
+    if (last == itr1)
+        return false;
+    itr1 = last;
+    --itr1;
+    itr1 = k;
+    --itr2;
+    while (first != itr1)
+    {
+        if (*--itr1 < *itr2)
+        {
+            Iterator j = k;
+            while (!(*itr1 < *j))
+                ++j;
+            std::iter_swap(itr1, j);
+            ++itr1;
+            ++j;
+            itr2 = k;
+            std::rotate(itr1, j, last);
+            while (last != j)
+            {
+                ++j;
+                ++itr2;
+            }
+            std::rotate(k, itr2, last);
+            return true;
+        }
+    }
+    std::rotate(first, k, last);
+    return false;
 }

@@ -13,6 +13,12 @@
 #include <unistd.h>
 #include <algorithm>
 
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/list.hpp>
+
 using namespace std;
 
 class Evaluator
@@ -35,7 +41,7 @@ private:
     void GenerateMonteCarloMap(int iterations);
 };
 
-template <class RandIt, class Compare>
-bool next_combination(RandIt first, RandIt mid, RandIt last, Compare comp);
+template <typename Iterator>
+inline bool next_combination(const Iterator first, Iterator k, const Iterator last);
 
 #endif
