@@ -110,7 +110,10 @@ void Evaluator::GenerateFiveCardTable()
     for (auto [bitmap, strength] : handStrengths)
     {
         auto insert_it = lower_bound(uniqueHandStrengths.begin(), uniqueHandStrengths.end(), strength);
-        uniqueHandStrengths.insert(insert_it, strength);
+        if (insert_it == uniqueHandStrengths.end() || insert_it->Compare(strength) != 0)
+        {
+            uniqueHandStrengths.insert(insert_it, strength);
+        }
     }
 
     cout << uniqueHandStrengths.size() << " unique hand strengths" << endl;
