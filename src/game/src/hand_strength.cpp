@@ -1,6 +1,6 @@
 #include "game/hand_strength.h"
 
-int HandStrength::Compare(HandStrength &other)
+int HandStrength::Compare(const HandStrength &other) const
 {
     if (this->handRanking > other.handRanking)
         return 1;
@@ -15,4 +15,14 @@ int HandStrength::Compare(HandStrength &other)
             return -1;
     }
     return 0;
+}
+
+bool HandStrength::operator<(const HandStrength &rhs) const
+{
+    return this->Compare(rhs) < 0;
+}
+
+ulong HandStrength::ToULong()
+{
+    return 0ul;
 }
