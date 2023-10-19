@@ -21,8 +21,3 @@ bool HandStrength::operator<(const HandStrength &rhs) const
 {
     return this->Compare(rhs) < 0;
 }
-
-ulong HandStrength::ToULong()
-{
-    return 0ul;
-}

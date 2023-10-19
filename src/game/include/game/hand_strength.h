@@ -16,7 +16,6 @@ public:
 
     int Compare(const HandStrength &other) const;
     bool operator<(const HandStrength &rhs) const;
-    ulong ToULong();
 };
 
 #endif
