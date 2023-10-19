@@ -28,7 +28,6 @@ Evaluator::Evaluator()
         handRankMap = unordered_map<ulong, ulong>((uint)(minHashMapSize * loadFactor));
         if (fiveCards)
         {
-            cout << "Generating new five card lookup table (52C5 = 2,598,960)" << endl;
             GenerateFiveCardTable();
         }
         if (sixCards)
