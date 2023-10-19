@@ -13,6 +13,9 @@
 #include <unistd.h>
 #include <algorithm>
 
+#include <indicators/cursor_control.hpp>
+#include <indicators/progress_bar.hpp>
+
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/map.hpp>
@@ -24,7 +27,7 @@ using namespace std;
 class Evaluator
 {
 public:
-    Evaluator();
+    void Initialise();
 
     int Evaluate(ulong bitmap);
     void SaveToFile(string &filename);

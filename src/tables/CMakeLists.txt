@@ -14,6 +14,7 @@ find_package(Boost 1.83.0 EXACT REQUIRED COMPONENTS
 target_include_directories( ${PROJECT_NAME}
     PUBLIC
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/../../include
     ${Boost_INCLUDE_DIR}
 )
 

@@ -1,6 +1,6 @@
 #include "tables/evaluator.h"
 
-Evaluator::Evaluator()
+void Evaluator::Initialise()
 {
     string fileName = "HandValueTable.txt";
     double loadFactor = 6.0;
@@ -144,6 +144,24 @@ void Evaluator::GenerateSixCardTable()
         combo[i] = i;
 
     int comboSize = 6;
+
+    using namespace indicators;
+    indicators::show_console_cursor(false);
+    ProgressBar bar{
+        option::BarWidth{50},
+        option::Start{"["},
+        option::Fill{"="},
+        option::Lead{">"},
+        option::Remainder{" "},
+        option::End{"]"},
+        option::PostfixText{"Generating 6 card table"},
+        option::ForegroundColor{Color::green},
+        option::ShowElapsedTime{true},
+        option::ShowRemainingTime{true},
+        option::FontStyles{std::vector<FontStyle>{FontStyle::bold}}};
+
+    long bar_percentile_count = 20358520 / 100;
+
     do
     {
         int subsetSize = comboSize - 1;
@@ -166,7 +184,15 @@ void Evaluator::GenerateSixCardTable()
 
         handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
 
+        bar_percentile_count--;
+        if (bar_percentile_count == 0)
+        {
+            bar_percentile_count = 20358520 / 100;
+            bar.tick();
+        }
     } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
+
+    indicators::show_console_cursor(true);
 }
 
 void Evaluator::GenerateSevenCardTable()
@@ -176,6 +202,25 @@ void Evaluator::GenerateSevenCardTable()
         combo[i] = i;
 
     int comboSize = 7;
+
+    using namespace indicators;
+
+    indicators::show_console_cursor(false);
+    ProgressBar bar{
+        option::BarWidth{50},
+        option::Start{"["},
+        option::Fill{"="},
+        option::Lead{">"},
+        option::Remainder{" "},
+        option::End{"]"},
+        option::PostfixText{"Generating 7 card table"},
+        option::ForegroundColor{Color::green},
+        option::ShowElapsedTime{true},
+        option::ShowRemainingTime{true},
+        option::FontStyles{std::vector<FontStyle>{FontStyle::bold}}};
+
+    long combination_count = 0;
+    long bar_percentile_count = 133784560 / 100;
     do
     {
         int subsetSize = comboSize - 1;
@@ -198,7 +243,14 @@ void Evaluator::GenerateSevenCardTable()
 
         handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
 
+        bar_percentile_count--;
+        if (bar_percentile_count == 0)
+        {
+            bar_percentile_count = 133784560 / 100;
+            bar.tick();
+        }
     } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
+    indicators::show_console_cursor(true);
 }
 
 void Evaluator::GenerateMonteCarloMap(int iterations)
