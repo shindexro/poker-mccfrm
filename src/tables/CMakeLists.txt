@@ -22,4 +22,5 @@ target_link_libraries(${PROJECT_NAME}
     sub::enums
     sub::game
     Boost::boost
+    ${Boost_LIBRARIES}
 )
