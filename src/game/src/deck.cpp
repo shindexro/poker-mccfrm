@@ -19,7 +19,7 @@ void Deck::Shuffle(int from)
 {
     for (int i = from; i < 52 - 1; i++)
     {
-        int n = from + (rand() % (52 - from));
+        int n = randint(from, 52);
         ulong temp = cards[i];
         cards[i] = cards[n];
         cards[n] = temp;

@@ -1,6 +1,8 @@
 #ifndef __CLASS_DECK_H__
 #define __CLASS_DECK_H__
 
+#include "utils/random.h"
+
 #include <string>
 
 using namespace std;
