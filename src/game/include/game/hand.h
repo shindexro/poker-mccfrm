@@ -24,7 +24,7 @@ public:
     Hand(ulong bitmap);
 
     HandStrength GetStrength();
-    void PrintColoredCards(string &end);
+    void PrintColoredCards(const string &end = string(""));
     string ToString();
 };
 
