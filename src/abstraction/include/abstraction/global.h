@@ -10,31 +10,31 @@ using namespace std;
 class Global
 {
 public:
-    const int NOF_THREADS = 12;
+    static const int NOF_THREADS = 12;
     static vector<float> raises;
-    const int buyIn = 200;
-    const int nofPlayers = 200;
-    const int C = -100000;
-    const int regretFloor = -110000;
+    static const int buyIn = 200;
+    static const int nofPlayers = 200;
+    static const int C = -100000;
+    static const int regretFloor = -110000;
 
-    const int BB = 2;
-    const int SB = 1;
+    static const int BB = 2;
+    static const int SB = 1;
 
     // information abstraction parameters, currently this would be a
     // 169 - 200 - 200 - 200 abstraction, where the river is bucketed using OCHS and the turn and flop using EMD
-    const int nofRiverBuckets = 1000;
-    const int nofTurnBuckets = 1000;
-    const int nofFlopBuckets = 1000;
+    static const int nofRiverBuckets = 1000;
+    static const int nofTurnBuckets = 1000;
+    static const int nofFlopBuckets = 1000;
     // 100k or even 1 million shouldn't take too much time compared to the rest of the information abstraction
-    const int nofMCSimsPerPreflopHand = 500;
+    static const int nofMCSimsPerPreflopHand = 500;
     // for the river, determines the river histogram size (in theory could be up to 169 but will be very slow) default 8
-    const int nofOpponentClusters = 16;
-    const int flopHistogramSize = 50;
-    const int turnHistogramSize = 50;
+    static const int nofOpponentClusters = 16;
+    static const int flopHistogramSize = 50;
+    static const int turnHistogramSize = 50;
 
     // this is used to create the nofOpponentClusters, it can be increased (default 50)
     // with little time penalty because the clustering for 169 hands is very fast
-    const int preflopHistogramSize = 100;
+    static const int preflopHistogramSize = 100;
 
     // dont change
     static HandIndexer indexer_2;
