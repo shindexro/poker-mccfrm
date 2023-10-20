@@ -29,6 +29,7 @@ void Evaluator::Initialise()
         if (fiveCards)
         {
             GenerateFiveCardTable();
+            SaveToFile(fileName);
         }
         if (sixCards)
         {
@@ -65,16 +66,16 @@ int Evaluator::Evaluate(ulong bitmap)
 
 void Evaluator::SaveToFile(string &fileName)
 {
-    // using var fileStream = File.Create(fileName);
-    // BinaryFormatter bf = new BinaryFormatter();
-    // bf.Serialize(fileStream, handRankMap);
+    ofstream file(fileName);
+    boost::archive::binary_oarchive archive(file);
+    archive << handRankMap;
 }
 
 void Evaluator::LoadFromFile(string &fileName)
 {
-    // using var fileStream = File.OpenRead(fileName);
-    // var binForm = new BinaryFormatter();
-    // handRankMap = (HashMap)binForm.Deserialize(fileStream);
+    ifstream file(fileName);
+    boost::archive::binary_iarchive archive(file);
+    archive >> handRankMap;
 }
 
 void Evaluator::GenerateFiveCardTable()
