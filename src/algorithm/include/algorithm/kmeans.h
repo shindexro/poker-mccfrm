@@ -7,6 +7,7 @@
 
 #include <oneapi/tbb.h>
 #include <vector>
+#include <unordered_set>
 #include <float.h>
 
 using namespace std;
@@ -26,16 +27,7 @@ public:
     /// <param name="k"></param>
     /// <returns></returns>
     vector<int> ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
-
-    /// <summary>
-    /// Returns an array where the element at index i contains the cluster entry associated with the entry
-    /// </summary>
-    /// <param name="data"></param>
-    /// <param name="k"></param>
-    /// <returns></returns>
     vector<int> ClusterL2(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
-
-    static double AddDouble(double location1, double value);
 
 private:
     vector<vector<float>> CalculateNewCenters(vector<vector<float>> &data, vector<int> &bestCenters, int k);
