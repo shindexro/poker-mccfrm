@@ -11,6 +11,7 @@ add_library(sub::tables ALIAS ${PROJECT_NAME})
 find_package(Boost 1.83.0 EXACT REQUIRED COMPONENTS
     serialization
 )
+find_package(TBB REQUIRED)
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC
@@ -23,6 +24,8 @@ target_link_libraries(${PROJECT_NAME}
     sub::enums
     sub::game
     sub::utils
+    sub::abstraction
     Boost::boost
+    TBB::tbb
     ${Boost_LIBRARIES}
 )
