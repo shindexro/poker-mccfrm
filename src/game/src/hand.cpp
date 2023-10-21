@@ -166,7 +166,7 @@ HandStrength Hand::GetStrength()
     return strength;
 }
 
-void Hand::PrintColoredCards(string &end)
+void Hand::PrintColoredCards(const string &end)
 {
     for (int i = 0; i < cards.size(); i++)
     {
