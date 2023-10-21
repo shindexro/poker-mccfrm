@@ -11,7 +11,7 @@
                 "${workspaceFolder}/src/game/**",
                 "${workspaceFolder}/src/tables/**",
                 "/usr/local/boost_1_83_0",
-                "/usr/local/onetbb"
+                "/usr/local/onetbb/include"
             ],
             "defines": [],
             "cStandard": "c17",
