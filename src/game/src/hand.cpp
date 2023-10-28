@@ -16,7 +16,7 @@ Hand::Hand(ulong bitmap)
             int shift = r * 4 + s;
             if (((1ul << shift) & bitmap) != 0)
             {
-                char card[] = {ranks[r], suits[s]};
+                string card{ranks[r], suits[s]};
                 cards.push_back(Card(card));
             }
         }

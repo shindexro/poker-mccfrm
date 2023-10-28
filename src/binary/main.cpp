@@ -2,6 +2,7 @@
 #include "game/deck.h"
 #include "abstraction/global.h"
 #include "tables/hand_indexer.h"
+#include "tables/ochs_table.h"
 #include <iostream>
 #include <string>
 
@@ -11,7 +12,8 @@ public:
     static void Test()
     {
         cout << "Testing card creation" << endl;
-        Card card = Card("Ts");
+        string cardString = "Ts";
+        Card card = Card(cardString);
         cout << card.ToString() << endl;
 
         cout << "Testing deck creation" << endl;
@@ -26,7 +28,7 @@ public:
     {
         CreateIndexers();
         Global::handEvaluator.Initialise();
-        // CalculateInformationAbstraction();
+        CalculateInformationAbstraction();
         // Train();
     }
 
@@ -72,13 +74,15 @@ private:
         cout << Global::indexer_2_3_1_1.roundSize[3] << " non-isomorphic hands found" << endl;
     }
 
-    // static void CalculateInformationAbstraction()
-    // {
-    //     cout << "Calculating information abstractions... ");
+    static void CalculateInformationAbstraction()
+    {
+        cout << "Calculating information abstractions... " << endl;
 
-    //     OCHSTable.Init();
-    //     EMDTable.Init();
-    // }
+        OCHSTable ochsTable = OCHSTable();
+        ochsTable.Init();
+
+        // EMDTable.Init();
+    }
 
     // static void Train()
     // {

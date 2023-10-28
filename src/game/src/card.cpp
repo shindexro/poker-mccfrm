@@ -2,10 +2,16 @@
 
 Card::Card(const char *s)
 {
-    // if (s.length() != 2)
-    // {
-    //     throw invalid_argument("Card string must be length 2");
-    // }
+    Card(string(s));
+}
+
+Card::Card(const string &s)
+{
+    if (s.length() != 2)
+    {
+        cerr << "Received card string " << s << endl;
+        throw invalid_argument("Card string must be length 2");
+    }
     switch (s[0])
     {
     case '2':
@@ -166,7 +172,8 @@ string Card::ToString()
     char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
     char suits[] = {'s', 'h', 'd', 'c'};
     // char suits[] = {'♠', '♥', '♦', '♣'};
-    string s = {ranks[(int)rank],
-                suits[(int)suit]};
+    cerr << "rank is " << (int)rank << " and suit is " << (int)suit << endl;
+    string s = string({ranks[(int)rank],
+                       suits[(int)suit]});
     return s;
 }

@@ -2,12 +2,17 @@
 #define __CLASS_OCHS_TABLE_H__
 
 #include "abstraction/global.h"
+#include "algorithm/kmeans.h"
 #include "utils/random.h"
 
+#include <oneapi/tbb.h>
 #include <string>
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include <boost/serialization/vector.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 
 using namespace std;
 

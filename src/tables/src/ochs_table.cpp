@@ -145,45 +145,43 @@ void OCHSTable::CalculateOCHSOpponentClusters()
 void OCHSTable::ClusterPreflopHands()
 {
     // k-means clustering
-    Kmeans kmeans = new Kmeans();
-    preflopIndices = kmeans.ClusterEMD(histogramsPreflop, Global::nofOpponentClusters, 100, null);
+    Kmeans kmeans = Kmeans();
+    auto emptyVector = vector<int>();
+    preflopIndices = kmeans.ClusterEMD(histogramsPreflop, Global::nofOpponentClusters, 100, emptyVector);
 
-    Console.WriteLine("Created the following cluster for starting hands: ");
-    vector<Hand> startingHands = Utilities::GetStartingHandChart();
+    cout << "Created the following cluster for starting hands: " << endl;
+    vector<Hand> startingHands = GetStartingHandChart();
 
     for (int i = 0; i < 169; ++i)
     {
-        long index = Global::indexer_2.indexLast(new int[]{startingHands[i].Cards[0].GetIndex(),
-                                                          startingHands[i].Cards[1].GetIndex()});
+        auto toIndex = vector<int>({startingHands[i].cards[0].Index(),
+                                    startingHands[i].cards[1].Index()});
+        long index = Global::indexer_2.IndexLast(toIndex);
 
-        var nofConsoleColors = Enum.GetNames(typeof(ConsoleColor)).Length;
+        cout << preflopIndices[index] << "  ";
 
-        if (nofConsoleColors <= Global::nofOpponentClusters)
-        {
-            Console.ForegroundColor = (ConsoleColor)preflopIndices[index];
-            Console.Write("X  ");
-            Console.ResetColor();
-        }
-        else
-        {
-            Console.Write(preflopIndices[index] + "  ");
-        }
         if (i % 13 == 12)
-            Console.WriteLine();
+            cout << endl;
     }
 
-    Console.WriteLine();
+    cout << endl;
 }
 
 void OCHSTable::ClusterRiver()
 {
     // k-means clustering
-    DateTime start = DateTime.UtcNow;
-    Kmeans kmeans = new Kmeans();
-    int[] indices = FileHandler.LoadFromFileIndex("OCHSRiverClusters_temp.txt");
+    chrono::steady_clock::time_point start = chrono::steady_clock::now();
+
+    Kmeans kmeans = Kmeans();
+    // TODO: vector<int> indices = FileHandler.LoadFromFileIndex("OCHSRiverClusters_temp.txt");
+    vector<int> indices;
+    ifstream file("OCHSRiverClusters_temp.txt");
+    boost::archive::binary_iarchive archive(file);
+    archive >> indices;
+
     riverIndices = kmeans.ClusterL2(histogramsRiver, Global::nofRiverBuckets, 1, indices);
 
-    Console.WriteLine("Created the following clusters for the River: ");
+    cout << "Created the following clusters for the River: " << endl;
 
     int nofExamplesToPrint = 10;
     for (int i = 0; i < Global::indexer_2_5.roundSize[1]; ++i)
@@ -191,7 +189,7 @@ void OCHSTable::ClusterRiver()
         if (riverIndices[i] == 0 && nofExamplesToPrint > 0)
         {
             auto cards = vector<int>(7);
-            Global::indexer_2_5.unindex(Global::indexer_2_5.rounds - 1, i, cards);
+            Global::indexer_2_5.Unindex(Global::indexer_2_5.rounds - 1, i, cards);
 
             Hand hand = Hand();
             hand.cards.push_back(Card(cards[0]));
@@ -202,154 +200,120 @@ void OCHSTable::ClusterRiver()
             hand.cards.push_back(Card(cards[5]));
             hand.cards.push_back(Card(cards[6]));
             hand.PrintColoredCards();
-            Console.WriteLine();
+            cout << endl;
             nofExamplesToPrint--;
         }
     }
-    TimeSpan elapsed = DateTime.UtcNow - start;
-    Console.WriteLine("River clustering completed in {0}d {1}h {2}m {3}s", elapsed.Days,
-                      elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
+    chrono::steady_clock::time_point end = chrono::steady_clock::now();
+    auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
+    cout << "Time taken to generate lookup table: " << elapsed << "[s]" << endl;
 }
 
 void OCHSTable::GenerateRiverHistograms()
 {
-    Console.WriteLine("Generating histograms for {0} river hands of length {1} each...",
-                      Global::indexer_2_5.roundSize[1], Global::nofOpponentClusters);
-    DateTime start = DateTime.UtcNow;
+    cout << "Generating histograms for " << Global::indexer_2_5.roundSize[1] << " river hands of length "
+         << Global::nofOpponentClusters << " each..." << endl;
+    chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
-    histogramsRiver = new float[Global::indexer_2_5.roundSize[1]][];
-    for (int i = 0; i < Global::indexer_2_5.roundSize[1]; ++i)
-    {
-        histogramsRiver[i] = new float[Global::nofOpponentClusters];
-    }
+    histogramsRiver = vector<vector<float>>(Global::indexer_2_5.roundSize[1], vector<float>(Global::nofOpponentClusters));
 
     long sharedLoopCounter = 0;
-    using(var progress = new ProgressBar())
-    {
-        progress.Report((double)(sharedLoopCounter) / Global::indexer_2_5.roundSize[1], sharedLoopCounter);
 
-        Parallel.For(
-            0, Global::NOF_THREADS,
-            t = >
-                {
-                    long iter = 0;
-                    for (int i = Util.GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t).Item1;
-                         i < Util.GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t).Item2; ++i)
-                    {
-                        int[] cards = new int[7];
-                        Global::indexer_2_5.unindex(Global::indexer_2_5.rounds - 1, i, cards);
-                        long deadCardMask = (1L << cards[0]) + (1L << cards[1]) + (1L << cards[2]) + (1L << cards[3]) + (1L << cards[4]) + (1L << cards[5]) + (1L << cards[6]);
+    oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
+                              [&](int t)
+                              {
+                                  long iter = 0;
+                                  for (int i = get<0>(GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t));
+                                       i < get<1>(GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t)); ++i)
+                                  {
+                                      auto cards = std::vector<int>(7);
+                                      Global::indexer_2_5.Unindex(Global::indexer_2_5.rounds - 1, i, cards);
+                                      long deadCardMask = (1L << cards[0]) + (1L << cards[1]) + (1L << cards[2]) + (1L << cards[3]) + (1L << cards[4]) + (1L << cards[5]) + (1L << cards[6]);
 
-                        for (int card1Opponent = 0; card1Opponent < 51; card1Opponent++)
-                        {
-                            if (((1L << card1Opponent) & deadCardMask) != 0)
-                            {
-                                continue;
-                            }
-                            for (int card2Opponent = card1Opponent + 1; card2Opponent < 52; card2Opponent++)
-                            {
-                                if (((1L << card2Opponent) & deadCardMask) != 0)
-                                {
-                                    continue;
-                                }
+                                      for (int card1Opponent = 0; card1Opponent < 51; card1Opponent++)
+                                      {
+                                          if (((1L << card1Opponent) & deadCardMask) != 0)
+                                          {
+                                              continue;
+                                          }
+                                          for (int card2Opponent = card1Opponent + 1; card2Opponent < 52; card2Opponent++)
+                                          {
+                                              if (((1L << card2Opponent) & deadCardMask) != 0)
+                                              {
+                                                  continue;
+                                              }
 
-                                ulong handSevenCards = (1uL << cards[0]) + (1uL << cards[1]) + (1uL << cards[2]) + (1uL << cards[3]) + (1uL << cards[4]) +
-                                                       +(1uL << cards[5]) + (1uL << cards[6]);
-                                ulong handOpponentSevenCards = (1uL << card1Opponent) + (1uL << card2Opponent) + (1uL << cards[2]) + (1uL << cards[3]) + (1uL << cards[4]) + (1uL << cards[5]) + (1uL << cards[6]);
+                                              ulong handSevenCards = (1uL << cards[0]) + (1uL << cards[1]) + (1uL << cards[2]) + (1uL << cards[3]) + (1uL << cards[4]) +
+                                                                     +(1uL << cards[5]) + (1uL << cards[6]);
+                                              ulong handOpponentSevenCards = (1uL << card1Opponent) + (1uL << card2Opponent) + (1uL << cards[2]) + (1uL << cards[3]) + (1uL << cards[4]) + (1uL << cards[5]) + (1uL << cards[6]);
 
-                                int valueSevenCards = Global::handEvaluator.Evaluate(handSevenCards);
-                                int valueOpponentSevenCards = Global::handEvaluator.Evaluate(handOpponentSevenCards);
+                                              int valueSevenCards = Global::handEvaluator.Evaluate(handSevenCards);
+                                              int valueOpponentSevenCards = Global::handEvaluator.Evaluate(handOpponentSevenCards);
 
-                                long indexPreflop = Global::indexer_2.indexLast(new int[]{card1Opponent, card2Opponent});
-                                histogramsRiver[i][preflopIndices[indexPreflop]] += valueSevenCards > valueOpponentSevenCards ? 1 : (valueSevenCards == valueOpponentSevenCards) ? 0.5f
-                                                                                                                                                                                 : 0.0f;
-                            }
-                        }
+                                              auto preflop = std::vector<int>({card1Opponent, card2Opponent});
+                                              long indexPreflop = Global::indexer_2.IndexLast(preflop);
+                                              histogramsRiver[i][preflopIndices[indexPreflop]] += valueSevenCards > valueOpponentSevenCards ? 1 : (valueSevenCards == valueOpponentSevenCards) ? 0.5f
+                                                                                                                                                                                               : 0.0f;
+                                          }
+                                      }
 
-                        iter++;
-                        if (iter % 10000 == 0)
-                        {
-                            Interlocked.Add(ref sharedLoopCounter, 10000);
-                            progress.Report((double)(sharedLoopCounter) / Global::indexer_2_5.roundSize[1], sharedLoopCounter);
-                        }
-                    }
-                    Interlocked.Add(ref sharedLoopCounter, iter % 10000);
-                    progress.Report((double)(sharedLoopCounter) / Global::indexer_2_5.roundSize[1], sharedLoopCounter);
-                });
-    }
-    TimeSpan elapsed = DateTime.UtcNow - start;
-    Console.WriteLine("Generating River histograms completed in {0}d {1}h {2}m {3}s", elapsed.Days,
-                      elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
+                                      iter++;
+                                  }
+                              });
+
+    chrono::steady_clock::time_point end = chrono::steady_clock::now();
+    auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
+    cout << "Time taken to generate lookup table: " << elapsed << "[s]" << endl;
 }
 
-static void OCHSTable::SaveToFile()
+void OCHSTable::SaveToFile()
 {
-    if (preflopIndices != null)
+    if (preflopIndices.size())
     {
-        Console.WriteLine("Saving table to file {0}", filenameOppClusters);
-        FileHandler.SaveToFile(preflopIndices, filenameOppClusters);
+        cout << "Saving table to file " << filenameOppClusters << endl;
+        ofstream file(filenameOppClusters);
+        boost::archive::binary_oarchive archive(file);
+        archive << preflopIndices;
     }
-    if (histogramsRiver != null)
+    if (histogramsRiver.size())
     {
-        Console.WriteLine("Saving river histograms from file {0}", filenameRiverHistograms);
-        BinaryWriter bin = new BinaryWriter(File.Open(filenameRiverHistograms, FileMode.Create));
-        int dim1 = histogramsRiver.Length;
-        int dim2 = histogramsRiver[0].Length;
-
-        bin.Write(dim1);
-        bin.Write(dim2);
-        for (int i = 0; i < dim1; ++i)
-        {
-            for (int j = 0; j < dim2; ++j)
-            {
-                bin.Write(histogramsRiver[i][j]);
-            }
-        }
-        bin.Close();
+        cout << "Saving river histograms from file " << filenameRiverHistograms << endl;
+        ofstream file(filenameRiverHistograms);
+        boost::archive::binary_oarchive archive(file);
+        archive << histogramsRiver;
     }
-    if (riverIndices != null)
+    if (riverIndices.size())
     {
-        Console.WriteLine("Saving river cluster index to file {0}", filenameRiverClusters);
-        using var fileStream = File.Create(filenameRiverClusters);
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(fileStream, riverIndices);
+        cout << "Saving river cluster index to file " << filenameRiverClusters << endl;
+        ofstream file(filenameRiverClusters);
+        boost::archive::binary_oarchive archive(file);
+        archive << riverIndices;
     }
 }
 
-static void OCHSTable::LoadFromFile()
+void OCHSTable::LoadFromFile()
 {
-    if (File.Exists(filenameRiverClusters))
+    if (filenameRiverClusters.size() && access(filenameRiverClusters.c_str(), F_OK) != -1)
     {
-        riverIndices = FileHandler.LoadFromFileIndex(filenameRiverClusters);
+        ifstream file(filenameRiverClusters);
+        boost::archive::binary_iarchive archive(file);
+        archive >> riverIndices;
     }
     else
     {
-        if (File.Exists(filenameRiverHistograms))
+        if (filenameRiverHistograms.size() && access(filenameRiverHistograms.c_str(), F_OK) != -1)
         {
-            Console.WriteLine("Loading river histograms from file {0}", filenameRiverHistograms);
-            BinaryReader binR = new BinaryReader(File.OpenRead(filenameRiverHistograms));
-            int dim1 = binR.ReadInt32();
-            int dim2 = binR.ReadInt32();
-            histogramsRiver = new float[dim1][];
-            for (int i = 0; i < dim1; ++i)
-            {
-                histogramsRiver[i] = new float[dim2];
-            }
-
-            for (int i = 0; i < dim1; ++i)
-            {
-                for (int j = 0; j < dim2; ++j)
-                {
-                    histogramsRiver[i][j] = binR.ReadSingle();
-                }
-            }
+            cout << "Loading river histograms from file " << filenameRiverHistograms << endl;
+            ifstream file(filenameRiverHistograms);
+            boost::archive::binary_iarchive archive(file);
+            archive >> histogramsRiver;
         }
-        if (File.Exists(filenameOppClusters))
+        if (filenameOppClusters.size() && access(filenameOppClusters.c_str(), F_OK) != -1)
         {
-            Console.WriteLine("Loading flop opponent clusters from file {0}", filenameOppClusters);
-            using var fileStream = File.OpenRead(filenameOppClusters);
-            var binForm = new BinaryFormatter();
-            preflopIndices = (int[])binForm.Deserialize(fileStream);
+            cout << "Loading flop opponent clusters from file " << filenameOppClusters << endl;
+            ifstream file(filenameOppClusters);
+            boost::archive::binary_iarchive archive(file);
+            archive >> preflopIndices;
         }
     }
 }

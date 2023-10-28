@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <iostream>
 #include "enums/rank.h"
 #include "enums/suit.h"
 
@@ -18,6 +19,7 @@ public:
     Suit suit;
 
     Card(const char *s);
+    Card(const string &s);
     Card(int index);
     bool Equals(const Card &other);
     int PrimeRank();

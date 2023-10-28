@@ -62,11 +62,20 @@ void HandIndexer::Initialise()
         }
     }
 
+    for (int i = 0; i < 100; i++)
+    {
+        for (int j = 0; j < SUITS + 1; j++)
+        {
+            cout << nCrGroups[i][j] << ' ';
+        }
+        cout << endl;
+    }
+
     for (int i = 0; i < 1 << RANKS; i++)
     {
         for (int set = i, j = 1; set != 0; ++j, set &= set - 1)
         {
-            rankSetToIndex[i] + nCrRanks[__builtin_ctz(set)][j];
+            rankSetToIndex[i] += nCrRanks[__builtin_ctz(set)][j];
         }
         indexToRankSet[__builtin_popcount((unsigned int)i)][rankSetToIndex[i]] = i;
     }
@@ -77,10 +86,9 @@ void HandIndexer::Initialise()
         numPermutations *= i;
     }
 
-    suitPermutations = vector<vector<int>>(numPermutations, vector<int>());
+    suitPermutations = vector<vector<int>>(numPermutations, vector<int>(SUITS));
     for (int i = 0; i < numPermutations; ++i)
     {
-        suitPermutations[i] = vector<int>(SUITS);
         for (int j = 0, index = i, used = 0; j < SUITS; ++j)
         {
             int suit = index % (SUITS - j);
@@ -343,7 +351,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
         {
             part = suitIndex[i];
             size = suitMultiplier[i];
-            i + 1;
+            i += 1;
         }
         index += multiplier * part;
         multiplier *= size;
@@ -394,6 +402,7 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
 
         int suitSize = configurationToSuitSize[round][configurationIdx][i];
         long groupSize = nCrGroups[suitSize + j - i - 1][j - 1];
+        cout << "group size is " << groupSize << " " << suitSize + j - i - 1 << " " << j - 1 << endl;
         long groupIndex = (long)((unsigned long)index % (unsigned long)groupSize);
 
         index = (long)((unsigned long)index / (unsigned long)groupSize);

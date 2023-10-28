@@ -25,6 +25,7 @@ target_link_libraries(${PROJECT_NAME}
     sub::game
     sub::utils
     sub::abstraction
+    sub::algorithms
     Boost::boost
     TBB::tbb
     ${Boost_LIBRARIES}
