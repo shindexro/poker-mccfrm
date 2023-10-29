@@ -134,15 +134,15 @@ vector<Hand> GetStartingHandChart()
             secondCardRank = "A";
             break;
         }
-        string firstCardSuit = "S";
+        string firstCardSuit = "s";
         string secondCardSuit;
         if (i % 13 > i / 13)
         {
-            secondCardSuit = "S";
+            secondCardSuit = "s";
         }
         else
         {
-            secondCardSuit = "H";
+            secondCardSuit = "h";
         }
         Hand hand = Hand();
         hand.cards.push_back(Card(firstCardRank + firstCardSuit));
