@@ -14,8 +14,11 @@ public:
     HandRanking handRanking;
     vector<int> kickers;
 
+    HandStrength();
+
     int Compare(const HandStrength &other) const;
     bool operator<(const HandStrength &rhs) const;
+    bool operator==(const HandStrength &rhs) const;
 };
 
 #endif

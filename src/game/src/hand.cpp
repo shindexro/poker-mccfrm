@@ -30,9 +30,7 @@ HandStrength Hand::GetStrength()
         throw invalid_argument("Failed to determine hand strength because card count is not 5.");
     }
 
-    HandStrength strength = HandStrength();
-    strength.kickers = vector<int>();
-
+    // sort cards by (rank, suit) from low to high
     sort(cards.begin(), cards.end(), [](Card &a, Card &b)
          { return a.PrimeRank() * 100 + a.PrimeSuit() < b.PrimeRank() * 100 + b.PrimeSuit(); });
 
@@ -59,10 +57,10 @@ HandStrength Hand::GetStrength()
         || suitProduct == 418195493  // Diamonds
         || suitProduct == 714924299; // Clubs
 
-    map<int, vector<Card>> groupsByRank = map<int, vector<Card>>();
+    map<int, vector<Card>> rankGroups = map<int, vector<Card>>();
     for (auto card : cards)
     {
-        groupsByRank[(int)card.rank].push_back(card);
+        rankGroups[(int)card.rank].push_back(card);
     }
 
     int fourOfAKind = -1;
@@ -70,7 +68,7 @@ HandStrength Hand::GetStrength()
     int onePair = -1;
     int twoPair = -1;
 
-    for (auto [rank, rankCards] : groupsByRank)
+    for (auto [rank, rankCards] : rankGroups)
     {
         int count = rankCards.size();
         if (count == 4)
@@ -83,6 +81,8 @@ HandStrength Hand::GetStrength()
             onePair = rank;
         }
     }
+
+    HandStrength strength = HandStrength();
 
     if (straight && flush)
     {
@@ -125,6 +125,7 @@ HandStrength Hand::GetStrength()
     else if (threeOfAKind >= 0)
     {
         strength.handRanking = HandRanking::ThreeOfAKind;
+        strength.kickers.push_back(threeOfAKind);
         for (auto card : cards)
         {
             if ((int)card.rank == threeOfAKind)

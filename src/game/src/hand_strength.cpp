@@ -1,5 +1,9 @@
 #include "game/hand_strength.h"
 
+HandStrength::HandStrength() : kickers{vector<int>()}
+{
+}
+
 int HandStrength::Compare(const HandStrength &other) const
 {
     if (this->handRanking > other.handRanking)
@@ -20,4 +24,9 @@ int HandStrength::Compare(const HandStrength &other) const
 bool HandStrength::operator<(const HandStrength &rhs) const
 {
     return this->Compare(rhs) < 0;
+}
+
+bool HandStrength::operator==(const HandStrength &rhs) const
+{
+    return this->Compare(rhs) == 0;
 }
