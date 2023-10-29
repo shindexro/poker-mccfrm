@@ -172,7 +172,6 @@ string Card::ToString()
     char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
     char suits[] = {'s', 'h', 'd', 'c'};
     // char suits[] = {'♠', '♥', '♦', '♣'};
-    cerr << "rank is " << (int)rank << " and suit is " << (int)suit << endl;
     string s = string({ranks[(int)rank],
                        suits[(int)suit]});
     return s;
