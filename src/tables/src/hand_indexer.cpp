@@ -1,15 +1,12 @@
 #include "tables/hand_indexer.h"
 
-HandIndexerState::HandIndexerState() : suitIndex(HandIndexer::SUITS),
-                                       suitMultiplier(HandIndexer::SUITS),
-                                       usedRanks(HandIndexer::SUITS)
-
+HandIndexerState::HandIndexerState() : round{0},
+                                       permutationIndex{0},
+                                       permutationMultiplier{1},
+                                       suitIndex(HandIndexer::SUITS, 0),
+                                       suitMultiplier(HandIndexer::SUITS, 1),
+                                       usedRanks(HandIndexer::SUITS, 0)
 {
-    permutationIndex = 1;
-    for (int i = 0; i < HandIndexer::SUITS; i++)
-    {
-        suitMultiplier[i] = 1;
-    }
 }
 
 int HandIndexer::nthUnset[1 << RANKS][RANKS] = {};
@@ -214,16 +211,17 @@ void HandIndexer::CreatePublicFlopHands()
  */
 long HandIndexer::IndexAll(vector<int> &cards, vector<long> &indices)
 {
-    if (rounds > 0)
+    if (rounds <= 0)
     {
-        HandIndexerState state = HandIndexerState();
-        for (int i = 0; i < rounds; i++)
-        {
-            indices[i] = IndexNextRound(state, cards);
-        }
-        return indices[rounds - 1];
+        return 0;
     }
-    return 0;
+
+    HandIndexerState state = HandIndexerState();
+    for (int i = 0; i < rounds; i++)
+    {
+        indices[i] = IndexNextRound(state, cards);
+    }
+    return indices[rounds - 1];
 }
 
 /**
@@ -280,6 +278,9 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
         remaining -= thisSize;
     }
 
+    // cout << "round: " << round << endl;
+    // cout << "state: " << state.permutationIndex << " " << state.suitIndex.size() << " " << state.usedRanks.size() << endl;
+    // cout << "permutationToConfiguration shape: " << permutationToConfiguration.size() << " x " << permutationToConfiguration[0].size() << endl;
     int configuration = permutationToConfiguration[round][state.permutationIndex];
     int piIndex = permutationToPi[round][state.permutationIndex];
     int equalIndex = configurationToEqual[round][configuration];
