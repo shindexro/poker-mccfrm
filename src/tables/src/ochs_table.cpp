@@ -105,6 +105,7 @@ void OCHSTable::CalculateOCHSOpponentClusters()
                     int valueSevenCards = Global::handEvaluator.Evaluate(handSevenCards);
                     int valueOpponentSevenCards = Global::handEvaluator.Evaluate(handOpponentSevenCards);
 
+                    // strength = histogram with column win, draw, and loss
                     int index = (valueSevenCards > valueOpponentSevenCards ? 0 : valueSevenCards == valueOpponentSevenCards ? 1
                                                                                                                             : 2);
 
