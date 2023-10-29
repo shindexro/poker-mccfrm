@@ -35,11 +35,13 @@ void Evaluator::Initialise()
         {
             cout << "Generating new six card lookup table (52C6 = 20,358,520)" << endl;
             GenerateSixCardTable();
+            SaveToFile(fileName);
         }
         if (sevenCards)
         {
             cout << "Generating new seven card lookup table (52C7 = 133,784,560)" << endl;
             GenerateSevenCardTable();
+            SaveToFile(fileName);
         }
 
         // Console.WriteLine("Running monte carlo simulation");
@@ -183,7 +185,7 @@ void Evaluator::GenerateSixCardTable()
         for (int i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
 
-        handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end()); // TODO: shouldn't this be max freq?
+        handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
 
         bar_percentile_count--;
         if (bar_percentile_count == 0)
