@@ -401,8 +401,7 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
         }
 
         int suitSize = configurationToSuitSize[round][configurationIdx][i];
-        long groupSize = nCrGroups[suitSize + j - i - 1][j - 1];
-        cout << "group size is " << groupSize << " " << suitSize + j - i - 1 << " " << j - 1 << endl;
+        long groupSize = nCrGroups[suitSize + j - i - 1][j - i];
         long groupIndex = (long)((unsigned long)index % (unsigned long)groupSize);
 
         index = (long)((unsigned long)index / (unsigned long)groupSize);
