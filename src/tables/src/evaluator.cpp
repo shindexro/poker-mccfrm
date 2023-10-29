@@ -63,6 +63,7 @@ int Evaluator::Evaluate(ulong bitmap)
     // if (monteCarloMap.ContainsKey(bitmap)) return (int)monteCarloMap[bitmap];
 
     // Otherwise return the real evaluation
+    // cout << "handRankMap size: " << handRankMap.size() << endl;
     return (int)handRankMap[bitmap];
 }
 
@@ -78,6 +79,7 @@ void Evaluator::LoadFromFile(string &fileName)
     ifstream file(fileName);
     boost::archive::binary_iarchive archive(file);
     archive >> handRankMap;
+    // cout << "handRankMap size: " << handRankMap.size() << endl;
 }
 
 void Evaluator::GenerateFiveCardTable()
@@ -138,6 +140,7 @@ void Evaluator::GenerateFiveCardTable()
             handRankMap[bitmap] = (ulong)(equivalence - uniqueHandStrengths.begin());
         }
     }
+    cout << "handRankMap size: " << handRankMap.size() << endl;
 }
 
 void Evaluator::GenerateSixCardTable()
@@ -174,14 +177,15 @@ void Evaluator::GenerateSixCardTable()
         do
         {
             ulong subsetBitmap = 0ul;
-            for (int card : subset)
+            for (int i = 0; i < subsetSize; i++)
             {
+                int card = subset[i];
                 subsetBitmap |= 1ul << card;
                 subsetValues.push_back(handRankMap[subsetBitmap]);
             }
         } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end()));
 
-        ulong bitmap;
+        ulong bitmap = 0ul;
         for (int i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
 
@@ -196,6 +200,7 @@ void Evaluator::GenerateSixCardTable()
     } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
 
     indicators::show_console_cursor(true);
+    cout << "handRankMap size: " << handRankMap.size() << endl;
 }
 
 void Evaluator::GenerateSevenCardTable()
@@ -233,14 +238,15 @@ void Evaluator::GenerateSevenCardTable()
         do
         {
             ulong subsetBitmap = 0ul;
-            for (int card : subset)
+            for (int i = 0; i < subsetSize; i++)
             {
+                int card = subset[i];
                 subsetBitmap |= 1ul << card;
                 subsetValues.push_back(handRankMap[subsetBitmap]);
             }
         } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end()));
 
-        ulong bitmap;
+        ulong bitmap = 0ul;
         for (int i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
 
@@ -254,6 +260,7 @@ void Evaluator::GenerateSevenCardTable()
         }
     } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
     indicators::show_console_cursor(true);
+    cout << "handRankMap size: " << handRankMap.size() << endl;
 }
 
 void Evaluator::GenerateMonteCarloMap(int iterations)
