@@ -166,7 +166,7 @@ void Evaluator::GenerateSixCardTable()
     do
     {
         int subsetSize = comboSize - 1;
-        auto subset = vector<int>(combo.begin(), combo.begin() + subsetSize);
+        auto subset = vector<int>(combo.begin(), combo.begin() + comboSize);
         auto subsetValues = vector<ulong>();
 
         do
@@ -183,7 +183,7 @@ void Evaluator::GenerateSixCardTable()
         for (int i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
 
-        handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
+        handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end()); // TODO: shouldn't this be max freq?
 
         bar_percentile_count--;
         if (bar_percentile_count == 0)
@@ -225,7 +225,7 @@ void Evaluator::GenerateSevenCardTable()
     do
     {
         int subsetSize = comboSize - 1;
-        auto subset = vector<int>(combo.begin(), combo.begin() + subsetSize);
+        auto subset = vector<int>(combo.begin(), combo.begin() + comboSize);
         auto subsetValues = vector<ulong>();
 
         do
