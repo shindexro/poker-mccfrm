@@ -83,14 +83,14 @@ vector<int> Kmeans::ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, 
                                               {
                                                   sharedLoopCounter += 100000;
                                                   double expectedTotalDistance = atomic_load(&totalDistance);
-                                                  while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance * threadDistance))
+                                                  while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance + threadDistance))
                                                       ;
                                                   threadDistance = 0;
                                               }
                                           }
                                           sharedLoopCounter += iter % 100000;
                                           double expectedTotalDistance = atomic_load(&totalDistance);
-                                          while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance * threadDistance))
+                                          while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance + threadDistance))
                                               ;
                                       });
 
@@ -110,7 +110,7 @@ vector<int> Kmeans::ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, 
             if (totalDistance < recordDistance)
             {
                 recordDistance = totalDistance;
-                bestCenters = vector<int>(recordCenters);
+                recordCenters = vector<int>(bestCenters);
             }
 
             std::cout << "Current average distance: " << totalDistance
@@ -213,14 +213,14 @@ vector<int> Kmeans::ClusterL2(vector<vector<float>> &data, int k, int nofRuns, v
                                               {
                                                   sharedLoopCounter += 100000;
                                                   double expectedTotalDistance = atomic_load(&totalDistance);
-                                                  while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance * threadDistance))
+                                                  while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance + threadDistance))
                                                       ;
                                                   threadDistance = 0;
                                               }
                                           }
                                           sharedLoopCounter += iter % 100000;
                                           double expectedTotalDistance = atomic_load(&totalDistance);
-                                          while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance * threadDistance))
+                                          while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance + threadDistance))
                                               ;
                                       });
 
@@ -241,7 +241,7 @@ vector<int> Kmeans::ClusterL2(vector<vector<float>> &data, int k, int nofRuns, v
             if (totalDistance < recordDistance)
             {
                 recordDistance = totalDistance;
-                bestCenters = vector<int>(recordCenters);
+                recordCenters = vector<int>(bestCenters);
             }
 
             lastDistance = totalDistance;
