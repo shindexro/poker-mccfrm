@@ -62,15 +62,6 @@ void HandIndexer::Initialise()
         }
     }
 
-    for (int i = 0; i < 100; i++)
-    {
-        for (int j = 0; j < SUITS + 1; j++)
-        {
-            cout << nCrGroups[i][j] << ' ';
-        }
-        cout << endl;
-    }
-
     for (int i = 0; i < 1 << RANKS; i++)
     {
         for (int set = i, j = 1; set != 0; ++j, set &= set - 1)
