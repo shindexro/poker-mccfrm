@@ -3,6 +3,7 @@
 #include "abstraction/global.h"
 #include "tables/hand_indexer.h"
 #include "tables/ochs_table.h"
+#include "utils/utils.h"
 #include <iostream>
 #include <string>
 
@@ -20,6 +21,9 @@ public:
         Deck deck = Deck(0);
         deck.Draw_(3);
         cout << deck.NumRemainingCards() << endl;
+
+        auto startingHandChart = GetStartingHandChart();
+        cout << "Hand Chart size: " << startingHandChart.size() << endl;
 
         Main();
     }
