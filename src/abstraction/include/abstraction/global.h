@@ -10,7 +10,7 @@ using namespace std;
 class Global
 {
 public:
-    static const int NOF_THREADS = 12;
+    static const int NOF_THREADS = 4;
     static vector<float> raises;
     static const int buyIn = 200;
     static const int nofPlayers = 200;
