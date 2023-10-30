@@ -13,6 +13,8 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <indicators/block_progress_bar.hpp>
+#include <indicators/cursor_control.hpp>
 
 using namespace std;
 

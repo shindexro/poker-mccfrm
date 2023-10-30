@@ -13,6 +13,7 @@
 
 using namespace std;
 using namespace chrono;
+using namespace indicators;
 
 vector<int> OCHSTable::preflopIndices; // has 169 elements to map each starting hand to a cluster
 vector<int> OCHSTable::riverIndices;   // mapping each canonical river hand (7 cards) to a cluster
@@ -218,7 +219,18 @@ void OCHSTable::GenerateRiverHistograms()
 
     histogramsRiver = vector<vector<float>>(Global::indexer_2_5.roundSize[1], vector<float>(Global::nofOpponentClusters));
 
-    long sharedLoopCounter = 0;
+    atomic<long> sharedLoopCounter = 0;
+
+    indicators::show_console_cursor(false);
+    BlockProgressBar bar{
+        option::BarWidth{80},
+        option::Start{"["},
+        option::End{"]"},
+        option::ForegroundColor{Color::white},
+        option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},
+        option::ShowElapsedTime{true},
+        option::ShowRemainingTime{true},
+        option::MaxProgress{Global::indexer_2_5.roundSize[1]}};
 
     oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
                               [&](int t)
@@ -259,9 +271,16 @@ void OCHSTable::GenerateRiverHistograms()
                                       }
 
                                       iter++;
+
+                                      if (iter == 10000)
+                                      {
+                                          sharedLoopCounter += iter;
+                                          bar.set_progress(sharedLoopCounter);
+                                          iter = 0;
+                                      }
                                   }
                               });
-
+    indicators::show_console_cursor(true);
     chrono::steady_clock::time_point end = chrono::steady_clock::now();
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
     cout << "Time taken to generate lookup table: " << elapsed << "[s]" << endl;
