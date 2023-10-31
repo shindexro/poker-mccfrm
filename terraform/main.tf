@@ -58,21 +58,27 @@ resource "aws_security_group" "poker_trainer" {
 
 resource "aws_instance" "poker_trainer" {
   ami                         = "ami-0694d931cee176e7d"
-  instance_type               = "t3.micro"
+  instance_type               = "r6a.xlarge"
   availability_zone           = "eu-west-1a"
   key_name                    = "main-key"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.poker.id
-  security_groups             = [aws_security_group.poker_trainer.id]
+  vpc_security_group_ids      = [aws_security_group.poker_trainer.id]
+
+  lifecycle {
+    ignore_changes = [associate_public_ip_address]
+  }
 }
 
 resource "aws_ebs_volume" "poker_trainer_data" {
   availability_zone = "eu-west-1a"
+  type              = "gp3"
   size              = 10
+  encrypted         = true
 }
 
 resource "aws_volume_attachment" "poker_trainer_data" {
-  device_name = "/dev/sdb"
+  device_name = "/dev/sdh"
   volume_id   = aws_ebs_volume.poker_trainer_data.id
   instance_id = aws_instance.poker_trainer.id
 }
