@@ -25,6 +25,35 @@ public:
         auto startingHandChart = GetStartingHandChart();
         cout << "Hand Chart size: " << startingHandChart.size() << endl;
 
+        vector<string> royalFlush{"As", "Ks", "Qs", "Js", "Ts"};
+        vector<string> aceHighFlush{"As", "9s", "2s", "5s", "Ts"};
+        vector<string> queenHighFlush{"Qh", "9h", "2h", "5h", "Th"};
+        vector<string> ace5FourOfAKind{"As", "Ah", "Ad", "Ac", "5d"};
+        vector<string> ace7FourOfAKind{"7s", "Ah", "Ad", "As", "Ac"};
+        vector<string> threeOfAKind1{"7s", "7h", "7d", "2s", "Ac"};
+        vector<string> threeOfAKind2{"7s", "7h", "7c", "3s", "4c"};
+
+        vector<Hand> hands{
+            Hand(royalFlush),
+            Hand(aceHighFlush),
+            Hand(queenHighFlush),
+            Hand(ace5FourOfAKind),
+            Hand(ace7FourOfAKind),
+            Hand(threeOfAKind1),
+            Hand(threeOfAKind2)};
+        sort(hands.begin(), hands.end(), [](Hand &a, Hand &b)
+             { return a.GetStrength() < b.GetStrength(); });
+        for (auto hand : hands)
+        {
+            auto strength = hand.GetStrength();
+            cout << strength.handRanking << ", kickers: ";
+            for (auto kicker : strength.kickers)
+            {
+                cout << "23456789TJQKA"[kicker] << " ";
+            }
+            cout << endl;
+        }
+
         Main();
     }
 

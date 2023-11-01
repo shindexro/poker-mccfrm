@@ -23,6 +23,12 @@ Hand::Hand(ulong bitmap)
     }
 }
 
+Hand::Hand(vector<string> &cardStrings) {
+    for (auto card : cardStrings) {
+        cards.push_back(Card(card));
+    }
+}
+
 HandStrength Hand::GetStrength()
 {
     if (cards.size() != 5)
@@ -30,9 +36,9 @@ HandStrength Hand::GetStrength()
         throw invalid_argument("Failed to determine hand strength because card count is not 5.");
     }
 
-    // sort cards by (rank, suit) from low to high
+    // sort cards by (rank, suit) from high to low
     sort(cards.begin(), cards.end(), [](Card &a, Card &b)
-         { return a.PrimeRank() * 100 + a.PrimeSuit() < b.PrimeRank() * 100 + b.PrimeSuit(); });
+         { return a.PrimeRank() * 100 + a.PrimeSuit() > b.PrimeRank() * 100 + b.PrimeSuit(); });
 
     int rankProduct = accumulate(cards.begin(), cards.end(), 1, [](int acc, Card &c)
                                  { return acc * c.PrimeRank(); });
@@ -89,7 +95,6 @@ HandStrength Hand::GetStrength()
         strength.handRanking = HandRanking::StraightFlush;
         for (auto card : cards)
             strength.kickers.push_back((int)card.rank);
-        reverse(strength.kickers.begin(), strength.kickers.end());
     }
     else if (fourOfAKind >= 0)
     {
@@ -113,14 +118,12 @@ HandStrength Hand::GetStrength()
         strength.handRanking = HandRanking::Flush;
         for (auto card : cards)
             strength.kickers.push_back((int)card.rank);
-        reverse(strength.kickers.begin(), strength.kickers.end());
     }
     else if (straight)
     {
         strength.handRanking = HandRanking::Straight;
         for (auto card : cards)
             strength.kickers.push_back((int)card.rank);
-        reverse(strength.kickers.begin(), strength.kickers.end());
     }
     else if (threeOfAKind >= 0)
     {
@@ -161,7 +164,6 @@ HandStrength Hand::GetStrength()
         strength.handRanking = HandRanking::HighCard;
         for (auto card : cards)
             strength.kickers.push_back((int)card.rank);
-        reverse(strength.kickers.begin(), strength.kickers.end());
     }
 
     return strength;

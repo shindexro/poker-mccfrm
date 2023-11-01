@@ -22,6 +22,7 @@ public:
 
     Hand();
     Hand(ulong bitmap);
+    Hand(vector<string> &cards);
 
     HandStrength GetStrength();
     void PrintColoredCards(const string &end = string(""));
