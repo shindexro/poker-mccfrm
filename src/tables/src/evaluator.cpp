@@ -19,7 +19,7 @@ void Evaluator::Initialise()
     // Load hand rank table or create one if no file was given
     if (fileName.size() && access(fileName.c_str(), F_OK) != -1)
     {
-        cout << "Loading table from " << fileName << endl;
+        std::cout << "Loading table from " << fileName << endl;
         LoadFromFile(fileName);
     }
     else
@@ -33,27 +33,27 @@ void Evaluator::Initialise()
         }
         if (sixCards)
         {
-            cout << "Generating new six card lookup table (52C6 = 20,358,520)" << endl;
-            GenerateSixCardTable();
+            std::cout << "Generating new six card lookup table (52C6 = 20,358,520)" << endl;
+            GenerateHandValueTable(6);
             SaveToFile(fileName);
         }
         if (sevenCards)
         {
-            cout << "Generating new seven card lookup table (52C7 = 133,784,560)" << endl;
-            GenerateSevenCardTable();
+            std::cout << "Generating new seven card lookup table (52C7 = 133,784,560)" << endl;
+            GenerateHandValueTable(7);
             SaveToFile(fileName);
         }
 
         // Console.WriteLine("Running monte carlo simulation");
         // GenerateMonteCarloMap(100000);
-        cout << "Writing table to disk" << endl;
+        std::cout << "Writing table to disk" << endl;
         SaveToFile(fileName);
     }
 
     chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
     auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
-    cout << "Time taken to generate lookup table: " << elapsed << "[s]" << endl;
+    std::cout << "Time taken to generate lookup table: " << elapsed << "[s]" << endl;
     loaded = true;
 }
 
@@ -63,7 +63,6 @@ int Evaluator::Evaluate(ulong bitmap)
     // if (monteCarloMap.ContainsKey(bitmap)) return (int)monteCarloMap[bitmap];
 
     // Otherwise return the real evaluation
-    // cout << "handRankMap size: " << handRankMap.size() << endl;
     return (int)handRankMap[bitmap];
 }
 
@@ -79,7 +78,6 @@ void Evaluator::LoadFromFile(string &fileName)
     ifstream file(fileName);
     boost::archive::binary_iarchive archive(file);
     archive >> handRankMap;
-    // cout << "handRankMap size: " << handRankMap.size() << endl;
 }
 
 void Evaluator::GenerateFiveCardTable()
@@ -100,7 +98,7 @@ void Evaluator::GenerateFiveCardTable()
 
     // Calculate hand strength of each hand
     auto handStrengths = unordered_map<ulong, HandStrength>();
-    cout << "Calculating hand strength (" << handBitmaps.size() << ")" << endl;
+    std::cout << "Calculating hand strength (" << handBitmaps.size() << ")" << endl;
 
     for (auto bitmap : handBitmaps)
     {
@@ -110,7 +108,7 @@ void Evaluator::GenerateFiveCardTable()
 
     // Generate a list of all unique hand strengths
     auto uniqueHandStrengths = vector<HandStrength>();
-    cout << "Generating equivalence classes" << endl;
+    std::cout << "Generating equivalence classes" << endl;
 
     for (auto [bitmap, strength] : handStrengths)
     {
@@ -121,10 +119,10 @@ void Evaluator::GenerateFiveCardTable()
         }
     }
 
-    cout << uniqueHandStrengths.size() << " unique hand strengths" << endl;
+    std::cout << uniqueHandStrengths.size() << " unique hand strengths" << endl;
 
     // Create a map of hand bitmaps to hand strength indices
-    cout << "Generating new five card lookup table (2,598,960)" << endl;
+    std::cout << "Generating new five card lookup table (2,598,960)" << endl;
 
     for (ulong bitmap : handBitmaps)
     {
@@ -140,34 +138,44 @@ void Evaluator::GenerateFiveCardTable()
             handRankMap[bitmap] = (ulong)(equivalence - uniqueHandStrengths.begin());
         }
     }
-    cout << "handRankMap size: " << handRankMap.size() << endl;
+    std::cout << "handRankMap size: " << handRankMap.size() << endl;
 }
 
-void Evaluator::GenerateSixCardTable()
+void Evaluator::GenerateHandValueTable(int comboSize)
 {
+    long totalCombos; // nCr(52, comboSize)
+    switch (comboSize)
+    {
+    case 5:
+        totalCombos = 2598960;
+        break;
+    case 6:
+        totalCombos = 20358520;
+        break;
+    case 7:
+        totalCombos = 133784560;
+        break;
+    default:
+        throw invalid_argument("Unsupported combo size for hand value table generation.");
+    }
+
     vector<int> combo(52);
     for (int i = 0; i < 52; i++)
         combo[i] = i;
 
-    int comboSize = 6;
-
     using namespace indicators;
     indicators::show_console_cursor(false);
-    ProgressBar bar{
-        option::BarWidth{50},
+    BlockProgressBar bar{
+        option::BarWidth{80},
         option::Start{"["},
-        option::Fill{"="},
-        option::Lead{">"},
-        option::Remainder{" "},
         option::End{"]"},
-        option::PostfixText{"Generating 6 card table"},
-        option::ForegroundColor{Color::green},
+        option::ForegroundColor{Color::white},
+        option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},
         option::ShowElapsedTime{true},
         option::ShowRemainingTime{true},
-        option::FontStyles{std::vector<FontStyle>{FontStyle::bold}}};
+        option::MaxProgress{totalCombos}};
 
-    long bar_percentile_count = 20358520 / 100;
-
+    long iter = 0;
     do
     {
         int subsetSize = comboSize - 1;
@@ -191,76 +199,16 @@ void Evaluator::GenerateSixCardTable()
 
         handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
 
-        bar_percentile_count--;
-        if (bar_percentile_count == 0)
+        iter++;
+        if (iter % 10000 == 0)
         {
-            bar_percentile_count = 20358520 / 100;
-            bar.tick();
+            bar.set_progress(iter);
+            bar.set_option(option::PostfixText{std::to_string(iter) + "/" + std::to_string(totalCombos)});
         }
     } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
 
     indicators::show_console_cursor(true);
-    cout << "handRankMap size: " << handRankMap.size() << endl;
-}
-
-void Evaluator::GenerateSevenCardTable()
-{
-    vector<int> combo(52);
-    for (int i = 0; i < 52; i++)
-        combo[i] = i;
-
-    int comboSize = 7;
-
-    using namespace indicators;
-
-    indicators::show_console_cursor(false);
-    ProgressBar bar{
-        option::BarWidth{50},
-        option::Start{"["},
-        option::Fill{"="},
-        option::Lead{">"},
-        option::Remainder{" "},
-        option::End{"]"},
-        option::PostfixText{"Generating 7 card table"},
-        option::ForegroundColor{Color::green},
-        option::ShowElapsedTime{true},
-        option::ShowRemainingTime{true},
-        option::FontStyles{std::vector<FontStyle>{FontStyle::bold}}};
-
-    long combination_count = 0;
-    long bar_percentile_count = 133784560 / 100;
-    do
-    {
-        int subsetSize = comboSize - 1;
-        auto subset = vector<int>(combo.begin(), combo.begin() + comboSize);
-        auto subsetValues = vector<ulong>();
-
-        do
-        {
-            ulong subsetBitmap = 0ul;
-            for (int i = 0; i < subsetSize; i++)
-            {
-                int card = subset[i];
-                subsetBitmap |= 1ul << card;
-                subsetValues.push_back(handRankMap[subsetBitmap]);
-            }
-        } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end()));
-
-        ulong bitmap = 0ul;
-        for (int i = 0; i < comboSize; i++)
-            bitmap |= 1ul << combo[i];
-
-        handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
-
-        bar_percentile_count--;
-        if (bar_percentile_count == 0)
-        {
-            bar_percentile_count = 133784560 / 100;
-            bar.tick();
-        }
-    } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
-    indicators::show_console_cursor(true);
-    cout << "handRankMap size: " << handRankMap.size() << endl;
+    std::cout << "handRankMap size: " << handRankMap.size() << endl;
 }
 
 void Evaluator::GenerateMonteCarloMap(int iterations)
@@ -277,7 +225,7 @@ void Evaluator::GenerateMonteCarloMap(int iterations)
 
     do
     {
-        cout << count++ << '\r' << endl;
+        std::cout << count++ << '\r' << endl;
 
         ulong bitmap = 0ul;
         for (int i = 0; i < comboSize; i++)
@@ -302,7 +250,7 @@ void Evaluator::GenerateMonteCarloMap(int iterations)
         Hand hand = Hand(k);
         string end = "\t";
         hand.PrintColoredCards(end);
-        cout << v << endl;
+        std::cout << v << endl;
         handRankMap[k] = v;
     }
 }
