@@ -189,8 +189,8 @@ void Evaluator::GenerateHandValueTable(int comboSize)
             {
                 int card = subset[i];
                 subsetBitmap |= 1ul << card;
-                subsetValues.push_back(handRankMap[subsetBitmap]);
             }
+            subsetValues.push_back(handRankMap[subsetBitmap]);
         } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end()));
 
         ulong bitmap = 0ul;
