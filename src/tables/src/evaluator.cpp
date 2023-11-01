@@ -206,7 +206,7 @@ void Evaluator::GenerateHandValueTable(int comboSize)
             bar.set_option(option::PostfixText{std::to_string(iter) + "/" + std::to_string(totalCombos)});
         }
     } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
-
+    bar.set_progress(iter);
     indicators::show_console_cursor(true);
     std::cout << "handRankMap size: " << handRankMap.size() << endl;
 }
