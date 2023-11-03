@@ -9,6 +9,12 @@ HandIndexerState::HandIndexerState() : round{0},
 {
 }
 
+/* nthUnset[i][j] 
+   where i is the rank combination in bitset format
+         j means the j-th unset(0) bit is the nthUnset[i][j] position from the right
+
+   e.g. nthUnset[1011][0] = 2
+*/
 int HandIndexer::nthUnset[1 << RANKS][RANKS] = {};
 bool HandIndexer::equal[1 << (SUITS - 1)][SUITS] = {};
 int HandIndexer::nCrRanks[RANKS + 1][RANKS + 1] = {};
@@ -278,9 +284,6 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
         remaining -= thisSize;
     }
 
-    // cout << "round: " << round << endl;
-    // cout << "state: " << state.permutationIndex << " " << state.suitIndex.size() << " " << state.usedRanks.size() << endl;
-    // cout << "permutationToConfiguration shape: " << permutationToConfiguration.size() << " x " << permutationToConfiguration[0].size() << endl;
     int configuration = permutationToConfiguration[round][state.permutationIndex];
     int piIndex = permutationToPi[round][state.permutationIndex];
     int equalIndex = configurationToEqual[round][configuration];
