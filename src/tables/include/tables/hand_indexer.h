@@ -27,7 +27,7 @@ class HandIndexer
 public:
     const static int SUITS = 4;
     const static int RANKS = 13;
-    const static int CARDS = 52;
+    const static int CARDS = SUITS * RANKS;
 
     int rounds;
     vector<int> cardsPerRound;
