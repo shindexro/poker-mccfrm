@@ -297,7 +297,7 @@ void OCHSTable::SaveToFile()
     }
     if (histogramsRiver.size())
     {
-        cout << "Saving river histograms from file " << filenameRiverHistograms << endl;
+        cout << "Saving river histograms to file " << filenameRiverHistograms << endl;
         ofstream file(filenameRiverHistograms);
         boost::archive::binary_oarchive archive(file);
         archive << histogramsRiver;
