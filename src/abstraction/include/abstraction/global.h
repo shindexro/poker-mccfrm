@@ -7,6 +7,9 @@
 
 using namespace std;
 
+class HandIndexer;
+class Evaluator;
+
 class Global
 {
 public:
@@ -20,7 +23,7 @@ public:
     static const int BB = 2;
     static const int SB = 1;
 
-    static const int RANKS = 13;
+    static const int RANKS = 5;
     static const int SUITS = 4;
     static const int CARDS = RANKS * SUITS;
 

@@ -1,9 +1,9 @@
 #include "game/deck.h"
 
-Deck::Deck(ulong removedCards)
+Deck::Deck(ulong removedCards) : cards(Global::CARDS)
 {
     this->removedCards = removedCards;
-    for (int i = 0; i < 52; i++)
+    for (int i = 0; i < Global::CARDS; i++)
     {
         cards[i] = 1ul < i;
     }
@@ -12,14 +12,14 @@ Deck::Deck(ulong removedCards)
 
 int Deck::NumRemainingCards()
 {
-    return 52 - position;
+    return Global::CARDS - position;
 }
 
 void Deck::Shuffle(int from)
 {
-    for (int i = from; i < 52 - 1; i++)
+    for (int i = from; i < Global::CARDS - 1; i++)
     {
-        int n = randint(from, 52);
+        int n = randint(from, Global::CARDS);
         ulong temp = cards[i];
         cards[i] = cards[n];
         cards[n] = temp;

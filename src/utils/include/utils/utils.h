@@ -4,6 +4,7 @@
 #include "utils/random.h"
 #include "game/hand.h"
 #include "game/card.h"
+#include "abstraction/global.h"
 
 #include <tuple>
 #include <vector>

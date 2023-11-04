@@ -4,6 +4,8 @@
 #include "game/deck.h"
 #include "game/hand.h"
 #include "game/hand_strength.h"
+#include "abstraction/global.h"
+
 #include <string>
 #include <iostream>
 #include <chrono>

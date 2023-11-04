@@ -82,8 +82,8 @@ void Evaluator::LoadFromFile(string &fileName)
 
 void Evaluator::GenerateFiveCardTable()
 {
-    vector<int> combo(52);
-    for (int i = 0; i < 52; i++)
+    vector<int> combo(Global::CARDS);
+    for (int i = 0; i < Global::CARDS; i++)
         combo[i] = i;
 
     int comboSize = 5;
@@ -159,8 +159,8 @@ void Evaluator::GenerateHandValueTable(int comboSize)
         throw invalid_argument("Unsupported combo size for hand value table generation.");
     }
 
-    vector<int> combo(52);
-    for (int i = 0; i < 52; i++)
+    vector<int> combo(Global::CARDS);
+    for (int i = 0; i < Global::CARDS; i++)
         combo[i] = i;
 
     using namespace indicators;
@@ -215,8 +215,8 @@ void Evaluator::GenerateMonteCarloMap(int iterations)
 {
     monteCarloMap = unordered_map<ulong, ulong>();
 
-    vector<int> combo(52);
-    for (int i = 0; i < 52; i++)
+    vector<int> combo(Global::CARDS);
+    for (int i = 0; i < Global::CARDS; i++)
     {
         combo[i] = i;
     }

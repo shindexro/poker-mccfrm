@@ -48,13 +48,13 @@ private:
     const static int ROUND_SHIFT = 4;
     const static int ROUND_MASK = 0xf;
 
-    static int nthUnset[1 << RANKS][RANKS];
-    static bool equal[1 << (SUITS - 1)][SUITS];
-    static int nCrRanks[RANKS + 1][RANKS + 1];
-    static int rankSetToIndex[1 << RANKS];
-    static int indexToRankSet[RANKS + 1][1 << RANKS];
+    static vector<vector<int>> nthUnset;
+    static vector<vector<bool>> equal;
+    static vector<vector<int>> nCrRanks;
+    static vector<int> rankSetToIndex;
+    static vector<vector<int>> indexToRankSet;
     static vector<vector<int>> suitPermutations;
-    static long nCrGroups[MAX_GROUP_INDEX][SUITS + 1];
+    static vector<vector<long>> nCrGroups;
 
     // static vector<vector<int>> nthUnset;
     // static vector<vector<bool>> equal;

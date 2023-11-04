@@ -46,10 +46,10 @@ vector<Hand> GetStartingHandChart()
 {
     auto result = vector<Hand>();
 
-    for (int i = 0; i < 169; ++i)
+    for (int i = 0; i < Global::RANKS * Global::RANKS; ++i)
     {
         string firstCardRank = "";
-        switch (i / 13)
+        switch (i / Global::RANKS)
         {
         case 0:
             firstCardRank = "2";
@@ -92,7 +92,7 @@ vector<Hand> GetStartingHandChart()
             break;
         }
         string secondCardRank = "";
-        switch (i % 13)
+        switch (i % Global::RANKS)
         {
         case 0:
             secondCardRank = "2";
@@ -136,7 +136,7 @@ vector<Hand> GetStartingHandChart()
         }
         string firstCardSuit = "s";
         string secondCardSuit;
-        if (i % 13 > i / 13)
+        if (i % Global::RANKS > i / Global::RANKS)
         {
             secondCardSuit = "s";
         }

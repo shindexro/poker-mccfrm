@@ -2,6 +2,7 @@
 #define __CLASS_DECK_H__
 
 #include "utils/random.h"
+#include "abstraction/global.h"
 
 #include <string>
 
@@ -17,7 +18,7 @@ public:
     ulong Draw(int pos);
 
 private:
-    ulong cards[52];
+    vector<ulong> cards;
     ulong removedCards;
     int position;
 };

@@ -52,38 +52,38 @@ void OCHSTable::CalculateOCHSOpponentClusters()
     std::cout << "Calculating " << Global::nofOpponentClusters << " opponent clusters for OCHS using Monte Carlo Sampling..." << endl;
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
-    histogramsPreflop = vector<vector<float>>(169, vector<float>((Global::preflopHistogramSize)));
+    histogramsPreflop = vector<vector<float>>(Global::RANKS * Global::RANKS, vector<float>((Global::preflopHistogramSize)));
 
-    for (int i = 0; i < 169; i++)
+    for (int i = 0; i < Global::RANKS * Global::RANKS; i++)
     {
         auto cards = vector<int>(2);
         Global::indexer_2.Unindex(Global::indexer_2.rounds - 1, i, cards);
         long deadCardMask = (1L << cards[0]) + (1L << cards[1]);
         for (int steps = 0; steps < Global::nofMCSimsPerPreflopHand; steps++)
         {
-            int cardFlop1 = randint(0, 52);
+            int cardFlop1 = randint(0, Global::CARDS);
             while (((1L << cardFlop1) & deadCardMask) != 0)
-                cardFlop1 = randint(0, 52);
+                cardFlop1 = randint(0, Global::CARDS);
             deadCardMask |= (1L << cardFlop1);
 
-            int cardFlop2 = randint(0, 52);
+            int cardFlop2 = randint(0, Global::CARDS);
             while (((1L << cardFlop2) & deadCardMask) != 0)
-                cardFlop2 = randint(0, 52);
+                cardFlop2 = randint(0, Global::CARDS);
             deadCardMask |= (1L << cardFlop2);
 
-            int cardFlop3 = randint(0, 52);
+            int cardFlop3 = randint(0, Global::CARDS);
             while (((1L << cardFlop3) & deadCardMask) != 0)
-                cardFlop3 = randint(0, 52);
+                cardFlop3 = randint(0, Global::CARDS);
             deadCardMask |= (1L << cardFlop3);
 
-            int cardTurn = randint(0, 52);
+            int cardTurn = randint(0, Global::CARDS);
             while (((1L << cardTurn) & deadCardMask) != 0)
-                cardTurn = randint(0, 52);
+                cardTurn = randint(0, Global::CARDS);
             deadCardMask |= (1L << cardTurn);
 
-            int cardRiver = randint(0, 52);
+            int cardRiver = randint(0, Global::CARDS);
             while (((1L << cardRiver) & deadCardMask) != 0)
-                cardRiver = randint(0, 52);
+                cardRiver = randint(0, Global::CARDS);
             deadCardMask |= (1L << cardRiver);
 
             auto strength = vector<int>(3);
@@ -94,7 +94,7 @@ void OCHSTable::CalculateOCHSOpponentClusters()
                     continue;
                 }
                 // deadCardMask |= (1L << card1Opponent); // card2Opponent is anyway > card1Opponent
-                for (int card2Opponent = card1Opponent + 1; card2Opponent < 52; card2Opponent++)
+                for (int card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
                 {
                     if (((1L << card2Opponent) & deadCardMask) != 0)
                     {
@@ -126,7 +126,7 @@ void OCHSTable::CalculateOCHSOpponentClusters()
 
     cout << "Calculated histograms: " << endl;
     auto cardsOutput = vector<int>(2);
-    for (int i = 0; i < 169; ++i)
+    for (int i = 0; i < Global::RANKS * Global::RANKS; ++i)
     {
         cardsOutput.clear();
         Global::indexer_2.Unindex(Global::indexer_2.rounds - 1, i, cardsOutput);
@@ -154,7 +154,7 @@ void OCHSTable::ClusterPreflopHands()
     cout << "Created the following cluster for starting hands: " << endl;
     vector<Hand> startingHands = GetStartingHandChart();
 
-    for (int i = 0; i < 169; ++i)
+    for (int i = 0; i < Global::RANKS * Global::RANKS; ++i)
     {
         auto toIndex = vector<int>({startingHands[i].cards[0].Index(),
                                     startingHands[i].cards[1].Index()});
@@ -162,7 +162,7 @@ void OCHSTable::ClusterPreflopHands()
 
         cout << preflopIndices[index] << "  ";
 
-        if (i % 13 == 12)
+        if (i % Global::RANKS == Global::RANKS - 1)
             cout << endl;
     }
 
@@ -236,8 +236,8 @@ void OCHSTable::GenerateRiverHistograms()
                               [&](int t)
                               {
                                   long iter = 0;
-                                  for (int i = get<0>(GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t));
-                                       i < get<1>(GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t)); ++i)
+                                  auto [startItemIdx, endItemIdx] = GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t);
+                                  for (int i = startItemIdx; i < endItemIdx; ++i)
                                   {
                                       auto cards = std::vector<int>(7);
                                       Global::indexer_2_5.Unindex(Global::indexer_2_5.rounds - 1, i, cards);
@@ -249,7 +249,7 @@ void OCHSTable::GenerateRiverHistograms()
                                           {
                                               continue;
                                           }
-                                          for (int card2Opponent = card1Opponent + 1; card2Opponent < 52; card2Opponent++)
+                                          for (int card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
                                           {
                                               if (((1L << card2Opponent) & deadCardMask) != 0)
                                               {
