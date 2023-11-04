@@ -63,7 +63,6 @@ namespace utils
             option::MaxProgress{maxCount}};
 
         atomic<long> iterations = 0;
-        const long barUpdateInterval = max(1L, maxCount / 10000 / Global::NOF_THREADS);
         oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
                                   [&](int threadIdx)
                                   {
@@ -71,15 +70,16 @@ namespace utils
                                       auto [startItemIdx, endItemIdx] = GetWorkItemsIndices(maxCount, Global::NOF_THREADS, threadIdx);
                                       for (int i = startItemIdx; i < endItemIdx; i++)
                                       {
-                                          if (threadIterations % barUpdateInterval)
+                                          if (threadIterations == barUpdateInterval)
                                           {
-                                              iterations += barUpdateInterval;
+                                              iterations += threadIterations;
+                                              threadIterations = 0;
                                               bar.set_progress(iterations);
                                           }
                                           func(threadIdx, i);
                                           threadIterations++;
                                       }
-                                      iterations += (endItemIdx - startItemIdx) % barUpdateInterval;
+                                      iterations += threadIterations;
                                       bar.set_progress(iterations);
                                   });
 
