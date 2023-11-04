@@ -1,6 +1,8 @@
 #ifndef __CLASS_HAND_INDEXER_H__
 #define __CLASS_HAND_INDEXER_H__
 
+#include "abstraction/global.h"
+
 #include <vector>
 #include <stdexcept>
 #include <iostream>
@@ -25,10 +27,6 @@ public:
 class HandIndexer
 {
 public:
-    const static int SUITS = 4;
-    const static int RANKS = 13;
-    const static int CARDS = SUITS * RANKS;
-
     int rounds;
     vector<int> cardsPerRound;
     vector<int> configurations;
