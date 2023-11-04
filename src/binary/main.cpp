@@ -5,6 +5,8 @@
 #include "tables/ochs_table.h"
 #include "tables/emd_table.h"
 #include "utils/utils.h"
+#include "utils/random.h"
+
 #include <iostream>
 #include <string>
 
@@ -119,107 +121,106 @@ private:
         emdTable.Init();
     }
 
-    // static void Train()
-    // {
-    //     cout << "Starting Monte Carlo Counterfactual Regret Minimization (MCCFRM)...");
+    static void Train()
+    {
+        cout << "Starting Monte Carlo Counterfactual Regret Minimization (MCCFRM)...");
 
-    //     long StrategyInterval = Math.Max(1, 1000 / Global::NOF_THREADS);
-    //     ;                                                     // bb rounds before updating player strategy (recursive through tree) 10k
-    //     long PruneThreshold = 20000000 / Global::NOF_THREADS;  // bb rounds after this time we stop checking all actions, 200 minutes
-    //     long LCFRThreshold = 20000000 / Global::NOF_THREADS;   // bb rounds when to stop discounting old regrets, no clue what it should be
-    //     long DiscountInterval = 1000000 / Global::NOF_THREADS; // bb rounds, discount values periodically but not every round, 10 minutes
-    //     long SaveToDiskInterval = 1000000 / Global::NOF_THREADS;
-    //     long testGamesInterval = 100000 / Global::NOF_THREADS;
+        long StrategyInterval = max(1, 1000 / Global::NOF_THREADS); // bb rounds before updating player strategy (recursive through tree) 10k
+        long PruneThreshold = 20000000 / Global::NOF_THREADS;       // bb rounds after this time we stop checking all actions, 200 minutes
+        long LCFRThreshold = 20000000 / Global::NOF_THREADS;        // bb rounds when to stop discounting old regrets, no clue what it should be
+        long DiscountInterval = 1000000 / Global::NOF_THREADS;      // bb rounds, discount values periodically but not every round, 10 minutes
+        long SaveToDiskInterval = 1000000 / Global::NOF_THREADS;
+        long testGamesInterval = 100000 / Global::NOF_THREADS;
 
-    //     long sharedLoopCounter = 0;
+        atomic<long> sharedLoopCounter = 0;
 
-    //     LoadFromFile();
-    //     LoadFromFile_d();
+        LoadFromFile();
+        LoadFromFile_d();
 
-    //     Trainer trainer = new Trainer(0);
-    //     trainer.EnumerateActionSpace();
+        Trainer trainer = new Trainer(0);
+        trainer.EnumerateActionSpace();
 
-    //     Stopwatch stopwatch = new Stopwatch();
-    //     stopwatch.Start();
-    //     Parallel.For(
-    //         0, Global::NOF_THREADS,
-    //         index = >
-    //                 {
-    //                     Trainer trainer = new Trainer(index);
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
 
-    //                     for (int t = 1;; t++) // bb rounds
-    //                     {
-    //                         if (t % 1000 == 0)
-    //                         {
-    //                             Interlocked.Add(ref sharedLoopCounter, 1000);
-    //                             cout << "Training steps " + sharedLoopCounter);
-    //                         }
+        oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
+                                  [&](int index)
+                                  {
+                                      Trainer trainer = new Trainer(index);
 
-    //                         if (t % testGamesInterval == 0 && index == 0) // implement progress bar later
-    //                         {
-    //                             trainer.PrintStartingHandsChart();
-    //                             trainer.PrintStatistics(sharedLoopCounter);
+                                      for (int t = 1;; t++) // bb rounds
+                                      {
+                                          if (t % 1000 == 0)
+                                          {
+                                              sharedLoopCounter += 1000;
+                                              cout << "Training steps " << sharedLoopCounter << endl;
+                                          }
 
-    //                             cout << "Sample games (against self)");
-    //                             for (int z = 0; z < 20; z++)
-    //                             {
-    //                                 trainer.PlayOneGame();
-    //                             }
+                                          if (t % testGamesInterval == 0 && index == 0) // implement progress bar later
+                                          {
+                                              trainer.PrintStartingHandsChart();
+                                              trainer.PrintStatistics(sharedLoopCounter);
 
-    //                             // cout << "Sample games (against baseline)");
-    //                             // float mainScore = 0.0f;
-    //                             // for (int x = 0; x < 100; x++) // 100 games not statistically significant
-    //                             //{
-    //                             //     if (x < 20)
-    //                             //     {
-    //                             //         mainScore += trainer.PlayOneGame_d(x % 2, true);
-    //                             //     }
-    //                             //     mainScore += trainer.PlayOneGame_d(x % 2, false);
-    //                             // }
-    //                             // WritePlotStatistics((mainScore / 10000) / Global::BB);
-    //                             // cout << "BBs per hand: {0}", (mainScore / 10000) / Global::BB);
+                                              cout << "Sample games (against self)" << endl;
+                                              ;
+                                              for (int z = 0; z < 20; z++)
+                                              {
+                                                  trainer.PlayOneGame();
+                                              }
 
-    //                             cout << "Iterations per second: {0}", 1000 * sharedLoopCounter / (stopwatch.ElapsedMilliseconds + 1));
-    //                             cout << );
-    //                         }
-    //                         for (int traverser = 0; traverser < Global::nofPlayers; traverser++) // traverser
-    //                         {
-    //                             if (t % StrategyInterval == 0 && index == 0)
-    //                             {
-    //                                 trainer.UpdateStrategy(traverser);
-    //                             }
-    //                             if (t > PruneThreshold)
-    //                             {
-    //                                 float q = RandomGen.NextFloat();
-    //                                 if (q < 0.05)
-    //                                 {
-    //                                     trainer.TraverseMCCFR(traverser, t);
-    //                                 }
-    //                                 else
-    //                                 {
-    //                                     trainer.TraverseMCCFRPruned(traverser);
-    //                                 }
-    //                             }
-    //                             else
-    //                             {
-    //                                 trainer.TraverseMCCFR(traverser, t);
-    //                             }
-    //                         }
-    //                         if (t % SaveToDiskInterval == 0 && index == 0) // allow only one thread to do saving
-    //                         {
-    //                             cout << "Saving nodeMap to disk disabled!");
-    //                             // SaveToFile();
-    //                         }
+                                              // cout << "Sample games (against baseline)");
+                                              // float mainScore = 0.0f;
+                                              // for (int x = 0; x < 100; x++) // 100 games not statistically significant
+                                              //{
+                                              //     if (x < 20)
+                                              //     {
+                                              //         mainScore += trainer.PlayOneGame_d(x % 2, true);
+                                              //     }
+                                              //     mainScore += trainer.PlayOneGame_d(x % 2, false);
+                                              // }
+                                              // WritePlotStatistics((mainScore / 10000) / Global::BB);
+                                              // cout << "BBs per hand: {0}", (mainScore / 10000) / Global::BB);
 
-    //                         // discount all infosets (for all players)
-    //                         if (t < LCFRThreshold && t % DiscountInterval == 0 && index == 0) // allow only one thread to do discounting
-    //                         {
-    //                             float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
-    //                             trainer.DiscountInfosets(d);
-    //                         }
-    //                     }
-    //                 });
-    // }
+                                              cout << "Iterations per second: ", 1000 * sharedLoopCounter / (stopwatch.ElapsedMilliseconds + 1) << endl;
+                                          }
+                                          for (int traverser = 0; traverser < Global::nofPlayers; traverser++) // traverser
+                                          {
+                                              if (t % StrategyInterval == 0 && index == 0)
+                                              {
+                                                  trainer.UpdateStrategy(traverser);
+                                              }
+                                              if (t > PruneThreshold)
+                                              {
+                                                  float q = randDouble();
+                                                  if (q < 0.05)
+                                                  {
+                                                      trainer.TraverseMCCFR(traverser, t);
+                                                  }
+                                                  else
+                                                  {
+                                                      trainer.TraverseMCCFRPruned(traverser);
+                                                  }
+                                              }
+                                              else
+                                              {
+                                                  trainer.TraverseMCCFR(traverser, t);
+                                              }
+                                          }
+                                          if (t % SaveToDiskInterval == 0 && index == 0) // allow only one thread to do saving
+                                          {
+                                              cout << "Saving nodeMap to disk disabled!" << endl;
+                                              // SaveToFile();
+                                          }
+
+                                          // discount all infosets (for all players)
+                                          if (t < LCFRThreshold && t % DiscountInterval == 0 && index == 0) // allow only one thread to do discounting
+                                          {
+                                              float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
+                                              trainer.DiscountInfosets(d);
+                                          }
+                                      }
+                                  });
+    }
 
     // static void WritePlotStatistics(float bbWins)
     // {
