@@ -3,6 +3,11 @@ project (algorithms)
 add_library(${PROJECT_NAME}
     src/kmeans.cpp
 )
+
+set_source_files_properties(
+    src/kmeans.cpp
+PROPERTIES COMPILE_OPTIONS "-g")
+
 add_library(sub::algorithms ALIAS ${PROJECT_NAME})
 
 find_package(TBB REQUIRED)

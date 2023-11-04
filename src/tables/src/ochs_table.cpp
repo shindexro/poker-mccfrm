@@ -152,7 +152,7 @@ void OCHSTable::ClusterPreflopHands()
     preflopIndices = kmeans.ClusterEMD(histogramsPreflop, Global::nofOpponentClusters, 100, emptyVector);
 
     cout << "Created the following cluster for starting hands: " << endl;
-    vector<Hand> startingHands = GetStartingHandChart();
+    vector<Hand> startingHands = utils::GetStartingHandChart();
 
     for (int i = 0; i < Global::RANKS * Global::RANKS; ++i)
     {
@@ -239,7 +239,7 @@ void OCHSTable::GenerateRiverHistograms()
                               [&](int t)
                               {
                                   long iter = 0;
-                                  auto [startItemIdx, endItemIdx] = GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t);
+                                  auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t);
                                   for (int i = startItemIdx; i < endItemIdx; ++i)
                                   {
                                       auto cards = std::vector<int>(7);
@@ -316,27 +316,21 @@ void OCHSTable::SaveToFile()
 
 void OCHSTable::LoadFromFile()
 {
-    if (filenameRiverClusters.size() && access(filenameRiverClusters.c_str(), F_OK) != -1)
+    if (utils::FileExists(filenameRiverClusters))
     {
-        ifstream file(filenameRiverClusters);
-        boost::archive::binary_iarchive archive(file);
-        archive >> riverIndices;
+        utils::LoadFromFile(riverIndices, filenameRiverClusters);
     }
     else
     {
-        if (filenameRiverHistograms.size() && access(filenameRiverHistograms.c_str(), F_OK) != -1)
+        if (utils::FileExists(filenameRiverHistograms))
         {
-            cout << "Loading river histograms from file " << filenameRiverHistograms << endl;
-            ifstream file(filenameRiverHistograms);
-            boost::archive::binary_iarchive archive(file);
-            archive >> histogramsRiver;
+            cout << "Loading river histograms from file " << filenameOppClusters << endl;
+            utils::LoadFromFile(histogramsRiver, filenameRiverHistograms);
         }
-        if (filenameOppClusters.size() && access(filenameOppClusters.c_str(), F_OK) != -1)
+        if (utils::FileExists(filenameOppClusters))
         {
             cout << "Loading flop opponent clusters from file " << filenameOppClusters << endl;
-            ifstream file(filenameOppClusters);
-            boost::archive::binary_iarchive archive(file);
-            archive >> preflopIndices;
+            utils::LoadFromFile(preflopIndices, filenameOppClusters);
         }
     }
 }

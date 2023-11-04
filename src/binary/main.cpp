@@ -3,6 +3,7 @@
 #include "abstraction/global.h"
 #include "tables/hand_indexer.h"
 #include "tables/ochs_table.h"
+#include "tables/emd_table.h"
 #include "utils/utils.h"
 #include <iostream>
 #include <string>
@@ -22,7 +23,7 @@ public:
         deck.Draw_(3);
         cout << deck.NumRemainingCards() << endl;
 
-        auto startingHandChart = GetStartingHandChart();
+        auto startingHandChart = utils::GetStartingHandChart();
         cout << "Hand Chart size: " << startingHandChart.size() << endl;
 
         vector<string> royalFlush{"As", "Ks", "Qs", "Js", "Ts"};
@@ -114,7 +115,8 @@ private:
         OCHSTable ochsTable = OCHSTable();
         ochsTable.Init();
 
-        // EMDTable.Init();
+        EMDTable emdTable = EMDTable();
+        emdTable.Init();
     }
 
     // static void Train()

@@ -5,6 +5,7 @@ add_library(${PROJECT_NAME}
     src/hand_indexer.cpp
     src/evaluator.cpp
     src/ochs_table.cpp
+    src/emd_table.cpp
 )
 
 set_source_files_properties(
@@ -12,6 +13,7 @@ set_source_files_properties(
     src/hand_indexer.cpp
     src/evaluator.cpp
     src/ochs_table.cpp
+    src/emd_table.cpp
 PROPERTIES COMPILE_OPTIONS "-g")
 
 add_library(sub::tables ALIAS ${PROJECT_NAME})
