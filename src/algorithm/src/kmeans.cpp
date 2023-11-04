@@ -1,6 +1,7 @@
 #include "algorithm/kmeans.h"
 
 using namespace std;
+using namespace indicators;
 
 vector<int> Kmeans::ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters)
 {
@@ -181,6 +182,17 @@ vector<int> Kmeans::ClusterL2(vector<vector<float>> &data, int k, int nofRuns, v
             atomic<long> sharedLoopCounter = 0;
             atomic<double> totalDistance = 0;
 
+            indicators::show_console_cursor(false);
+            BlockProgressBar bar{
+                option::BarWidth{80},
+                option::Start{"["},
+                option::End{"]"},
+                option::ForegroundColor{Color::white},
+                option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},
+                option::ShowElapsedTime{true},
+                option::ShowRemainingTime{true},
+                option::MaxProgress{data.size()}};
+
             oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
                                       [&](int i)
                                       {
@@ -209,16 +221,18 @@ vector<int> Kmeans::ClusterL2(vector<vector<float>> &data, int k, int nofRuns, v
                                               threadDistance += sqrt(distance);
 
                                               iter++;
-                                              if (iter % 100000 == 0)
+                                              if (iter % 100 == 0)
                                               {
-                                                  sharedLoopCounter += 100000;
+                                                  sharedLoopCounter += 100;
+                                                  bar.set_progress(sharedLoopCounter);
                                                   double expectedTotalDistance = atomic_load(&totalDistance);
                                                   while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance + threadDistance))
                                                       ;
                                                   threadDistance = 0;
                                               }
                                           }
-                                          sharedLoopCounter += iter % 100000;
+                                          sharedLoopCounter += iter % 100;
+                                          bar.set_progress(sharedLoopCounter);
                                           double expectedTotalDistance = atomic_load(&totalDistance);
                                           while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance + threadDistance))
                                               ;
