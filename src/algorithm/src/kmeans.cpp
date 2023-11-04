@@ -235,8 +235,9 @@ vector<int> Kmeans::ClusterL2(vector<vector<float>> &data, int k, int nofRuns, v
                       << std::endl;
 
             std::cout << "Saving intermediate table to file..." << std::endl;
-
-            // FileHandler.SaveToFile(recordCenters, "OCHSRiverClusters_temp.txt");
+            ofstream file("OCHSRiverClusters_temp.txt");
+            boost::archive::binary_oarchive archive(file);
+            archive << recordCenters;
 
             if (totalDistance < recordDistance)
             {

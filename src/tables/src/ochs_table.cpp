@@ -176,10 +176,13 @@ void OCHSTable::ClusterRiver()
 
     Kmeans kmeans = Kmeans();
     // TODO: vector<int> indices = FileHandler.LoadFromFileIndex("OCHSRiverClusters_temp.txt");
-    vector<int> indices;
-    ifstream file("OCHSRiverClusters_temp.txt");
-    boost::archive::binary_iarchive archive(file);
-    archive >> indices;
+
+    vector<int> indices = vector<int>();
+
+    // vector<int> indices;
+    // ifstream file("OCHSRiverClusters_temp.txt");
+    // boost::archive::binary_iarchive archive(file);
+    // archive >> indices;
 
     riverIndices = kmeans.ClusterL2(histogramsRiver, Global::nofRiverBuckets, 1, indices);
 

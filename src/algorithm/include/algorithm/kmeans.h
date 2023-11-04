@@ -9,6 +9,8 @@
 #include <vector>
 #include <unordered_set>
 #include <float.h>
+#include <boost/serialization/vector.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 
 using namespace std;
 
