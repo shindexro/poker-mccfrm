@@ -234,10 +234,10 @@ vector<int> Kmeans::ClusterL2(vector<vector<float>> &data, int k, int nofRuns, v
                       << ", " << 100.0 * (1.0 - totalDistance / lastDistance) << "%"
                       << std::endl;
 
-            std::cout << "Saving intermediate table to file..." << std::endl;
-            ofstream file("OCHSRiverClusters_temp.txt");
-            boost::archive::binary_oarchive archive(file);
-            archive << recordCenters;
+            // std::cout << "Saving intermediate table to file..." << std::endl;
+            // ofstream file("OCHSRiverClusters_temp.txt");
+            // boost::archive::binary_oarchive archive(file);
+            // archive << recordCenters;
 
             if (totalDistance < recordDistance)
             {
