@@ -20,6 +20,10 @@ public:
     static const int BB = 2;
     static const int SB = 1;
 
+    static const int RANKS = 13;
+    static const int SUITS = 4;
+    static const int CARDS = RANKS * SUITS;
+
     // information abstraction parameters, currently this would be a
     // 169 - 200 - 200 - 200 abstraction, where the river is bucketed using OCHS and the turn and flop using EMD
     static const int nofRiverBuckets = 1000;
