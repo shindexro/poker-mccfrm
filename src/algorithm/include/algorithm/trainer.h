@@ -1,10 +1,14 @@
 #ifndef __CLASS_TRAINER_H__
 #define __CLASS_TRAINER_H__
 
-#include "binary/state.h"
+#include "abstraction/state.h"
+#include "utils/utils.h"
+#include "enums/action.h"
 
 #include <vector>
 #include <string>
+#include <fstream>
+#include <regex>
 
 using namespace std;
 

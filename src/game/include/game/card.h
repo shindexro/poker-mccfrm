@@ -33,6 +33,7 @@ public:
     static int GetIndexFromBitmask(ulong bitmask);
 
     string ToString();
+    void PrintBeautifulString(const string_view &end = "");
 };
 
 #endif

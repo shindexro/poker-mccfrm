@@ -87,6 +87,12 @@ namespace utils
         indicators::show_console_cursor(true);
         cout << endl;
     }
+
+    template <typename Base, typename T>
+    inline bool instanceof(const T *ptr)
+    {
+        return dynamic_cast<const Base *>(ptr) != nullptr;
+    }
 }
 
 #endif

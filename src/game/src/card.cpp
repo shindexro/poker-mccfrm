@@ -167,12 +167,14 @@ int Card::Index()
     return (int)rank * 4 + (int)suit;
 }
 
-ulong Card::Bitmask() {
+ulong Card::Bitmask()
+{
     return 1ul << Index();
 }
 
-int Card::GetIndexFromBitmask(ulong bitmask){
-    return (int) log2(bitmask);
+int Card::GetIndexFromBitmask(ulong bitmask)
+{
+    return (int)log2(bitmask);
 }
 
 string Card::ToString()
@@ -183,4 +185,10 @@ string Card::ToString()
     string s = string({ranks[(int)rank],
                        suits[(int)suit]});
     return s;
+}
+
+void Card::PrintBeautifulString(const string_view &end)
+{
+    // TOOD: change color according to suit
+    cout << ToString() << endl;
 }

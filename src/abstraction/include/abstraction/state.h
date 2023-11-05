@@ -53,15 +53,15 @@ public:
 
     int GetActivePlayers(vector<bool> &newIsPlayerIn);
     int GetNumberOfAllInPlayers();
-    void CreateChildren();
-    bool IsPlayerInHand(int traverser);
+    virtual void CreateChildren();
+    virtual bool IsPlayerInHand(int traverser);
 
-    Infoset GetInfoset();
-    Infoset GetInfosetSecondary();
-    bool IsPlayerTurn(int traverser);
+    virtual Infoset GetInfoset();
+    virtual Infoset GetInfosetSecondary();
+    virtual bool IsPlayerTurn(int traverser);
     int BettingRound();
-    State DoRandomAction();
-    float GetReward(int traverser);
+    virtual State DoRandomAction();
+    virtual float GetReward(int traverser);
 };
 
 class TerminalState : public State
