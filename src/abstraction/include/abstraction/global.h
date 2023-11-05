@@ -3,6 +3,8 @@
 
 #include "tables/hand_indexer.h"
 #include "tables/evaluator.h"
+#include "binary/infoset.h"
+
 #include <oneapi/tbb/concurrent_hash_map.h>
 #include <vector>
 
@@ -58,8 +60,7 @@ public:
     static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMap;
     static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMapBaseline;
 
-    // one deck for each thread
-    static vector<Deck> threadDeck;
+    thread_local static Deck deck;
 };
 
 #endif

@@ -15,4 +15,4 @@ Evaluator Global::handEvaluator;
 oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMap();
 oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMapBaseline();
 
-vector<Deck> Global::threadDeck(NOF_THREADS, Deck());
+Deck Global::deck();
