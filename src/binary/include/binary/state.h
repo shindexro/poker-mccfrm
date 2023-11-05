@@ -3,6 +3,8 @@
 
 #include "enums/action.h"
 #include "binary/infoset.h"
+#include "abstraction/global.h"
+#include "enums/action.h"
 
 #include <vector>
 #include <string>
@@ -22,7 +24,7 @@ public:
 
     int playerToMove;
     int bettingRound;
-    int playersInHands;
+    int playersInHand;
     int lastPlayer;
     int minRaise;
     bool isBettingOpen;
@@ -33,6 +35,11 @@ public:
 
     vector<Action> history;
     vector<Action> lastActions;
+
+    State();
+    State(vector<int> &stacks, vector<int> &bets, vector<Action> &history,
+          vector<tuple<ulong, ulong>> &playerCards, vector<ulong> &tableCards, vector<Action> &lastActions,
+          vector<bool> &isPlayerIn, int playersInHand, int bettingRound));
 
     int GetNextPlayer();
     int GetNextPlayer(int lastToMoveTemp);
