@@ -12,7 +12,7 @@ HandIndexer Global::indexer_2_5_2;
 
 Evaluator Global::handEvaluator;
 
-// ConcurrentDictionary<string, Infoset> nodeMap = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
-// ConcurrentDictionary<string, Infoset> nodeMapBaseline = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
+oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMap();
+oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMapBaseline();
 
-// ThreadLocal<Deck> Deck = new ThreadLocal<Deck>(() = > new Deck());
+vector<Deck> Global::threadDeck(NOF_THREADS, Deck());

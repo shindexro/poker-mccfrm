@@ -3,6 +3,7 @@
 
 #include "tables/hand_indexer.h"
 #include "tables/evaluator.h"
+#include <oneapi/tbb/concurrent_hash_map.h>
 #include <vector>
 
 using namespace std;
@@ -54,10 +55,11 @@ public:
 
     static Evaluator handEvaluator;
 
-    // static ConcurrentDictionary<string, Infoset> nodeMap = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
-    // static ConcurrentDictionary<string, Infoset> nodeMapBaseline = new ConcurrentDictionary<string, Infoset>(Global.NOF_THREADS, 1000000);
+    static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMap;
+    static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMapBaseline;
 
-    // static ThreadLocal<Deck> Deck = new ThreadLocal<Deck>(() = > new Deck());
+    // one deck for each thread
+    static vector<Deck> threadDeck;
 };
 
 #endif
