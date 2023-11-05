@@ -167,6 +167,14 @@ int Card::Index()
     return (int)rank * 4 + (int)suit;
 }
 
+ulong Card::Bitmask() {
+    return 1ul << Index();
+}
+
+int Card::GetIndexFromBitmask(ulong bitmask){
+    return (int) log2(bitmask);
+}
+
 string Card::ToString()
 {
     char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};

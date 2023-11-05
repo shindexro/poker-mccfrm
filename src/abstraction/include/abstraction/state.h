@@ -2,12 +2,17 @@
 #define __CLASS_STATE_H__
 
 #include "enums/action.h"
-#include "binary/infoset.h"
+#include "abstraction/infoset.h"
 #include "abstraction/global.h"
 #include "enums/action.h"
+#include "utils/utils.h"
+#include "tables/ochs_table.h"
+#include "tables/emd_table.h"
 
 #include <vector>
 #include <string>
+#include <oneapi/tbb/concurrent_hash_map.h>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -39,7 +44,7 @@ public:
     State();
     State(vector<int> &stacks, vector<int> &bets, vector<Action> &history,
           vector<tuple<ulong, ulong>> &playerCards, vector<ulong> &tableCards, vector<Action> &lastActions,
-          vector<bool> &isPlayerIn, int playersInHand, int bettingRound));
+          vector<bool> &isPlayerIn, int playersInHand, int bettingRound);
 
     int GetNextPlayer();
     int GetNextPlayer(int lastToMoveTemp);
@@ -59,7 +64,7 @@ public:
     float GetReward(int traverser);
 };
 
-class TerminalState : State
+class TerminalState : public State
 {
 private:
     bool rewardGenerated = false;
@@ -73,7 +78,7 @@ public:
     void CreateRewards();
 };
 
-class ChanceState : State
+class ChanceState : public State
 {
     // this is the root state
 public:
@@ -91,7 +96,7 @@ public:
     bool IsPlayerInHand(int player);
 };
 
-class PlayState : State
+class PlayState : public State
 {
 public:
     PlayState(int bettingRound, int playerToMove, int lastToMove, int minRaise,

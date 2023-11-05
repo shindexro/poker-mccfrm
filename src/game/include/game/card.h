@@ -4,6 +4,8 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include <cmath>
+
 #include "enums/rank.h"
 #include "enums/suit.h"
 
@@ -26,6 +28,10 @@ public:
     int PrimeSuit();
     int HashCode(Card &c);
     int Index();
+    ulong Bitmask();
+
+    static int GetIndexFromBitmask(ulong bitmask);
+
     string ToString();
 };
 

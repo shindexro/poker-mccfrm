@@ -3,7 +3,8 @@
 
 #include "tables/hand_indexer.h"
 #include "tables/evaluator.h"
-#include "binary/infoset.h"
+#include "abstraction/infoset.h"
+#include "game/deck.h"
 
 #include <oneapi/tbb/concurrent_hash_map.h>
 #include <vector>
@@ -12,6 +13,7 @@ using namespace std;
 
 class HandIndexer;
 class Evaluator;
+class Deck;
 
 class Global
 {

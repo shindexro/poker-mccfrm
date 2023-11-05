@@ -12,7 +12,7 @@ HandIndexer Global::indexer_2_5_2;
 
 Evaluator Global::handEvaluator;
 
-oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMap();
-oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMapBaseline();
+oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMap = oneapi::tbb::concurrent_hash_map<string, Infoset>();
+oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMapBaseline = oneapi::tbb::concurrent_hash_map<string, Infoset>();
 
-Deck Global::deck();
+thread_local Deck Global::deck = Deck();
