@@ -11,6 +11,7 @@
 #include <regex>
 
 using namespace std;
+using namespace poker;
 
 class Trainer
 {

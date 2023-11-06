@@ -69,7 +69,7 @@ public:
         CreateIndexers();
         Global::handEvaluator.Initialise();
         CalculateInformationAbstraction();
-        // Train();
+        Train();
     }
 
 private:

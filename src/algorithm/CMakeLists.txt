@@ -2,6 +2,7 @@ project (algorithms)
 
 add_library(${PROJECT_NAME}
     src/kmeans.cpp
+    src/trainer.cpp
 )
 
 set_source_files_properties(

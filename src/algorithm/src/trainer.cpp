@@ -1,5 +1,7 @@
 #include "algorithm/trainer.h"
 
+using namespace poker;
+
 Trainer::Trainer(int threadIndex) : rootState{ChanceState()},
                                     threadIndex{threadIndex}
 {
@@ -489,7 +491,7 @@ void Trainer::PrintStatistics(long iterations)
             {
                 std::cout << "ALLIN: ";
             }
-            std::cout << "Regret: " << infoset.regret[j]  << " ";
+            std::cout << "Regret: " << infoset.regret[j] << " ";
             std::cout << "ActionCounter: " << infoset.actionCounter[j] << " ";
             std::cout << endl;
         }

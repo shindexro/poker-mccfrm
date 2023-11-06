@@ -9,4 +9,5 @@ target_link_libraries(${PROJECT_NAME}
     sub::game
     sub::abstraction
     sub::tables
+    sub::algorithms
 )
