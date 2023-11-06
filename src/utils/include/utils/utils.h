@@ -5,6 +5,7 @@
 #include "game/hand.h"
 #include "game/card.h"
 #include "abstraction/global.h"
+#include "abstraction/infoset.h"
 
 #include <tuple>
 #include <vector>
@@ -14,6 +15,7 @@
 #include <indicators/block_progress_bar.hpp>
 #include <indicators/cursor_control.hpp>
 #include <oneapi/tbb.h>
+#include <oneapi/tbb/concurrent_hash_map.h>
 
 using namespace std;
 
@@ -89,10 +91,80 @@ namespace utils
     }
 
     template <typename Base, typename T>
-    inline bool instanceof(const T *ptr)
+    inline bool instanceof (const T *ptr)
     {
         return dynamic_cast<const Base *>(ptr) != nullptr;
     }
+}
+
+//////////////////////////////////////////////////////////////////////
+// non-intrusive serialization for oneapi::tbb::concurrent_hash_map
+template <
+    class Archive,
+    typename Key,
+    typename T,
+    typename HashCompare,
+    typename Allocator>
+inline void save(
+    Archive &ar,
+    const oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+    const unsigned int /*file_version*/
+)
+{
+    size_t count(t.size());
+    size_t bucket_count(t.bucket_count());
+
+    ar << count;
+    ar << bucket_count;
+
+    for (auto item : t)
+    {
+        ar << item;
+    }
+}
+
+template <
+    class Archive,
+    typename Key,
+    typename T,
+    typename HashCompare,
+    typename Allocator>
+inline void load(
+    Archive &ar,
+    oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+    const unsigned int /*file_version*/
+)
+{
+    size_t count;
+    size_t bucket_count;
+
+    ar >> count;
+    ar >> bucket_count;
+
+    t.clear();
+    t.rehash(bucket_count);
+    while (count-- > 0)
+    {
+        pair<Key, T> item;
+        ar >> item;
+        t.insert(item);
+    }
+}
+
+// split non-intrusive serialization function member into separate
+// non intrusive save/load member functions
+template <
+    class Archive,
+    typename Key,
+    typename T,
+    typename HashCompare,
+    typename Allocator>
+inline void serialize(
+    Archive &ar,
+    oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+    const unsigned int file_version)
+{
+    boost::serialization::split_free(ar, t, file_version);
 }
 
 #endif

@@ -1,4 +1,4 @@
-#include "binary/infoset.h"
+#include "abstraction/infoset.h"
 
 Infoset::Infoset() : regret(),
                      actionCounter()

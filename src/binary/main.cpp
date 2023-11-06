@@ -1,11 +1,13 @@
 #include "game/card.h"
 #include "game/deck.h"
 #include "abstraction/global.h"
+#include "abstraction/infoset.h"
 #include "tables/hand_indexer.h"
 #include "tables/ochs_table.h"
 #include "tables/emd_table.h"
 #include "utils/utils.h"
 #include "utils/random.h"
+#include "algorithm/trainer.h"
 
 #include <iostream>
 #include <string>
@@ -56,6 +58,8 @@ public:
             }
             cout << endl;
         }
+
+        Infoset infoset = Infoset();
 
         Main();
     }
@@ -123,7 +127,7 @@ private:
 
     static void Train()
     {
-        cout << "Starting Monte Carlo Counterfactual Regret Minimization (MCCFRM)...");
+        cout << "Starting Monte Carlo Counterfactual Regret Minimization (MCCFRM)..." << endl;
 
         long StrategyInterval = max(1, 1000 / Global::NOF_THREADS); // bb rounds before updating player strategy (recursive through tree) 10k
         long PruneThreshold = 20000000 / Global::NOF_THREADS;       // bb rounds after this time we stop checking all actions, 200 minutes
@@ -137,16 +141,15 @@ private:
         LoadFromFile();
         LoadFromFile_d();
 
-        Trainer trainer = new Trainer(0);
+        Trainer trainer = Trainer(0);
         trainer.EnumerateActionSpace();
 
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.Start();
+        chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
         oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
                                   [&](int index)
                                   {
-                                      Trainer trainer = new Trainer(index);
+                                      Trainer trainer = Trainer(index);
 
                                       for (int t = 1;; t++) // bb rounds
                                       {
@@ -181,7 +184,9 @@ private:
                                               // WritePlotStatistics((mainScore / 10000) / Global::BB);
                                               // cout << "BBs per hand: {0}", (mainScore / 10000) / Global::BB);
 
-                                              cout << "Iterations per second: ", 1000 * sharedLoopCounter / (stopwatch.ElapsedMilliseconds + 1) << endl;
+                                              chrono::steady_clock::time_point end = chrono::steady_clock::now();
+                                              auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
+                                              cout << "Iterations per second: " << 1000 * sharedLoopCounter / (elapsed + 1) << std::endl;
                                           }
                                           for (int traverser = 0; traverser < Global::nofPlayers; traverser++) // traverser
                                           {
@@ -230,114 +235,38 @@ private:
     //     }
     // }
 
-    // static void SaveToFile_d()
-    // {
-    //     cout << "Saving dictionary to file {0}", "nodeMap_d.txt");
+    static void SaveToFile_d()
+    {
+        cout << "Saving dictionary to file nodeMap_d.txt" << endl;
+        utils::SaveToFile(Global::nodeMapBaseline, "nodeMap_d.txt");
+    }
 
-    //     using FileStream fs = File.OpenWrite("nodeMap.txt");
-    //     using BinaryWriter writer = new BinaryWriter(fs);
-    //     foreach (var pair in Global::nodeMapBaseline)
-    //     {
-    //         byte[] bytes = Encoding.ASCII.GetBytes(pair.Key);
+    static void LoadFromFile_d()
+    {
+        if (!utils::FileExists("nodeMap_d.txt"))
+            return;
+        cout << "Loading nodes from file nodeMap_d.txt..." << endl;
+        utils::LoadFromFile(Global::nodeMapBaseline, "nodeMap_d.txt");
+    }
 
-    //         writer.Write(bytes.Length);
-    //         writer.Write(bytes);
+    static void SaveToFile()
+    {
+        cout << "Saving dictionary to file nodeMap.txt" << endl;
+        utils::SaveToFile(Global::nodeMap, "nodeMap.txt");
 
-    //         bytes = SerializeToBytes(pair.Value);
-    //         writer.Write(bytes.Length);
-    //         writer.Write(bytes);
-    //     }
-    // }
+        cout << "Saving dictionary to file nodeMap.txt" << endl;
+    }
 
-    // static void LoadFromFile_d()
-    // {
-    //     if (!File.Exists("nodeMap_d.txt"))
-    //         return;
-    //     cout << "Loading nodes from file nodeMap_d.txt...");
-    //     using FileStream fs = File.OpenRead("nodeMap_d.txt");
-    //     using BinaryReader reader = new BinaryReader(fs);
-    //     Global::nodeMapBaseline = new ConcurrentDictionary<string, Infoset>();
+    static void LoadFromFile()
+    {
+        if (!utils::FileExists("nodeMap.txt"))
+            return;
+        cout << "Loading nodes from file nodeMap.txt..." << endl;
+        utils::LoadFromFile(Global::nodeMap, "nodeMap.txt");
+    }
 
-    //     try
-    //     {
-    //         while (true)
-    //         {
-    //             int keyLength = reader.ReadInt32();
-    //             byte[] key = reader.ReadBytes(keyLength);
-    //             string keyString = Encoding.ASCII.GetString(key);
-    //             int valueLength = reader.ReadInt32();
-    //             byte[] value = reader.ReadBytes(valueLength);
-    //             Infoset infoset = Deserialize(value);
-    //             Global::nodeMapBaseline.TryAdd(keyString, infoset);
-    //         }
-    //     }
-    //     catch (EndOfStreamException e)
-    //     {
-    //         return;
-    //     }
-    // }
-
-    // static void SaveToFile()
-    // {
-    //     cout << "Saving dictionary to file {0}", "nodeMap.txt");
-
-    //     using FileStream fs = File.OpenWrite("nodeMap.txt");
-    //     using BinaryWriter writer = new BinaryWriter(fs);
-    //     foreach (var pair in Global::nodeMap)
-    //     {
-    //         byte[] bytes = Encoding.ASCII.GetBytes(pair.Key);
-
-    //         writer.Write(bytes.Length);
-    //         writer.Write(bytes);
-
-    //         // bytes = SerializeToBytes(pair.Value);
-
-    //         writer.Write(pair.Value.actionCounter.Length);
-    //         for (int i = 0; i < pair.Value.actionCounter.Length; i++)
-    //             writer.Write(pair.Value.actionCounter[i]);
-
-    //         for (int i = 0; i < pair.Value.regret.Length; i++)
-    //             writer.Write(pair.Value.regret[i]);
-    //     }
-    // }
-
-    // static void LoadFromFile()
-    // {
-    //     if (!File.Exists("nodeMap.txt"))
-    //         return;
-    //     cout << "Loading nodes from file nodeMap.txt...");
-    //     using FileStream fs = File.OpenRead("nodeMap.txt");
-    //     using BinaryReader reader = new BinaryReader(fs);
-    //     Global::nodeMap = new ConcurrentDictionary<string, Infoset>();
-
-    //     try
-    //     {
-    //         while (true)
-    //         {
-    //             int keyLength = reader.ReadInt32();
-    //             byte[] key = reader.ReadBytes(keyLength);
-    //             string keyString = Encoding.ASCII.GetString(key);
-    //             int valueLength = reader.ReadInt32();
-
-    //             Infoset infoset = new Infoset(valueLength);
-    //             for (int i = 0; i < valueLength; i++)
-    //             {
-    //                 infoset.actionCounter[i] = reader.ReadInt32();
-    //             }
-    //             for (int i = 0; i < valueLength; i++)
-    //             {
-    //                 infoset.regret[i] = reader.ReadInt32();
-    //             }
-    //             Global::nodeMap.TryAdd(keyString, infoset);
-    //         }
-    //     }
-    //     catch (EndOfStreamException e)
-    //     {
-    //         return;
-    //     }
-    // }
-
-    // static byte[] SerializeToBytes<T>(T item)
+    // template <typename T>
+    // static vector<byte> SerializeToBytes<T>(T item)
     // {
     //     var formatter = new BinaryFormatter();
     //     using var stream = new MemoryStream();
@@ -346,7 +275,7 @@ private:
     //     return stream.ToArray();
     // }
 
-    // static Infoset Deserialize(this byte[] byteArray)
+    // static Infoset Deserialize(vector<byte> &byteArray)
     // {
     //     if (byteArray == null)
     //     {

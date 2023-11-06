@@ -1,3 +1,6 @@
+#ifndef __ENUM_ACTION_H__
+#define __ENUM_ACTION_H__
+
 enum Action
 {
     NONE,
@@ -13,3 +16,5 @@ enum Action
     RAISE6,
     ALLIN
 };
+
+#endif

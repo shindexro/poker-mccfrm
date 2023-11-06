@@ -2,6 +2,8 @@ project (abstraction)
 
 add_library(${PROJECT_NAME}
     src/global.cpp
+    src/infoset.cpp
+    src/state.cpp
 )
 add_library(sub::abstraction ALIAS ${PROJECT_NAME})
 

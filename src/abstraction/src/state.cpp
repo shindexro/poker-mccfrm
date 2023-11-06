@@ -1,4 +1,4 @@
-#include "binary/state.h"
+#include "abstraction/state.h"
 
 State::State() : stacks(Global::nofPlayers),
                  bets(Global::nofPlayers),
@@ -95,8 +95,8 @@ int State::GetActivePlayers(vector<bool> &newIsPlayerIn)
 
 int State::GetNumberOfAllInPlayers()
 {
-    return count_if(lastActions.begin(), lastActions.end(), [](auto a)
-                    { a == Action::ALLIN; });
+    return count_if(lastActions.begin(), lastActions.end(), [](Action &a)
+                    { return a == Action::ALLIN; });
 }
 
 int State::BettingRound()

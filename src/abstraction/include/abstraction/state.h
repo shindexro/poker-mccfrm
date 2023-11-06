@@ -16,6 +16,10 @@
 
 using namespace std;
 
+class PlayState;
+class ChanceState;
+class TerminalState;
+
 class State
 {
 public:
