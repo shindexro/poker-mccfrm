@@ -142,9 +142,14 @@ Card::Card(int index)
     }
 }
 
-bool Card::Equals(const Card &other)
+bool Card::Equals(const Card &other) const
 {
     return rank == other.rank && suit == other.suit;
+}
+
+bool Card::operator==(const Card &other) const
+{
+    return Equals(other);
 }
 
 int Card::PrimeRank()
@@ -177,7 +182,7 @@ int Card::GetIndexFromBitmask(ulong bitmask)
     return (int)log2(bitmask);
 }
 
-string Card::ToString()
+string Card::ToString() const
 {
     char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
     char suits[] = {'s', 'h', 'd', 'c'};
@@ -191,4 +196,10 @@ void Card::PrintBeautifulString(const string_view &end)
 {
     // TOOD: change color according to suit
     cout << ToString() << endl;
+}
+
+ostream &operator<<(ostream &out, const Card &card)
+{
+    out << card.ToString();
+    return out;
 }

@@ -23,16 +23,19 @@ public:
     Card(const char *s);
     Card(const string &s);
     Card(int index);
-    bool Equals(const Card &other);
+    bool Equals(const Card &other) const;
     int PrimeRank();
     int PrimeSuit();
     int HashCode(Card &c);
     int Index();
     ulong Bitmask();
 
+    bool operator==(const Card &other) const;
+    friend ostream& operator<<(ostream& out, const Card& card);
+
     static int GetIndexFromBitmask(ulong bitmask);
 
-    string ToString();
+    string ToString() const;
     void PrintBeautifulString(const string_view &end = "");
 };
 

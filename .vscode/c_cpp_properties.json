@@ -12,7 +12,8 @@
                 "${workspaceFolder}/src/tables/**",
                 "/usr/local/boost_1_83_0",
                 "/usr/local/onetbb/include",
-                "${workspaceFolder}/src/binary/include"
+                "${workspaceFolder}/src/binary/include",
+                "${workspaceFolder}/build/_deps/googletest-src/googletest/include"
             ],
             "defines": [],
             "cStandard": "c17",

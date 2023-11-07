@@ -10,4 +10,12 @@ set(Boost_NO_WARN_NEW_VERSIONS 1)
 
 set(TBB_DIR "/usr/local/onetbb/lib/cmake/TBB")
 
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/7f036c5563af7d0329f20e8bb42effb04629f0c0.zip
+)
+FetchContent_MakeAvailable(googletest)
+
 add_subdirectory(src)
+add_subdirectory(test)
