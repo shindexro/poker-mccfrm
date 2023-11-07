@@ -5,6 +5,12 @@
 
 using namespace testing;
 
+TEST(HandTest, CreateEmptyHand)
+{
+    Hand hand = Hand();
+    EXPECT_THAT(hand.cards, IsEmpty());
+}
+
 TEST(HandTest, CreateHandWithCardBitmap)
 {
     ulong bitmap = 0ul;
