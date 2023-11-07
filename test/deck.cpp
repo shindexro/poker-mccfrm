@@ -30,3 +30,13 @@ TEST(DeckTest, CannotDrawMoreCardsThanDeck)
 
     EXPECT_THROW(deck.Draw(totalCards + 1), invalid_argument);
 }
+
+TEST(DeckTest, CannotDrawMoreCardsThanAvailableCardsInDeck)
+{
+    ulong removedCards = 0b001;
+    Deck deck = Deck(removedCards);
+    int totalCards = Global::CARDS;
+
+    EXPECT_THROW(deck.Draw(totalCards), invalid_argument);
+}
+

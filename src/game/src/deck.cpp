@@ -24,16 +24,19 @@ void Deck::Shuffle()
 
 ulong Deck::Draw(int count)
 {
-    if (count > NumRemainingCards())
-        throw invalid_argument("Insufficient cards in deck.");
-
     ulong hand = 0;
     for (int i = 0; i < count; i++)
     {
-        while ((cards[position] & removedCards) != 0)
+        while (position < cards.size() && (cards[position] & removedCards))
         {
             position++;
         }
+
+        if (position >= cards.size())
+        {
+            throw invalid_argument("Insufficient cards in deck.");
+        }
+
         hand |= cards[position];
         position++;
     }
