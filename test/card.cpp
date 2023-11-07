@@ -30,3 +30,10 @@ TEST(CardTest, CardEquality)
     Card card2("Ad");
     EXPECT_EQ(card1, card2);
 }
+
+TEST(CardTest, CardInequality)
+{
+    Card card1("Ad");
+    Card card2("Ah");
+    EXPECT_NE(card1, card2);
+}
