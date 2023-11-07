@@ -178,7 +178,7 @@ void Trainer::PlayOneGame()
                 for (int i = 0; i < Global::nofPlayers; ++i)
                 {
                     auto [card1, card2] = gs->playerCards[i];
-                    auto playerCards = vector<Card>({card1, card2});
+                    auto playerCards = vector<Card>({Card(card1), Card(card2)});
                     playerCards[0].PrintBeautifulString();
                     playerCards[1].PrintBeautifulString(" ");
                 }
@@ -238,7 +238,7 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
                 for (int i = 0; i < Global::nofPlayers; ++i)
                 {
                     auto [card1, card2] = gs->playerCards[i];
-                    auto playerCards = vector<Card>({card1, card2});
+                    auto playerCards = vector<Card>({Card(card1), Card(card2)});
                     if (display)
                         playerCards[0].PrintBeautifulString();
                     if (display)
