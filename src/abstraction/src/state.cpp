@@ -264,8 +264,8 @@ namespace poker
         if (GetNumberOfPlayersThatNeedToAct() >= 2 && bettingRound < 4)
         {
             // there is someone left that plays
-            children.push_back(PlayState(newBettingRound, playerToMove, lastToMoveTemp, minRaiseTemp, playersInHand,
-                                         stacks, bets, history, playerCardsNew, tableCardsNew, lastActions, isPlayerIn, true));
+            children.push_back(make_shared<PlayState>(newBettingRound, playerToMove, lastToMoveTemp, minRaiseTemp, playersInHand,
+                                                      stacks, bets, history, playerCardsNew, tableCardsNew, lastActions, isPlayerIn, true));
         }
         else
         {
@@ -276,29 +276,30 @@ namespace poker
             if (bettingRound < 3 && GetNumberOfAllInPlayers() >= 2)
             {
                 // directly go to next chance node
-                children.push_back(ChanceState(newBettingRound, GetNumberOfAllInPlayers(), stacks,
-                                               bets, history, playerCardsNew, tableCardsNew, lastActions, isPlayerIn));
+                children.push_back(make_shared<ChanceState>(newBettingRound, GetNumberOfAllInPlayers(), stacks,
+                                                            bets, history, playerCardsNew, tableCardsNew, lastActions, isPlayerIn));
             }
             else
             {
-                children.push_back(TerminalState(stacks, bets, history,
-                                                 playerCardsNew, tableCardsNew, lastActions, isPlayerIn));
+                children.push_back(make_shared<TerminalState>(stacks, bets, history,
+                                                              playerCardsNew, tableCardsNew, lastActions, isPlayerIn));
             }
         }
     }
+
     /// <summary>
     /// Note: The single child was already randomly created
     /// </summary>
     /// <returns></returns>
-    State ChanceState::DoRandomAction()
+    shared_ptr<State> ChanceState::DoRandomAction()
     {
         CreateChildren();
         return children[0];
     }
 
-    vector<PlayState> ChanceState::GetFirstActionStates()
+    vector<shared_ptr<PlayState>> ChanceState::GetFirstActionStates()
     {
-        auto gameStates = vector<PlayState>();
+        auto gameStates = vector<shared_ptr<PlayState>>();
 
         // create one playstate child after chance
         int lastToMoveTemp = -1;
@@ -336,8 +337,8 @@ namespace poker
             auto tableCardsNew = vector<ulong>();
 
             playerCardsNew.push_back({startingHands[i].cards[0].Bitmask(), startingHands[i].cards[1].Bitmask()});
-            gameStates.push_back(PlayState(newBettingRound, playerToMove, lastToMoveTemp, minRaiseTemp, playersInHand,
-                                           stacks, bets, history, playerCardsNew, tableCardsNew, lastActions, isPlayerIn, true));
+            gameStates.push_back(make_shared<PlayState>(newBettingRound, playerToMove, lastToMoveTemp, minRaiseTemp, playersInHand,
+                                                        stacks, bets, history, playerCardsNew, tableCardsNew, lastActions, isPlayerIn, true));
         }
 
         return gameStates;
@@ -409,9 +410,9 @@ namespace poker
 
                 if (nextPlayer != -1)
                 {
-                    children.push_back(PlayState(bettingRound, nextPlayer, newLastPlayer,
-                                                 actualRaise, playersInHand, newStacks, newBets, newHistory,
-                                                 playerCards, tableCards, newLastActions, newIsPlayerIn, true));
+                    children.push_back(make_shared<PlayState>(bettingRound, nextPlayer, newLastPlayer,
+                                                              actualRaise, playersInHand, newStacks, newBets, newHistory,
+                                                              playerCards, tableCards, newLastActions, newIsPlayerIn, true));
                 }
                 else
                 {
@@ -448,22 +449,22 @@ namespace poker
                     // check if there is any player that has to play..
                     if (nextPlayer != -1)
                     {
-                        children.push_back(PlayState(bettingRound, nextPlayer, newLastPlayer,
-                                                     actualRaise, playersInHand, newStacks, newBets, newHistory,
-                                                     playerCards, tableCards, newLastActions, newIsPlayerIn, true));
+                        children.push_back(make_shared<PlayState>(bettingRound, nextPlayer, newLastPlayer,
+                                                                  actualRaise, playersInHand, newStacks, newBets, newHistory,
+                                                                  playerCards, tableCards, newLastActions, newIsPlayerIn, true));
                     }
                     else
                     {
                         // ...otherwise go to chance
                         if (bettingRound != 4)
                         {
-                            children.push_back(ChanceState(bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
-                                                           newBets, newHistory, playerCards, tableCards, newLastActions, newIsPlayerIn));
+                            children.push_back(make_shared<ChanceState>(bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
+                                                                        newBets, newHistory, playerCards, tableCards, newLastActions, newIsPlayerIn));
                         }
                         else
                         {
-                            children.push_back(TerminalState(newStacks, newBets, newHistory,
-                                                             playerCards, tableCards, newLastActions, newIsPlayerIn));
+                            children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
+                                                                          playerCards, tableCards, newLastActions, newIsPlayerIn));
                         }
                     }
                 }
@@ -482,22 +483,22 @@ namespace poker
                     // check if there is any player that has to play..
                     if (nextPlayer != -1)
                     {
-                        children.push_back(PlayState(bettingRound, nextPlayer, newLastPlayer,
-                                                     minRaise, playersInHand, newStacks, newBets, newHistory,
-                                                     playerCards, tableCards, newLastActions, newIsPlayerIn, isBettingOpen));
+                        children.push_back(make_shared<PlayState>(bettingRound, nextPlayer, newLastPlayer,
+                                                                  minRaise, playersInHand, newStacks, newBets, newHistory,
+                                                                  playerCards, tableCards, newLastActions, newIsPlayerIn, isBettingOpen));
                     }
                     else
                     {
                         // ...otherwise go to chance
                         if (bettingRound != 4)
                         {
-                            children.push_back(ChanceState(bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
-                                                           newBets, newHistory, playerCards, tableCards, newLastActions, newIsPlayerIn));
+                            children.push_back(make_shared<ChanceState>(bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
+                                                                        newBets, newHistory, playerCards, tableCards, newLastActions, newIsPlayerIn));
                         }
                         else
                         {
-                            children.push_back(TerminalState(newStacks, newBets, newHistory,
-                                                             playerCards, tableCards, newLastActions, newIsPlayerIn));
+                            children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
+                                                                          playerCards, tableCards, newLastActions, newIsPlayerIn));
                         }
                     }
                 }
@@ -521,14 +522,14 @@ namespace poker
             if (GetActivePlayers(newIsPlayerIn) == 1)
             {
                 // terminal state
-                children.push_back(TerminalState(newStacks, newBets, newHistory,
-                                                 playerCards, tableCards, newLastActions, newIsPlayerIn));
+                children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
+                                                              playerCards, tableCards, newLastActions, newIsPlayerIn));
             }
             else if (nextPlayer != -1)
             {
-                children.push_back(PlayState(bettingRound, nextPlayer, lastPlayer,
-                                             minRaise, playersInHand, newStacks, newBets, newHistory,
-                                             playerCards, tableCards, newLastActions, newIsPlayerIn, isBettingOpen));
+                children.push_back(make_shared<PlayState>(bettingRound, nextPlayer, lastPlayer,
+                                                          minRaise, playersInHand, newStacks, newBets, newHistory,
+                                                          playerCards, tableCards, newLastActions, newIsPlayerIn, isBettingOpen));
             }
             else
             {
@@ -536,13 +537,13 @@ namespace poker
                 if (bettingRound != 4)
                 {
                     // chance
-                    children.push_back(ChanceState(bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
-                                                   newBets, newHistory, playerCards, tableCards, newLastActions, newIsPlayerIn));
+                    children.push_back(make_shared<ChanceState>(bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
+                                                                newBets, newHistory, playerCards, tableCards, newLastActions, newIsPlayerIn));
                 }
                 else
                 {
-                    children.push_back(TerminalState(newStacks, newBets, newHistory,
-                                                     playerCards, tableCards, newLastActions, newIsPlayerIn));
+                    children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
+                                                                  playerCards, tableCards, newLastActions, newIsPlayerIn));
                 }
             }
         }
@@ -565,9 +566,9 @@ namespace poker
 
             if (nextPlayer != -1) // the round isnt over
             {
-                children.push_back(PlayState(bettingRound, nextPlayer, lastPlayer,
-                                             minRaise, playersInHand, newStacks, newBets, newHistory,
-                                             playerCards, tableCards, newLastActions, newIsPlayerIn, isBettingOpen));
+                children.push_back(make_shared<PlayState>(bettingRound, nextPlayer, lastPlayer,
+                                                          minRaise, playersInHand, newStacks, newBets, newHistory,
+                                                          playerCards, tableCards, newLastActions, newIsPlayerIn, isBettingOpen));
             }
             else
             {
@@ -575,14 +576,14 @@ namespace poker
                 if (bettingRound < 4)
                 {
                     // some cards are missing still, chance
-                    children.push_back(ChanceState(bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
-                                                   newBets, newHistory, playerCards, tableCards, newLastActions, newIsPlayerIn));
+                    children.push_back(make_shared<ChanceState>(bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
+                                                                newBets, newHistory, playerCards, tableCards, newLastActions, newIsPlayerIn));
                 }
                 else if (bettingRound == 4)
                 {
                     // terminal, all cards are already dealt
-                    children.push_back(TerminalState(newStacks, newBets, newHistory,
-                                                     playerCards, tableCards, lastActions, isPlayerIn));
+                    children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
+                                                                  playerCards, tableCards, lastActions, isPlayerIn));
                 }
             }
         }

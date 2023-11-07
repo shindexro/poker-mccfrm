@@ -16,12 +16,12 @@ using namespace poker;
 class Trainer
 {
 public:
-    State rootState;
+    shared_ptr<State> rootState;
 
     Trainer(int threadIndex);
 
     void ResetGame();
-    void UpdateStrategy(State gs, int traverser);
+    void UpdateStrategy(shared_ptr<State> gs, int traverser);
     void UpdateStrategy(int traverser);
     float TraverseMCCFRPruned(int traverser);
     float TraverseMCCFR(int traverser, int iteration);
@@ -33,14 +33,14 @@ public:
 
     void PrintStartingHandsChart();
     void PrintStatistics(long iterations);
-    void EnumerateActionSpace(State gs);
+    void EnumerateActionSpace(shared_ptr<State> gs);
     void EnumerateActionSpace();
 
 private:
     int threadIndex = 0;
 
-    float TraverseMCCFRPruned(State gs, int traverser);
-    float TraverseMCCFR(State gs, int traverser, int iteration);
+    float TraverseMCCFRPruned(shared_ptr<State> gs, int traverser);
+    float TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration);
 };
 
 #endif

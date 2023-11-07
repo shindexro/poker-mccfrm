@@ -2,7 +2,7 @@
 
 using namespace poker;
 
-Trainer::Trainer(int threadIndex) : rootState{ChanceState()},
+Trainer::Trainer(int threadIndex) : rootState{make_shared<ChanceState>()},
                                     threadIndex{threadIndex}
 {
     Global::deck = Deck();
@@ -13,38 +13,37 @@ Trainer::Trainer(int threadIndex) : rootState{ChanceState()},
 /// </summary>
 void Trainer::ResetGame()
 {
-    rootState = ChanceState();
+    rootState = make_shared<ChanceState>();
 }
 
 /// <summary>
 /// Recursively update the strategy for the tree of player
 /// </summary>
-void Trainer::UpdateStrategy(State gs, int traverser)
+void Trainer::UpdateStrategy(shared_ptr<State> gs, int traverser)
 {
-    if (gs.BettingRound() > 1 || dynamic_cast<const TerminalState *>(&gs) != nullptr || !gs.IsPlayerInHand(traverser))
+    if (gs->BettingRound() > 1 || dynamic_cast<TerminalState *>(gs.get()) || !gs->IsPlayerInHand(traverser))
     {
         return;
     }
-    else if (dynamic_cast<const ChanceState *>(&gs) != nullptr)
+    else if (ChanceState *cs = dynamic_cast<ChanceState *>(gs.get()))
     {
-        gs = gs.DoRandomAction();
-        UpdateStrategy(gs, traverser);
+        UpdateStrategy(cs->DoRandomAction(), traverser);
     }
-    else if (gs.IsPlayerTurn(traverser))
+    else if (gs->IsPlayerTurn(traverser))
     {
-        Infoset infoset = gs.GetInfoset();
+        Infoset infoset = gs->GetInfoset();
         auto sigma = infoset.CalculateStrategy();
         int randomIndex = utils::SampleDistribution(sigma);
-        gs.CreateChildren();
-        gs = gs.children[randomIndex];
+        gs->CreateChildren();
+        gs = gs->children[randomIndex];
         infoset.actionCounter[randomIndex]++;
 
         UpdateStrategy(gs, traverser);
     }
     else
     {
-        gs.CreateChildren();
-        for (State state : gs.children)
+        gs->CreateChildren();
+        for (auto state : gs->children)
         {
             UpdateStrategy(state, traverser);
         }
@@ -54,7 +53,7 @@ void Trainer::UpdateStrategy(State gs, int traverser)
 void Trainer::UpdateStrategy(int traverser)
 {
     ResetGame();
-    if (rootState.bettingRound > 0)
+    if (rootState->bettingRound > 0)
     {
         throw invalid_argument("DAFUQ");
     }
@@ -73,39 +72,39 @@ float Trainer::TraverseMCCFR(int traverser, int iteration)
     return TraverseMCCFR(rootState, traverser, iteration);
 }
 
-float Trainer::TraverseMCCFRPruned(State gs, int traverser)
+float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
 {
-    if (dynamic_cast<const TerminalState *>(&gs) != nullptr)
+    if (dynamic_cast<TerminalState *>(gs.get()))
     {
-        return gs.GetReward(traverser);
+        return gs->GetReward(traverser);
     }
-    else if (!gs.IsPlayerInHand(traverser)) // we cant get the reward because this function is not implemented
+    else if (!gs->IsPlayerInHand(traverser)) // we cant get the reward because this function is not implemented
     {
-        return -gs.bets[traverser]; // correct?
+        return -gs->bets[traverser]; // correct?
     }
-    else if (dynamic_cast<const ChanceState *>(&gs) != nullptr)
+    else if (dynamic_cast<ChanceState *>(gs.get()))
     {
         // sample a from chance
-        return TraverseMCCFRPruned(gs.DoRandomAction(), traverser);
+        return TraverseMCCFRPruned(gs->DoRandomAction(), traverser);
     }
-    else if (gs.IsPlayerTurn(traverser))
+    else if (gs->IsPlayerTurn(traverser))
     {
         // according to supp. mat. page 3, we do full MCCFR on the last betting round, otherwise skip low regret
-        if (gs.bettingRound != 4)
+        if (gs->bettingRound != 4)
         {
             // Infoset of player i that corresponds to h
-            Infoset infoset = gs.GetInfoset();
+            Infoset infoset = gs->GetInfoset();
             auto sigma = infoset.CalculateStrategy();
             float expectedVal = 0.0f;
 
-            gs.CreateChildren();
+            gs->CreateChildren();
             auto expectedValsChildren = vector<float>();
             auto explored = vector<bool>();
-            for (int i = 0; i < gs.children.size(); ++i)
+            for (int i = 0; i < gs->children.size(); ++i)
             {
                 if (infoset.regret[i] > Global::C)
                 {
-                    expectedValsChildren.push_back(TraverseMCCFRPruned(gs.children[i], traverser));
+                    expectedValsChildren.push_back(TraverseMCCFRPruned(gs->children[i], traverser));
                     explored.push_back(true);
                     expectedVal += sigma[i] * expectedValsChildren[expectedValsChildren.size() - 1];
                 }
@@ -114,7 +113,7 @@ float Trainer::TraverseMCCFRPruned(State gs, int traverser)
                     explored.push_back(false);
                 }
             }
-            for (int i = 0; i < gs.children.size(); ++i)
+            for (int i = 0; i < gs->children.size(); ++i)
             {
                 if (explored[i])
                 {
@@ -128,18 +127,18 @@ float Trainer::TraverseMCCFRPruned(State gs, int traverser)
         {
             // do the same as in normal MCCFR
             // Infoset of player i that corresponds to h
-            Infoset infoset = gs.GetInfoset();
+            Infoset infoset = gs->GetInfoset();
             auto sigma = infoset.CalculateStrategy();
             float expectedVal = 0.0f;
 
-            gs.CreateChildren();
+            gs->CreateChildren();
             auto expectedValsChildren = vector<float>();
-            for (int i = 0; i < gs.children.size(); ++i)
+            for (int i = 0; i < gs->children.size(); ++i)
             {
-                expectedValsChildren.push_back(TraverseMCCFRPruned(gs.children[i], traverser));
+                expectedValsChildren.push_back(TraverseMCCFRPruned(gs->children[i], traverser));
                 expectedVal += sigma[i] * expectedValsChildren[expectedValsChildren.size() - 1];
             }
-            for (int i = 0; i < gs.children.size(); ++i)
+            for (int i = 0; i < gs->children.size(); ++i)
             {
                 infoset.regret[i] += expectedValsChildren[i] - expectedVal;
                 infoset.regret[i] = max({(float)Global::regretFloor, infoset.regret[i]});
@@ -149,27 +148,27 @@ float Trainer::TraverseMCCFRPruned(State gs, int traverser)
     }
     else
     {
-        Infoset infoset = gs.GetInfoset();
+        Infoset infoset = gs->GetInfoset();
         auto sigma = infoset.CalculateStrategy();
 
         int randomIndex = utils::SampleDistribution(sigma);
-        gs.CreateChildren();
+        gs->CreateChildren();
 
-        return TraverseMCCFRPruned(gs.children[randomIndex], traverser);
+        return TraverseMCCFRPruned(gs->children[randomIndex], traverser);
     }
 }
 
 void Trainer::PlayOneGame()
 {
     ResetGame();
-    State gs = rootState;
+    shared_ptr<State> gs = rootState;
     bool first = true;
-    while (!(dynamic_cast<const TerminalState *>(&gs) != nullptr))
+    while (!(dynamic_cast<TerminalState *>(gs.get())))
     {
-        if (dynamic_cast<const ChanceState *>(&gs) != nullptr)
+        if (dynamic_cast<ChanceState *>(gs.get()))
         {
             // sample a from chance
-            gs = gs.DoRandomAction();
+            gs = gs->DoRandomAction();
 
             std::cout << endl;
 
@@ -178,7 +177,7 @@ void Trainer::PlayOneGame()
                 std::cout << "Player Cards: ";
                 for (int i = 0; i < Global::nofPlayers; ++i)
                 {
-                    auto [card1, card2] = gs.playerCards[i];
+                    auto [card1, card2] = gs->playerCards[i];
                     auto playerCards = vector<Card>({card1, card2});
                     playerCards[0].PrintBeautifulString();
                     playerCards[1].PrintBeautifulString(" ");
@@ -187,32 +186,32 @@ void Trainer::PlayOneGame()
             }
             else
             {
-                if (gs.tableCards.size() != 0)
+                if (gs->tableCards.size() != 0)
                     std::cout << "Table Cards: " << endl;
-                for (int i = 0; i < gs.tableCards.size(); ++i)
+                for (int i = 0; i < gs->tableCards.size(); ++i)
                 {
-                    Card(gs.tableCards[i]).PrintBeautifulString();
+                    Card(gs->tableCards[i]).PrintBeautifulString();
                 }
             }
         }
-        else if (dynamic_cast<const PlayState *>(&gs) != nullptr)
+        else if (dynamic_cast<PlayState *>(gs.get()))
         {
             std::cout << endl;
-            std::cout << "Player " << gs.playerToMove << "'s turn : ";
-            Infoset infoset = gs.GetInfoset();
+            std::cout << "Player " << gs->playerToMove << "'s turn : ";
+            Infoset infoset = gs->GetInfoset();
             auto sigma = infoset.CalculateStrategy();
 
             int randomIndex = utils::SampleDistribution(sigma);
-            gs.CreateChildren();
-            gs = gs.children[randomIndex];
-            std::cout << gs.history[gs.history.size() - 1];
+            gs->CreateChildren();
+            gs = gs->children[randomIndex];
+            std::cout << gs->history[gs->history.size() - 1];
         }
     }
     std::cout << endl;
     std::cout << "Rewards: ";
     for (int i = 0; i < Global::nofPlayers; ++i)
     {
-        std::cout << gs.GetReward(i) << " ";
+        std::cout << gs->GetReward(i) << " ";
     }
     std::cout << endl;
 }
@@ -220,14 +219,14 @@ void Trainer::PlayOneGame()
 float Trainer::PlayOneGame_d(int mainPlayer, bool display)
 {
     ResetGame();
-    State gs = rootState;
+    shared_ptr<State> gs = rootState;
     bool first = true;
-    while (!utils:: instanceof <TerminalState>(&gs))
+    while (!dynamic_cast<TerminalState *>(gs.get()))
     {
-        if (utils:: instanceof <ChanceState>(&gs))
+        if (dynamic_cast<ChanceState *>(gs.get()))
         {
             // sample a from chance
-            gs = gs.DoRandomAction();
+            gs = gs->DoRandomAction();
 
             if (display)
                 std::cout << endl;
@@ -238,7 +237,7 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
                     std::cout << "Player Cards: ";
                 for (int i = 0; i < Global::nofPlayers; ++i)
                 {
-                    auto [card1, card2] = gs.playerCards[i];
+                    auto [card1, card2] = gs->playerCards[i];
                     auto playerCards = vector<Card>({card1, card2});
                     if (display)
                         playerCards[0].PrintBeautifulString();
@@ -249,40 +248,40 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
             }
             else
             {
-                if (gs.tableCards.size() != 0)
+                if (gs->tableCards.size() != 0)
                     if (display)
                         std::cout << "Table Cards: ";
-                for (int i = 0; i < gs.tableCards.size(); ++i)
+                for (int i = 0; i < gs->tableCards.size(); ++i)
                 {
                     if (display)
-                        Card(gs.tableCards[i]).PrintBeautifulString();
+                        Card(gs->tableCards[i]).PrintBeautifulString();
                 }
             }
         }
-        else if (utils:: instanceof <PlayState>(&gs))
+        else if (dynamic_cast<PlayState *>(gs.get()))
         {
             if (display)
                 std::cout << endl;
             if (display)
-                std::cout << "Player " << gs.playerToMove << "'s turn : ";
+                std::cout << "Player " << gs->playerToMove << "'s turn : ";
 
             Infoset infoset;
-            if (mainPlayer == gs.playerToMove)
+            if (mainPlayer == gs->playerToMove)
             {
-                infoset = gs.GetInfoset();
+                infoset = gs->GetInfoset();
             }
             else
             {
-                infoset = gs.GetInfosetSecondary();
+                infoset = gs->GetInfosetSecondary();
             }
 
             auto sigma = infoset.CalculateStrategy();
 
             int randomIndex = utils::SampleDistribution(sigma);
-            gs.CreateChildren();
-            gs = gs.children[randomIndex];
+            gs->CreateChildren();
+            gs = gs->children[randomIndex];
             if (display)
-                std::cout << gs.history[gs.history.size() - 1];
+                std::cout << gs->history[gs->history.size() - 1];
         }
     }
     if (display)
@@ -292,43 +291,43 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
     for (int i = 0; i < Global::nofPlayers; ++i)
     {
         if (display)
-            std::cout << gs.GetReward(i) << " ";
+            std::cout << gs->GetReward(i) << " ";
     }
     if (display)
         std::cout << endl;
-    return gs.GetReward(mainPlayer);
+    return gs->GetReward(mainPlayer);
 }
 
-float Trainer::TraverseMCCFR(State gs, int traverser, int iteration)
+float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
 {
-    if (utils:: instanceof <TerminalState>(&gs))
+    if (dynamic_cast<TerminalState *>(gs.get()))
     {
-        return gs.GetReward(traverser);
+        return gs->GetReward(traverser);
     }
-    else if (!gs.IsPlayerInHand(traverser)) // we cant get the reward because this function is not implemented
+    else if (!gs->IsPlayerInHand(traverser)) // we cant get the reward because this function is not implemented
     {
-        return -gs.bets[traverser]; // correct?
+        return -gs->bets[traverser]; // correct?
     }
-    else if (utils:: instanceof <ChanceState>(&gs))
+    else if (dynamic_cast<ChanceState *>(gs.get()))
     {
         // sample a from chance
-        return TraverseMCCFR(gs.DoRandomAction(), traverser, iteration);
+        return TraverseMCCFR(gs->DoRandomAction(), traverser, iteration);
     }
-    else if (gs.IsPlayerTurn(traverser))
+    else if (gs->IsPlayerTurn(traverser))
     {
         // Infoset of player i that corresponds to h
-        Infoset infoset = gs.GetInfoset();
+        Infoset infoset = gs->GetInfoset();
         auto sigma = infoset.CalculateStrategy();
         float expectedVal = 0.0f;
 
-        gs.CreateChildren();
+        gs->CreateChildren();
         auto expectedValsChildren = vector<float>();
-        for (int i = 0; i < gs.children.size(); ++i)
+        for (int i = 0; i < gs->children.size(); ++i)
         {
-            expectedValsChildren.push_back(TraverseMCCFR(gs.children[i], traverser, iteration));
+            expectedValsChildren.push_back(TraverseMCCFR(gs->children[i], traverser, iteration));
             expectedVal += sigma[i] * expectedValsChildren[expectedValsChildren.size() - 1];
         }
-        for (int i = 0; i < gs.children.size(); ++i)
+        for (int i = 0; i < gs->children.size(); ++i)
         {
             infoset.regret[i] += expectedValsChildren[i] - expectedVal;
             infoset.regret[i] = max({(float)Global::regretFloor, infoset.regret[i]});
@@ -337,13 +336,13 @@ float Trainer::TraverseMCCFR(State gs, int traverser, int iteration)
     }
     else
     {
-        Infoset infoset = gs.GetInfoset();
+        Infoset infoset = gs->GetInfoset();
         auto sigma = infoset.CalculateStrategy();
 
         int randomIndex = utils::SampleDistribution(sigma);
-        gs.CreateChildren();
+        gs->CreateChildren();
 
-        return TraverseMCCFR(gs.children[randomIndex], traverser, iteration);
+        return TraverseMCCFR(gs->children[randomIndex], traverser, iteration);
     }
 }
 void Trainer::TraverseMCCFRPruned()
@@ -366,34 +365,34 @@ void Trainer::DiscountInfosets(float d)
 void Trainer::PrintStartingHandsChart()
 {
     ResetGame();
-    vector<PlayState> gs = dynamic_cast<ChanceState *>(&rootState)->GetFirstActionStates();
+    auto gs = dynamic_cast<ChanceState *>(rootState.get())->GetFirstActionStates();
 
-    for (int i = 0; i < gs[0].GetValidActions().size(); ++i)
+    for (int i = 0; i < gs[0]->GetValidActions().size(); ++i)
     {
-        if (gs[0].GetValidActions()[i] == Action::FOLD)
+        if (gs[0]->GetValidActions()[i] == Action::FOLD)
         {
             std::cout << "FOLD Table" << endl;
         }
-        if (gs[0].GetValidActions()[i] == Action::CALL)
+        if (gs[0]->GetValidActions()[i] == Action::CALL)
         {
             std::cout << "CALL Table" << endl;
         }
-        if (gs[0].GetValidActions()[i] == Action::RAISE1)
+        if (gs[0]->GetValidActions()[i] == Action::RAISE1)
         {
             std::cout << Global::raises[0] << "*POT RAISE "
                       << "Table" << endl;
         }
-        if (gs[0].GetValidActions()[i] == Action::RAISE2)
+        if (gs[0]->GetValidActions()[i] == Action::RAISE2)
         {
             std::cout << Global::raises[1] << "*POT RAISE "
                       << "Table" << endl;
         }
-        if (gs[0].GetValidActions()[i] == Action::RAISE3)
+        if (gs[0]->GetValidActions()[i] == Action::RAISE3)
         {
             std::cout << Global::raises[2] << "*POT RAISE "
                       << "Table" << endl;
         }
-        if (gs[0].GetValidActions()[i] == Action::ALLIN)
+        if (gs[0]->GetValidActions()[i] == Action::ALLIN)
         {
             std::cout << "ALLIN Table" << endl;
         }
@@ -401,8 +400,8 @@ void Trainer::PrintStartingHandsChart()
         std::cout << "    2    3    4    5    6    7    8    9    T    J    Q    K    A (suited)" << endl;
         for (int j = 0; j < gs.size(); ++j)
         {
-            PlayState ps = gs[j];
-            Infoset infoset = ps.GetInfoset();
+            auto ps = gs[j];
+            Infoset infoset = ps->GetInfoset();
             // List<float> sigma = infoset.CalculateStrategy();
             auto phi = infoset.GetFinalStrategy();
 
@@ -446,24 +445,24 @@ void Trainer::PrintStartingHandsChart()
 void Trainer::PrintStatistics(long iterations)
 {
     ResetGame();
-    vector<PlayState> gs = dynamic_cast<ChanceState *>(&rootState)->GetFirstActionStates();
+    auto gs = dynamic_cast<ChanceState *>(rootState.get())->GetFirstActionStates();
 
     int maxOutput = -1; // todo
-    for (PlayState ps : gs)
+    for (auto ps : gs)
     {
         if (maxOutput < 0)
             break;
         maxOutput--;
 
-        Infoset infoset = ps.GetInfoset();
+        Infoset infoset = ps->GetInfoset();
 
-        auto [card1, card2] = ps.playerCards[ps.playerToMove];
+        auto [card1, card2] = ps->playerCards[ps->playerToMove];
         Hand hand = Hand();
         hand.cards.push_back(card1);
         hand.cards.push_back(card2);
 
         hand.PrintColoredCards("\n");
-        auto actions = ps.GetValidActions();
+        auto actions = ps->GetValidActions();
 
         for (int j = 0; j < actions.size(); ++j)
         {
@@ -501,13 +500,13 @@ void Trainer::PrintStatistics(long iterations)
     std::cout << "Number of training iterations: " << iterations << endl;
 }
 
-void Trainer::EnumerateActionSpace(State gs)
+void Trainer::EnumerateActionSpace(shared_ptr<State> gs)
 {
-    if (utils:: instanceof <TerminalState>(&gs))
+    if (dynamic_cast<TerminalState *>(gs.get()))
     {
 
         string outstring = "";
-        for (auto action : gs.history)
+        for (auto action : gs->history)
         {
             outstring += action;
         }
@@ -526,11 +525,11 @@ void Trainer::EnumerateActionSpace(State gs)
     }
     else
     {
-        gs.CreateChildren();
+        gs->CreateChildren();
 
-        for (int i = 0; i < gs.children.size(); ++i)
+        for (int i = 0; i < gs->children.size(); ++i)
         {
-            EnumerateActionSpace(gs.children[i]);
+            EnumerateActionSpace(gs->children[i]);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace poker
         vector<int> bets;
         vector<float> rewards;
         vector<bool> isPlayerIn;
-        vector<State> children;
+        vector<shared_ptr<State>> children;
 
         int playerToMove;
         int bettingRound;
@@ -62,7 +62,7 @@ namespace poker
         virtual Infoset GetInfosetSecondary(){};
         virtual bool IsPlayerTurn(int traverser){};
         int BettingRound();
-        virtual State DoRandomAction(){};
+        virtual shared_ptr<State> DoRandomAction(){};
         virtual float GetReward(int traverser){};
     };
 
@@ -109,9 +109,9 @@ namespace poker
                     vector<bool> &isPlayerIn);
         void CreateChildren();
 
-        State DoRandomAction();
+        shared_ptr<State> DoRandomAction();
 
-        vector<PlayState> GetFirstActionStates();
+        vector<shared_ptr<PlayState>> GetFirstActionStates();
 
         bool IsPlayerInHand(int player);
     };
