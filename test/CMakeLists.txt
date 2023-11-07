@@ -4,7 +4,6 @@ enable_testing()
 
 add_executable(
   test
-  test.cpp
   card.cpp
   hand.cpp
 )
