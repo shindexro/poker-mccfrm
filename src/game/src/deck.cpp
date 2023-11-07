@@ -4,7 +4,7 @@ Deck::Deck(ulong removedCards) : removedCards{removedCards},
                                  position{0},
                                  cards(Global::CARDS)
 {
-    for (int i = 0; i < Global::CARDS; i++)
+    for (int i = 0; i < cards.size(); i++)
     {
         cards[i] = 1ul << i;
     }
@@ -12,7 +12,7 @@ Deck::Deck(ulong removedCards) : removedCards{removedCards},
 
 int Deck::NumRemainingCards()
 {
-    return Global::CARDS - position;
+    return cards.size() - position;
 }
 
 void Deck::Shuffle()
