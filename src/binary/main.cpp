@@ -48,16 +48,6 @@ public:
             Hand(threeOfAKind2)};
         sort(hands.begin(), hands.end(), [](Hand &a, Hand &b)
              { return a.GetStrength() < b.GetStrength(); });
-        for (auto hand : hands)
-        {
-            auto strength = hand.GetStrength();
-            cout << strength.handRanking << ", kickers: ";
-            for (auto kicker : strength.kickers)
-            {
-                cout << "23456789TJQKA"[kicker] << " ";
-            }
-            cout << endl;
-        }
 
         Infoset infoset = Infoset();
 
