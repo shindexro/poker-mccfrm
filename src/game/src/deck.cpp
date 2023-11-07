@@ -15,15 +15,11 @@ int Deck::NumRemainingCards()
     return Global::CARDS - position;
 }
 
-void Deck::Shuffle(int from)
+void Deck::Shuffle()
 {
-    for (int i = from; i < Global::CARDS - 1; i++)
-    {
-        int n = randint(from, Global::CARDS);
-        ulong temp = cards[i];
-        cards[i] = cards[n];
-        cards[n] = temp;
-    }
+    std::random_device rd;
+    std::mt19937 g(rd());
+    shuffle(cards.begin() + position, cards.end(), g);
 }
 
 ulong Deck::Draw_(int count)

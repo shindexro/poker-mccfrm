@@ -13,7 +13,7 @@ class Deck
 public:
     int NumRemainingCards();
     Deck(ulong removedCards = 0);
-    void Shuffle(int from = 0);
+    void Shuffle();
     ulong Draw_(int count);
     ulong Draw(int pos);
 
