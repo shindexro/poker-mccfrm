@@ -5,7 +5,7 @@ Deck::Deck(ulong removedCards) : cards(Global::CARDS)
     this->removedCards = removedCards;
     for (int i = 0; i < Global::CARDS; i++)
     {
-        cards[i] = 1ul < i;
+        cards[i] = 1ul << i;
     }
     position = 0;
 }
