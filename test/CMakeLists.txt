@@ -6,6 +6,7 @@ add_executable(
   test
   card.cpp
   hand.cpp
+  hand_strength.cpp
 )
 
 target_link_libraries(

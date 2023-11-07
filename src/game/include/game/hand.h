@@ -27,6 +27,8 @@ public:
     HandStrength GetStrength();
     void PrintColoredCards(const string &end = string(""));
     string ToString();
+
+    bool operator==(const Hand &other) const;
 };
 
 #endif

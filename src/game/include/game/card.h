@@ -24,13 +24,14 @@ public:
     Card(const string &s);
     Card(int index);
     bool Equals(const Card &other) const;
-    int PrimeRank();
-    int PrimeSuit();
+    int PrimeRank() const;
+    int PrimeSuit() const;
     int HashCode(Card &c);
     int Index();
     ulong Bitmask();
 
     bool operator==(const Card &other) const;
+    bool operator<(const Card &rhs) const;
     friend ostream& operator<<(ostream& out, const Card& card);
 
     static int GetIndexFromBitmask(ulong bitmask);

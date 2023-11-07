@@ -39,8 +39,8 @@ HandStrength Hand::GetStrength()
     }
 
     // sort cards by (rank, suit) from high to low
-    sort(cards.begin(), cards.end(), [](Card &a, Card &b)
-         { return a.PrimeRank() * 100 + a.PrimeSuit() > b.PrimeRank() * 100 + b.PrimeSuit(); });
+    sort(cards.begin(), cards.end());
+    reverse(cards.begin(), cards.end());
 
     int rankProduct = accumulate(cards.begin(), cards.end(), 1, [](int acc, Card &c)
                                  { return acc * c.PrimeRank(); });
@@ -189,4 +189,24 @@ string Hand::ToString()
         s += card.ToString();
     }
     return s;
+}
+
+bool Hand::operator==(const Hand &other) const
+{
+    /* TODO: optimize this algorithm if it's a huge bottleneck
+             currently only implementing test and debug purpose */
+    if (cards.size() != other.cards.size())
+        return false;
+
+    auto cardsCopy = vector<Card>(cards);
+    auto otherCardsCopy = vector<Card>(other.cards);
+    sort(cardsCopy.begin(), cardsCopy.end());
+    sort(otherCardsCopy.begin(), otherCardsCopy.end());
+
+    for (int i = 0; i < cards.size(); i++)
+    {
+        if (cardsCopy[i] != otherCardsCopy[i])
+            return false;
+    }
+    return true;
 }

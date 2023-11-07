@@ -151,12 +151,12 @@ bool Card::operator==(const Card &other) const
     return Equals(other);
 }
 
-int Card::PrimeRank()
+int Card::PrimeRank() const
 {
     return rankPrimes[(int)rank];
 }
 
-int Card::PrimeSuit()
+int Card::PrimeSuit() const
 {
     return suitPrimes[(int)suit];
 }
@@ -201,4 +201,13 @@ ostream &operator<<(ostream &out, const Card &card)
 {
     out << card.ToString();
     return out;
+}
+
+bool Card::operator<(const Card &rhs) const
+{
+    if (rank < rhs.rank)
+        return true;
+    if (suit < rhs.suit)
+        return true;
+    return false;
 }
