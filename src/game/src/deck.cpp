@@ -8,11 +8,12 @@ Deck::Deck(ulong removedCards) : removedCards{removedCards},
     {
         cards[i] = 1ul << i;
     }
+    numRemovedCards = __builtin_popcount(removedCards);
 }
 
 int Deck::NumRemainingCards()
 {
-    return cards.size() - position;
+    return cards.size() - numRemovedCards - position;
 }
 
 void Deck::Shuffle()

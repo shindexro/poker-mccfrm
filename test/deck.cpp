@@ -10,6 +10,25 @@ TEST(DeckTest, NewDeckInitialSize)
     EXPECT_EQ(deck.NumRemainingCards(), totalCards);
 }
 
+TEST(DeckTest, NewDeckWithRemovedCardsInitialSize)
+{
+    ulong removedCards = 0b01001;
+    Deck deck = Deck(removedCards);
+    int totalCards = Global::CARDS;
+    EXPECT_EQ(deck.NumRemainingCards(), totalCards - 2);
+}
+
+TEST(DeckTest, RemovedCardsNotInDeck)
+{
+    int totalCards = Global::CARDS;
+    ulong allCardsBitmap = (1 << totalCards) - 1;
+    ulong removedCards = 0b01001;
+    ulong remainingCards = allCardsBitmap & ~removedCards;
+    Deck deck = Deck(removedCards);
+
+    EXPECT_EQ(deck.Draw(totalCards - 2), remainingCards);
+}
+
 TEST(DeckTest, FewerCardsInDeckAfterEachDraw)
 {
     Deck deck = Deck();
@@ -40,3 +59,12 @@ TEST(DeckTest, CannotDrawMoreCardsThanAvailableCardsInDeck)
     EXPECT_THROW(deck.Draw(totalCards), invalid_argument);
 }
 
+TEST(DeckTest, AllCardsStillInDeckAfterShuffle)
+{
+    Deck deck = Deck();
+    int totalCards = Global::CARDS;
+    ulong allCardsBitmap = (1 << totalCards) - 1;
+    deck.Shuffle();
+
+    EXPECT_EQ(deck.Draw(totalCards), allCardsBitmap);
+}
