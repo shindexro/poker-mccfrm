@@ -7,6 +7,7 @@ add_executable(
   card.cpp
   hand.cpp
   hand_strength.cpp
+  deck.cpp
 )
 
 target_link_libraries(
@@ -14,6 +15,7 @@ target_link_libraries(
   GTest::gtest_main
   GTest::gmock_main
   sub::game
+  sub::abstraction
 )
 
 include(GoogleTest)
