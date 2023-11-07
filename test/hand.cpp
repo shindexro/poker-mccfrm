@@ -32,3 +32,18 @@ TEST(HandTest, CreateHandWithCardStrings)
     Hand hand(cardString);
     EXPECT_THAT(hand.cards, UnorderedElementsAreArray(cards));
 }
+
+TEST(HandTest, HandStrengthIsHighCard)
+{
+    auto cardString = vector<string>({"As", "Qh", "2d", "5d", "7c"});
+    auto kickers = vector<Rank>({Rank::Ace,
+                                 Rank::Queen,
+                                 Rank::Seven,
+                                 Rank::Five,
+                                 Rank::Two});
+
+    Hand hand(cardString);
+    auto strength = hand.GetStrength();
+    EXPECT_EQ(strength.handRanking, HandRanking::HighCard);
+    EXPECT_THAT(strength.kickers, ElementsAreArray(kickers));
+}

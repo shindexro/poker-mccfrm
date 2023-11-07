@@ -1,6 +1,6 @@
 #include "game/hand_strength.h"
 
-HandStrength::HandStrength() : kickers{vector<int>()}
+HandStrength::HandStrength() : kickers{vector<Rank>()}
 {
 }
 

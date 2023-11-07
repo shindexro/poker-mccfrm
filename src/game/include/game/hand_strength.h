@@ -12,7 +12,7 @@ class HandStrength
 {
 public:
     HandRanking handRanking;
-    vector<int> kickers;
+    vector<Rank> kickers;
 
     HandStrength();
 

@@ -23,8 +23,10 @@ Hand::Hand(ulong bitmap)
     }
 }
 
-Hand::Hand(vector<string> &cardStrings) {
-    for (auto card : cardStrings) {
+Hand::Hand(vector<string> &cardStrings)
+{
+    for (auto card : cardStrings)
+    {
         cards.push_back(Card(card));
     }
 }
@@ -94,76 +96,76 @@ HandStrength Hand::GetStrength()
     {
         strength.handRanking = HandRanking::StraightFlush;
         for (auto card : cards)
-            strength.kickers.push_back((int)card.rank);
+            strength.kickers.push_back(card.rank);
     }
     else if (fourOfAKind >= 0)
     {
         strength.handRanking = HandRanking::FourOfAKind;
-        strength.kickers.push_back(fourOfAKind);
+        strength.kickers.push_back((Rank)fourOfAKind);
         for (auto card : cards)
         {
             if ((int)card.rank == fourOfAKind)
                 continue;
-            strength.kickers.push_back((int)card.rank);
+            strength.kickers.push_back(card.rank);
         }
     }
     else if (threeOfAKind >= 0 && onePair >= 0)
     {
         strength.handRanking = HandRanking::FullHouse;
-        strength.kickers.push_back(threeOfAKind);
-        strength.kickers.push_back(onePair);
+        strength.kickers.push_back((Rank)threeOfAKind);
+        strength.kickers.push_back((Rank)onePair);
     }
     else if (flush)
     {
         strength.handRanking = HandRanking::Flush;
         for (auto card : cards)
-            strength.kickers.push_back((int)card.rank);
+            strength.kickers.push_back(card.rank);
     }
     else if (straight)
     {
         strength.handRanking = HandRanking::Straight;
         for (auto card : cards)
-            strength.kickers.push_back((int)card.rank);
+            strength.kickers.push_back(card.rank);
     }
     else if (threeOfAKind >= 0)
     {
         strength.handRanking = HandRanking::ThreeOfAKind;
-        strength.kickers.push_back(threeOfAKind);
+        strength.kickers.push_back((Rank)threeOfAKind);
         for (auto card : cards)
         {
             if ((int)card.rank == threeOfAKind)
                 continue;
-            strength.kickers.push_back((int)card.rank);
+            strength.kickers.push_back(card.rank);
         }
     }
     else if (twoPair >= 0)
     {
         strength.handRanking = HandRanking::TwoPair;
-        strength.kickers.push_back(max({twoPair, onePair}));
-        strength.kickers.push_back(min({twoPair, onePair}));
+        strength.kickers.push_back((Rank)max({twoPair, onePair}));
+        strength.kickers.push_back((Rank)min({twoPair, onePair}));
         for (auto card : cards)
         {
             if ((int)card.rank == twoPair || (int)card.rank == onePair)
                 continue;
-            strength.kickers.push_back((int)card.rank);
+            strength.kickers.push_back(card.rank);
         }
     }
     else if (onePair >= 0)
     {
         strength.handRanking = HandRanking::Pair;
-        strength.kickers.push_back(onePair);
+        strength.kickers.push_back((Rank)onePair);
         for (auto card : cards)
         {
-            if ((int)card.rank == twoPair || (int)card.rank == onePair)
+            if (card.rank == (Rank)twoPair || card.rank == (Rank)onePair)
                 continue;
-            strength.kickers.push_back((int)card.rank);
+            strength.kickers.push_back(card.rank);
         }
     }
     else
     {
         strength.handRanking = HandRanking::HighCard;
         for (auto card : cards)
-            strength.kickers.push_back((int)card.rank);
+            strength.kickers.push_back(card.rank);
     }
 
     return strength;
