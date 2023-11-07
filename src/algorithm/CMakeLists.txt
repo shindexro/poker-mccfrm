@@ -7,6 +7,7 @@ add_library(${PROJECT_NAME}
 
 set_source_files_properties(
     src/kmeans.cpp
+    src/trainer.cpp
 PROPERTIES COMPILE_OPTIONS "-g")
 
 add_library(sub::algorithms ALIAS ${PROJECT_NAME})
