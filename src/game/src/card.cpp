@@ -1,8 +1,7 @@
 #include "game/card.h"
 
-Card::Card(const char *s)
+Card::Card(const char *s) : Card(string(s))
 {
-    Card(string(s));
 }
 
 Card::Card(const string &s)
