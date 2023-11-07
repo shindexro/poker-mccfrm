@@ -22,7 +22,7 @@ void Deck::Shuffle()
     shuffle(cards.begin() + position, cards.end(), g);
 }
 
-ulong Deck::Draw_(int count)
+ulong Deck::Draw(int count)
 {
     ulong hand = 0;
     for (int i = 0; i < count; i++)
@@ -35,9 +35,4 @@ ulong Deck::Draw_(int count)
         position++;
     }
     return hand;
-}
-
-ulong Deck::Draw(int pos)
-{
-    return cards[pos];
 }

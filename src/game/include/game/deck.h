@@ -14,8 +14,7 @@ public:
     int NumRemainingCards();
     Deck(ulong removedCards = 0);
     void Shuffle();
-    ulong Draw_(int count);
-    ulong Draw(int pos);
+    ulong Draw(int count);
 
 private:
     vector<ulong> cards;

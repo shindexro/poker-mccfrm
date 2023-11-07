@@ -243,22 +243,22 @@ namespace poker
             Global::deck.Shuffle();
             for (int i = 0; i < Global::nofPlayers; ++i)
             {
-                playerCardsNew.push_back({Global::deck.Draw(i * 2), Global::deck.Draw(i * 2 + 1)});
+                playerCardsNew.push_back({Global::deck.Draw(1), Global::deck.Draw(1)});
             }
             break;
         case 1: // deal flop
             // Global::deck.Shuffle(Global::nofPlayers * 2); // not necessarily needed, check
-            tableCardsNew.push_back(Global::deck.Draw(Global::nofPlayers * 2 + 0));
-            tableCardsNew.push_back(Global::deck.Draw(Global::nofPlayers * 2 + 1));
-            tableCardsNew.push_back(Global::deck.Draw(Global::nofPlayers * 2 + 2));
+            tableCardsNew.push_back(Global::deck.Draw(1));
+            tableCardsNew.push_back(Global::deck.Draw(1));
+            tableCardsNew.push_back(Global::deck.Draw(1));
             break;
         case 2: // deal turn
-            Global::deck.Shuffle(Global::nofPlayers * 2 + 3);
-            tableCardsNew.push_back(Global::deck.Draw(Global::nofPlayers * 2 + 3));
+            // Global::deck.Shuffle(Global::nofPlayers * 2 + 3);
+            tableCardsNew.push_back(Global::deck.Draw(1));
             break;
         case 3: // deal river
-            Global::deck.Shuffle(Global::nofPlayers * 2 + 4);
-            tableCardsNew.push_back(Global::deck.Draw(Global::nofPlayers * 2 + 4));
+            // Global::deck.Shuffle(Global::nofPlayers * 2 + 4);
+            tableCardsNew.push_back(Global::deck.Draw(1));
             break;
         }
         if (GetNumberOfPlayersThatNeedToAct() >= 2 && bettingRound < 4)
