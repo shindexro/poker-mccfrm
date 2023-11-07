@@ -55,15 +55,15 @@ namespace poker
 
         int GetActivePlayers(vector<bool> &newIsPlayerIn);
         int GetNumberOfAllInPlayers();
-        virtual void CreateChildren(){};
-        virtual bool IsPlayerInHand(int traverser){};
+        virtual void CreateChildren(){throw invalid_argument("Not implemented");};
+        virtual bool IsPlayerInHand(int traverser){throw invalid_argument("Not implemented");};
 
-        virtual Infoset GetInfoset(){};
-        virtual Infoset GetInfosetSecondary(){};
-        virtual bool IsPlayerTurn(int traverser){};
+        virtual Infoset GetInfoset(){throw invalid_argument("Not implemented");};
+        virtual Infoset GetInfosetSecondary(){throw invalid_argument("Not implemented");};
+        virtual bool IsPlayerTurn(int traverser){throw invalid_argument("Not implemented");};
         int BettingRound();
-        virtual shared_ptr<State> DoRandomAction(){};
-        virtual float GetReward(int traverser){};
+        virtual shared_ptr<State> DoRandomAction(){throw invalid_argument("Not implemented");};
+        virtual float GetReward(int traverser){throw invalid_argument("Not implemented");};
     };
 
     class TerminalState : public State
