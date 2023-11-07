@@ -1,13 +1,13 @@
 #include "game/deck.h"
 
-Deck::Deck(ulong removedCards) : cards(Global::CARDS)
+Deck::Deck(ulong removedCards) : removedCards{removedCards},
+                                 position{0},
+                                 cards(Global::CARDS)
 {
-    this->removedCards = removedCards;
     for (int i = 0; i < Global::CARDS; i++)
     {
         cards[i] = 1ul << i;
     }
-    position = 0;
 }
 
 int Deck::NumRemainingCards()
