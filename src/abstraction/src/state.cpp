@@ -234,8 +234,8 @@ namespace poker
         }
 
         // todo: wouldnt need to always copy
-        auto playerCardsNew = vector<tuple<ulong, ulong>>(); // original c# list capacity is playerCards
-        auto tableCardsNew = vector<ulong>();                // original c# list capacity is tableCards
+        auto playerCardsNew = vector<tuple<ulong, ulong>>(playerCards); // original c# list capacity is playerCards
+        auto tableCardsNew = vector<ulong>(tableCards);                // original c# list capacity is tableCards
 
         switch (bettingRound)
         {
@@ -388,12 +388,12 @@ namespace poker
 
                 // valid raise, if stack is equal it would be an all in
                 // TODO: dont hardcode this
-                if (i == 0)
-                    newHistory.push_back(Action::RAISE1);
-                if (i == 1)
-                    newHistory.push_back(Action::RAISE2);
-                if (i == 2)
-                    newHistory.push_back(Action::RAISE3);
+                // if (i == 0)
+                //     newHistory.push_back(Action::RAISE1);
+                // if (i == 1)
+                //     newHistory.push_back(Action::RAISE2);
+                // if (i == 2)
+                //     newHistory.push_back(Action::RAISE3);
                 // if (i == 3)
                 //     newHistory.push_back(Action::RAISE4);
                 // if (i == 4)
