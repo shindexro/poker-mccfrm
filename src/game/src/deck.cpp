@@ -8,7 +8,7 @@ Deck::Deck(ulong removedCards) : removedCards{removedCards},
     {
         cards[i] = 1ul << i;
     }
-    numRemovedCards = __builtin_popcount(removedCards);
+    numRemovedCards = __builtin_popcountll(removedCards);
 }
 
 int Deck::NumRemainingCards()

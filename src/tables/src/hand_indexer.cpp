@@ -49,7 +49,7 @@ void HandIndexer::Initialise()
         {
             rankSetToIndex[i] += nCrRanks[__builtin_ctz(set)][j];
         }
-        indexToRankSet[__builtin_popcount((unsigned int)i)][rankSetToIndex[i]] = i;
+        indexToRankSet[__builtin_popcountll((unsigned int)i)][rankSetToIndex[i]] = i;
     }
 
     int numPermutations = 1;
@@ -264,13 +264,13 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
         int rankBit = 1 << rank;
 
         ranks[suit] |= rankBit;
-        shiftedRanks[suit] |= (rankBit >> __builtin_popcount((unsigned int)((rankBit - 1) & state.usedRanks[suit])));
+        shiftedRanks[suit] |= (rankBit >> __builtin_popcountll((unsigned int)((rankBit - 1) & state.usedRanks[suit])));
     }
 
     for (int i = 0; i < Global::SUITS; i++)
     {
-        int usedSize = __builtin_popcount((unsigned int)state.usedRanks[i]);
-        int thisSize = __builtin_popcount((unsigned int)ranks[i]);
+        int usedSize = __builtin_popcountll((unsigned int)state.usedRanks[i]);
+        int thisSize = __builtin_popcountll((unsigned int)ranks[i]);
 
         state.suitIndex[i] += state.suitMultiplier[i] * rankSetToIndex[shiftedRanks[i]];
         state.suitMultiplier[i] *= nCrRanks[Global::RANKS - usedSize][thisSize];
@@ -279,7 +279,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
 
     for (int i = 0, remaining = cardsPerRound[round]; i < Global::SUITS - 1; ++i)
     {
-        int thisSize = __builtin_popcount((unsigned int)ranks[i]);
+        int thisSize = __builtin_popcountll((unsigned int)ranks[i]);
         state.permutationIndex += state.permutationMultiplier * thisSize;
         state.permutationMultiplier *= remaining + 1;
         remaining -= thisSize;
@@ -727,7 +727,7 @@ void HandIndexer::TabulatePermutations(int round, vector<int> &count)
     for (int i = 0; i < Global::SUITS; ++i)
     {
         int this_bit = (1 << pi[i]);
-        int smaller = __builtin_popcount((uint)((this_bit - 1) & pi_used));
+        int smaller = __builtin_popcountll((uint)((this_bit - 1) & pi_used));
         pi_idx += (pi[i] - smaller) * pi_mult;
         pi_mult *= Global::SUITS - i;
         pi_used |= this_bit;
