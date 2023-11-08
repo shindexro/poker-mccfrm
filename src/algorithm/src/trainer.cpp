@@ -402,7 +402,7 @@ void Trainer::PrintStartingHandsChart()
         {
             auto ps = gs[j];
             Infoset infoset = ps->GetInfoset();
-            // List<float> sigma = infoset.CalculateStrategy();
+            // auto sigma = infoset.CalculateStrategy();
             auto phi = infoset.GetFinalStrategy();
 
             if (j % Global::RANKS == 0 && j + 1 < gs.size())
@@ -430,7 +430,7 @@ void Trainer::PrintStartingHandsChart()
             else if (phi[i] <= 1.0)
                 std::cout << "\033[1;34m";
 
-            std::cout << to_string(phi[i]) << " ";
+            std::cout << setprecision(4) << phi[i] << " ";
             std::cout << "\033[0m";
 
             if ((j + 1) % Global::RANKS == 0)
