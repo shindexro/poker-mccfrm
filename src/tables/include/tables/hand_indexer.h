@@ -27,11 +27,11 @@ public:
 class HandIndexer
 {
 public:
-    int rounds;
-    vector<int> cardsPerRound;
+    int rounds;                // no. of rounds
+    vector<int> cardsPerRound; // no. of cards dealt at i-th round
     vector<int> configurations;
     vector<int> permutations;
-    vector<long> roundSize;
+    vector<long> roundSize; // no. of non-isomorphic hands at i-th round
 
     HandIndexer();
     void Construct(vector<int> &cardsPerRound);
@@ -49,11 +49,11 @@ private:
 
     static vector<vector<int>> nthUnset;
     static vector<vector<bool>> equal;
-    static vector<vector<int>> nCrRanks;
+    static vector<vector<int>> nCrRanks; // cache of nCr calculation
     static vector<int> rankSetToIndex;
     static vector<vector<int>> indexToRankSet;
     static vector<vector<int>> suitPermutations;
-    static vector<vector<long>> nCrGroups;
+    static vector<vector<long>> nCrGroups; // cache of nCr calculation
 
     vector<int> roundStart;
     vector<vector<int>> permutationToConfiguration;
