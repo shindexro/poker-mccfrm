@@ -71,7 +71,7 @@ private:
     vector<vector<vector<int>>> configuration;
     vector<vector<vector<int>>> configurationToSuitSize;
     vector<vector<long>> configurationToOffset;
-    vector<vector<int>> publicFlopHands;
+    vector<vector<int>> publicFlopHands; // map idx (from IndexLast) to canonical flop cards
 
     static void CacheNCRCalculation();
 
