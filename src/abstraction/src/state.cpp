@@ -703,22 +703,22 @@ namespace poker
             if (tableCards.size() == 0)
             {
                 long index = Global::indexer_2.IndexLast(cards);
-                cardString += "P" + index;
+                cardString += "P" + to_string(index);
             }
             else if (tableCards.size() == 3)
             {
                 long index = EMDTable::flopIndices[Global::indexer_2_3.IndexLast(cards)];
-                cardString += "F" + index;
+                cardString += "F" + to_string(index);
             }
             else if (tableCards.size() == 4)
             {
                 long index = EMDTable::turnIndices[Global::indexer_2_4.IndexLast(cards)];
-                cardString += "T" + index;
+                cardString += "T" + to_string(index);
             }
             else
             {
                 long index = OCHSTable::riverIndices[Global::indexer_2_5.IndexLast(cards)];
-                cardString += "R" + index;
+                cardString += "R" + to_string(index);
             }
             infosetString = historyString + cardString;
             infosetStringGenerated = true;
