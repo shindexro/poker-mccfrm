@@ -185,11 +185,7 @@ void HandIndexer::CreatePublicFlopHands()
     cout << "Creating canonical samples of the 1755 public flop hand combinations..." << endl;
 
     vector<bool> publicFlopHandsFound(roundSize[0]);
-    publicFlopHands = vector<vector<int>>(roundSize[0], vector<int>());
-    for (int i = 0; i < roundSize[0]; i++)
-    {
-        publicFlopHands[i] = vector<int>(cardsPerRound[0]);
-    }
+    publicFlopHands = vector<vector<int>>(roundSize[0], vector<int>(cardsPerRound[0]));
 
     for (int card1 = 0; card1 < Global::CARDS; card1++)
     {
