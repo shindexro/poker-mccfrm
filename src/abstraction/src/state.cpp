@@ -11,7 +11,7 @@ namespace poker
                      isPlayerIn(Global::nofPlayers),
                      rewards(Global::nofPlayers),
                      children(),
-                     playerToMove{2},
+                     playerToMove{2 % Global::nofPlayers},
                      bettingRound{0},
                      playersInHand{0},
                      lastPlayer{1},
@@ -34,7 +34,7 @@ namespace poker
                                                                                   isPlayerIn(isPlayerIn),
                                                                                   rewards(Global::nofPlayers),
                                                                                   children(),
-                                                                                  playerToMove{2},
+                                                                                  playerToMove{2 % Global::nofPlayers},
                                                                                   bettingRound{bettingRound},
                                                                                   playersInHand{playersInHand},
                                                                                   lastPlayer{1},
@@ -243,7 +243,8 @@ namespace poker
             Global::deck.Shuffle();
             for (int i = 0; i < Global::nofPlayers; ++i)
             {
-                playerCardsNew.push_back({Global::deck.Peek(i), Global::deck.Peek(i + 1)});
+                // cout << "adding player cards in chancestate: " << Global::deck.Peek(i * 2) << " " << Global::deck.Peek(i * 2 + 1) << endl;
+                playerCardsNew.push_back({Global::deck.Peek(i * 2), Global::deck.Peek(i * 2 + 1)});
             }
             break;
         case 1: // deal flop
@@ -385,12 +386,12 @@ namespace poker
 
                 // valid raise, if stack is equal it would be an all in
                 // TODO: dont hardcode this
-                // if (i == 0)
-                //     newHistory.push_back(Action::RAISE1);
-                // if (i == 1)
-                //     newHistory.push_back(Action::RAISE2);
-                // if (i == 2)
-                //     newHistory.push_back(Action::RAISE3);
+                if (i == 0)
+                    newHistory.push_back(Action::RAISE1);
+                if (i == 1)
+                    newHistory.push_back(Action::RAISE2);
+                if (i == 2)
+                    newHistory.push_back(Action::RAISE3);
                 // if (i == 3)
                 //     newHistory.push_back(Action::RAISE4);
                 // if (i == 4)
