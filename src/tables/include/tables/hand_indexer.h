@@ -73,6 +73,8 @@ private:
     vector<vector<long>> configurationToOffset;
     vector<vector<int>> publicFlopHands;
 
+    static void CacheNCRCalculation();
+
     void Swap(vector<int> &suitIndex, int u, int v);
 
     void EnumerateConfigurations(bool tabulate);

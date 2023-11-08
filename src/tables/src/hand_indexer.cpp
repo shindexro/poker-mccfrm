@@ -41,29 +41,7 @@ void HandIndexer::Initialise()
         }
     }
 
-    nCrRanks[0][0] = 1;
-    for (int i = 1; i < Global::RANKS + 1; ++i)
-    {
-        nCrRanks[i][0] = nCrRanks[i][i] = 1;
-        for (int j = 1; j < i; ++j)
-        {
-            nCrRanks[i][j] = nCrRanks[i - 1][j - 1] + nCrRanks[i - 1][j];
-        }
-    }
-
-    nCrGroups[0][0] = 1;
-    for (int i = 1; i < MAX_GROUP_INDEX; ++i)
-    {
-        nCrGroups[i][0] = 1;
-        if (i < Global::SUITS + 1)
-        {
-            nCrGroups[i][i] = 1;
-        }
-        for (int j = 1; j < (i < (Global::SUITS + 1) ? i : (Global::SUITS + 1)); ++j)
-        {
-            nCrGroups[i][j] = nCrGroups[i - 1][j - 1] + nCrGroups[i - 1][j];
-        }
-    }
+    CacheNCRCalculation();
 
     for (int i = 0; i < 1 << Global::RANKS; i++)
     {
@@ -90,6 +68,33 @@ void HandIndexer::Initialise()
             int shiftedSuit = nthUnset[used][suit];
             suitPermutations[i][j] = shiftedSuit;
             used |= 1 << shiftedSuit;
+        }
+    }
+}
+
+void HandIndexer::CacheNCRCalculation()
+{
+    nCrRanks[0][0] = 1;
+    for (int i = 1; i < Global::RANKS + 1; ++i)
+    {
+        nCrRanks[i][0] = nCrRanks[i][i] = 1;
+        for (int j = 1; j < i; ++j)
+        {
+            nCrRanks[i][j] = nCrRanks[i - 1][j - 1] + nCrRanks[i - 1][j];
+        }
+    }
+
+    nCrGroups[0][0] = 1;
+    for (int i = 1; i < MAX_GROUP_INDEX; ++i)
+    {
+        nCrGroups[i][0] = 1;
+        if (i < Global::SUITS + 1)
+        {
+            nCrGroups[i][i] = 1;
+        }
+        for (int j = 1; j < (i < (Global::SUITS + 1) ? i : (Global::SUITS + 1)); ++j)
+        {
+            nCrGroups[i][j] = nCrGroups[i - 1][j - 1] + nCrGroups[i - 1][j];
         }
     }
 }
