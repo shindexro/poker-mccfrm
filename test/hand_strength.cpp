@@ -19,12 +19,16 @@ TEST(HandStrengthTest, HandStrengthComparison)
     vector<string> threeOfAKindAceKicker{"7s", "7h", "7d", "2s", "Ac"};
     vector<string> threeOfAKind4Kicker{"7s", "7h", "7c", "3s", "4c"};
     vector<string> twoPair{"7s", "7h", "3c", "3s", "4c"};
-    vector<string> pair{"7s", "7h", "2c", "3s", "4c"};
-    vector<string> highCard{"7s", "2h", "Kc", "3s", "4c"};
+    vector<string> pairSeven{"7s", "7h", "2c", "3s", "4c"};
+    vector<string> pairQueen{"7s", "5h", "2c", "Qs", "Qc"};
+    vector<string> highCardKingHigh{"7s", "2h", "Kc", "3s", "4c"};
+    vector<string> highCardNineHigh{"8s", "5h", "9c", "3s", "2c"};
 
     vector<Hand> hands{
-        Hand(highCard),
-        Hand(pair),
+        Hand(highCardNineHigh),
+        Hand(highCardKingHigh),
+        Hand(pairSeven),
+        Hand(pairQueen),
         Hand(twoPair),
         Hand(threeOfAKind4Kicker),
         Hand(threeOfAKindAceKicker),
