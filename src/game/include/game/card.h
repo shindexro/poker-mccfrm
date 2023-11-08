@@ -23,6 +23,8 @@ public:
     Card(const char *s);
     Card(const string &s);
     Card(int index);
+    Card(ulong bitmap);
+
     bool Equals(const Card &other) const;
     int PrimeRank() const;
     int PrimeSuit() const;

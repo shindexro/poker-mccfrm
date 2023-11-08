@@ -141,6 +141,10 @@ Card::Card(int index)
     }
 }
 
+Card::Card(ulong bitmap) : Card((int)log2(bitmap))
+{
+}
+
 bool Card::Equals(const Card &other) const
 {
     return rank == other.rank && suit == other.suit;
@@ -178,6 +182,7 @@ ulong Card::Bitmask()
 
 int Card::GetIndexFromBitmask(ulong bitmask)
 {
+    // cout << "GetIndexFromBitmask " << bitmask << endl;
     return (int)log2(bitmask);
 }
 
