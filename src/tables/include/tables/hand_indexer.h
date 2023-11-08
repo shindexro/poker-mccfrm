@@ -37,7 +37,6 @@ public:
     void Construct(vector<int> &cardsPerRound);
     static void Initialise();
 
-    void CreatePublicFlopHands();
     long IndexAll(vector<int> &cards, vector<long> &indices);
     long IndexLast(vector<int> &cards);
     long IndexNextRound(HandIndexerState &state, vector<int> &cards);
@@ -77,6 +76,7 @@ private:
 
     void Swap(vector<int> &suitIndex, int u, int v);
 
+    void CreatePublicFlopHands();
     void EnumerateConfigurations(bool tabulate);
     void EnumerateConfigurationsR(int round, int remaining, int suit, int equal, vector<int> &used, vector<int> &configuration, bool tabulate);
     void TabulateConfigurations(int round, vector<int> &configuration);
