@@ -55,14 +55,6 @@ private:
     static vector<vector<int>> suitPermutations;
     static vector<vector<long>> nCrGroups;
 
-    // static vector<vector<int>> nthUnset;
-    // static vector<vector<bool>> equal;
-    // static vector<vector<int>> nCrRanks;
-    // static vector<int> rankSetToIndex;
-    // static vector<vector<int>> indexToRankSet;
-    // static vector<vector<int>> suitPermutations;
-    // static vector<vector<long>> nCrGroups;
-
     vector<int> roundStart;
     vector<vector<int>> permutationToConfiguration;
     vector<vector<int>> permutationToPi;
