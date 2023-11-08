@@ -18,14 +18,12 @@ int Deck::NumRemainingCards()
 
 void Deck::Shuffle()
 {
-    std::random_device rd;
-    std::mt19937 g(rd());
-    shuffle(cards.begin() + position, cards.end(), g);
+    random_shuffle(cards.begin() + position, cards.end());
 }
 
 ulong Deck::Draw(int count)
 {
-    ulong hand = 0;
+    ulong hand = 0ul;
     for (int i = 0; i < count; i++)
     {
         while (position < cards.size() && (cards[position] & removedCards))
@@ -47,6 +45,7 @@ ulong Deck::Draw(int count)
 /* WARN: this doesn't take into account removedCards
     but removedCards appears to be legacy.
 */
-ulong Deck::Peek(int idx) {
+ulong Deck::Peek(int idx)
+{
     return cards[idx];
 }

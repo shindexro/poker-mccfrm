@@ -23,7 +23,7 @@ TEST(DeckTest, NewDeckWithRemovedCardsInitialSize)
 TEST(DeckTest, RemovedCardsNotInDeck)
 {
     int totalCards = Global::CARDS;
-    ulong allCardsBitmap = (1 << totalCards) - 1;
+    ulong allCardsBitmap = (1ul << totalCards) - 1;
     ulong removedCards = 0b01001;
     ulong remainingCards = allCardsBitmap & ~removedCards;
     Deck deck = Deck(removedCards);
@@ -65,7 +65,7 @@ TEST(DeckTest, AllCardsStillInDeckAfterShuffle)
 {
     Deck deck = Deck();
     int totalCards = Global::CARDS;
-    ulong allCardsBitmap = (1 << totalCards) - 1;
+    ulong allCardsBitmap = (1ul << totalCards) - 1;
     deck.Shuffle();
 
     EXPECT_EQ(deck.Draw(totalCards), allCardsBitmap);
@@ -77,9 +77,10 @@ TEST(DeckTest, DrawDeckMatchCardCount)
     int totalCards = Global::CARDS;
     deck.Shuffle();
 
-    EXPECT_EQ(__builtin_popcount(deck.Draw(1)), 1);
-    EXPECT_EQ(__builtin_popcount(deck.Draw(3)), 3);
-    EXPECT_EQ(__builtin_popcount(deck.Draw(6)), 6);
+    EXPECT_EQ(__builtin_popcountll(deck.Draw(1)), 1);
+    EXPECT_EQ(__builtin_popcountll(deck.Draw(3)), 3);
+    EXPECT_EQ(__builtin_popcountll(deck.Draw(6)), 6);
+
 }
 
 TEST(DeckTest, PeekCards)
