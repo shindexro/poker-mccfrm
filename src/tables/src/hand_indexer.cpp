@@ -239,8 +239,23 @@ long HandIndexer::IndexAllRounds(vector<int> &cards, vector<long> &indices)
  */
 long HandIndexer::IndexLastRound(vector<int> &cards)
 {
+    // cout << "Indexing last round with cards: ";
+    // for (auto card : cards)
+    //     cout << card << " ";
+    // cout << endl;
+
+    for (auto card : cards)
+        if (card < 0)
+            throw invalid_argument("card value cannot be negative.");
+
     vector<long> indices(rounds);
-    return IndexAllRounds(cards, indices);
+    long res = IndexAllRounds(cards, indices);
+    // cout << "return value: " << res << endl;
+    // cout << "result indices: ";
+    // for (auto i : indices)
+    //     cout << i << " ";
+    // cout << endl;
+    return res;
 }
 
 /**
@@ -365,6 +380,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
  */
 bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
 {
+    cout << "Unindexing round " << round << " index " << index << endl;
     if (round >= rounds || index >= roundSize[round])
         return false;
 
@@ -458,6 +474,10 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
             used |= rankSet;
         }
     }
+    cout << "unindex canonical card output: ";
+    for (auto card : cards)
+        cout << card << " ";
+    cout << endl;
     return true;
 }
 
