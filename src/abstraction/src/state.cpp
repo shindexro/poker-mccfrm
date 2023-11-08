@@ -235,7 +235,7 @@ namespace poker
 
         // todo: wouldnt need to always copy
         auto playerCardsNew = vector<tuple<ulong, ulong>>(playerCards); // original c# list capacity is playerCards
-        auto tableCardsNew = vector<ulong>(tableCards);                // original c# list capacity is tableCards
+        auto tableCardsNew = vector<ulong>(tableCards);                 // original c# list capacity is tableCards
 
         switch (bettingRound)
         {
@@ -243,22 +243,19 @@ namespace poker
             Global::deck.Shuffle();
             for (int i = 0; i < Global::nofPlayers; ++i)
             {
-                playerCardsNew.push_back({Global::deck.Draw(1), Global::deck.Draw(1)});
+                playerCardsNew.push_back({Global::deck.Peek(i), Global::deck.Peek(i + 1)});
             }
             break;
         case 1: // deal flop
-            // Global::deck.Shuffle(Global::nofPlayers * 2); // not necessarily needed, check
-            tableCardsNew.push_back(Global::deck.Draw(1));
-            tableCardsNew.push_back(Global::deck.Draw(1));
-            tableCardsNew.push_back(Global::deck.Draw(1));
+            tableCardsNew.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 0));
+            tableCardsNew.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 1));
+            tableCardsNew.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 2));
             break;
         case 2: // deal turn
-            // Global::deck.Shuffle(Global::nofPlayers * 2 + 3);
-            tableCardsNew.push_back(Global::deck.Draw(1));
+            tableCardsNew.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 3));
             break;
         case 3: // deal river
-            // Global::deck.Shuffle(Global::nofPlayers * 2 + 4);
-            tableCardsNew.push_back(Global::deck.Draw(1));
+            tableCardsNew.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 4));
             break;
         }
         if (GetNumberOfPlayersThatNeedToAct() >= 2 && bettingRound < 4)
