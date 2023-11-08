@@ -158,7 +158,7 @@ void OCHSTable::ClusterPreflopHands()
     {
         auto toIndex = vector<int>({startingHands[i].cards[0].Index(),
                                     startingHands[i].cards[1].Index()});
-        long index = Global::indexer_2.IndexLast(toIndex);
+        long index = Global::indexer_2.IndexLastRound(toIndex);
 
         cout << preflopIndices[index] << "  ";
 
@@ -267,7 +267,7 @@ void OCHSTable::GenerateRiverHistograms()
                                               int valueOpponentSevenCards = Global::handEvaluator.Evaluate(handOpponentSevenCards);
 
                                               auto preflop = std::vector<int>({card1Opponent, card2Opponent});
-                                              long indexPreflop = Global::indexer_2.IndexLast(preflop);
+                                              long indexPreflop = Global::indexer_2.IndexLastRound(preflop);
                                               histogramsRiver[i][preflopIndices[indexPreflop]] += valueSevenCards > valueOpponentSevenCards ? 1 : (valueSevenCards == valueOpponentSevenCards) ? 0.5f
                                                                                                                                                                                                : 0.0f;
                                           }

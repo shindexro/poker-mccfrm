@@ -702,22 +702,22 @@ namespace poker
             string cardString = "";
             if (tableCards.size() == 0)
             {
-                long index = Global::indexer_2.IndexLast(cards);
+                long index = Global::indexer_2.IndexLastRound(cards);
                 cardString += "P" + to_string(index);
             }
             else if (tableCards.size() == 3)
             {
-                long index = EMDTable::flopIndices[Global::indexer_2_3.IndexLast(cards)];
+                long index = EMDTable::flopIndices[Global::indexer_2_3.IndexLastRound(cards)];
                 cardString += "F" + to_string(index);
             }
             else if (tableCards.size() == 4)
             {
-                long index = EMDTable::turnIndices[Global::indexer_2_4.IndexLast(cards)];
+                long index = EMDTable::turnIndices[Global::indexer_2_4.IndexLastRound(cards)];
                 cardString += "T" + to_string(index);
             }
             else
             {
-                long index = OCHSTable::riverIndices[Global::indexer_2_5.IndexLast(cards)];
+                long index = OCHSTable::riverIndices[Global::indexer_2_5.IndexLastRound(cards)];
                 cardString += "R" + to_string(index);
             }
             infosetString = historyString + cardString;
@@ -763,22 +763,22 @@ namespace poker
             string cardString = "";
             if (tableCards.size() == 0)
             {
-                long index = Global::indexer_2.IndexLast(cards);
+                long index = Global::indexer_2.IndexLastRound(cards);
                 cardString += "Preflop" + to_string(index);
             }
             else if (tableCards.size() == 3)
             {
-                long index = EMDTable::flopIndices[Global::indexer_2_3.IndexLast(cards)];
+                long index = EMDTable::flopIndices[Global::indexer_2_3.IndexLastRound(cards)];
                 cardString += "Flop" + to_string(index);
             }
             else if (tableCards.size() == 4)
             {
-                long index = EMDTable::turnIndices[Global::indexer_2_4.IndexLast(cards)];
+                long index = EMDTable::turnIndices[Global::indexer_2_4.IndexLastRound(cards)];
                 cardString += "Turn" + to_string(index);
             }
             else
             {
-                long index = OCHSTable::riverIndices[Global::indexer_2_5.IndexLast(cards)];
+                long index = OCHSTable::riverIndices[Global::indexer_2_5.IndexLastRound(cards)];
                 cardString += "River" + to_string(index);
             }
             infosetString = historyString + cardString;

@@ -37,8 +37,8 @@ public:
     void Construct(vector<int> &cardsPerRound);
     static void Initialise();
 
-    long IndexAll(vector<int> &cards, vector<long> &indices);
-    long IndexLast(vector<int> &cards);
+    long IndexAllRounds(vector<int> &cards, vector<long> &indices);
+    long IndexLastRound(vector<int> &cards);
     long IndexNextRound(HandIndexerState &state, vector<int> &cards);
     bool Unindex(int round, long index, vector<int> &cards);
 

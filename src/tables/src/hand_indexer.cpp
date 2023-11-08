@@ -196,7 +196,7 @@ void HandIndexer::CreatePublicFlopHands()
                 if (card1 != card2 && card2 != card3 && card1 != card3)
                 {
                     vector<int> flop = vector<int>({card1, card2, card3});
-                    long index = IndexLast(flop);
+                    long index = IndexLastRound(flop);
 
                     if (!publicFlopHandsFound[index])
                     {
@@ -216,7 +216,7 @@ void HandIndexer::CreatePublicFlopHands()
  * @param indices an array where the indices for every round will be saved to
  * @return hands index on the last round
  */
-long HandIndexer::IndexAll(vector<int> &cards, vector<long> &indices)
+long HandIndexer::IndexAllRounds(vector<int> &cards, vector<long> &indices)
 {
     if (rounds <= 0)
     {
@@ -237,10 +237,10 @@ long HandIndexer::IndexAll(vector<int> &cards, vector<long> &indices)
  * @param cards
  * @return hand's index on the last round
  */
-long HandIndexer::IndexLast(vector<int> &cards)
+long HandIndexer::IndexLastRound(vector<int> &cards)
 {
     vector<long> indices(rounds);
-    return IndexAll(cards, indices);
+    return IndexAllRounds(cards, indices);
 }
 
 /**
