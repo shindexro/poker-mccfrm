@@ -436,16 +436,16 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
 
     vector<int> location(roundStart);
 
-    for (int i = 0; i < Global::SUITS; ++i)
+    for (int suit = 0; suit < Global::SUITS; ++suit)
     {
         int used = 0, m = 0;
-        for (int j = 0; j < rounds; ++j)
+        for (int r = 0; r < rounds; ++r)
         {
-            int n = configuration[round][configurationIdx][i] >> (ROUND_SHIFT * (rounds - j - 1)) & ROUND_MASK;
+            int n = configuration[round][configurationIdx][suit] >> (ROUND_SHIFT * (rounds - r - 1)) & ROUND_MASK;
             int roundSize = nCrRanks[Global::RANKS - m][n];
             m += n;
-            int roundIdx = (int)((ulong)suitIndex[i] % (ulong)roundSize);
-            suitIndex[i] = (long)((ulong)suitIndex[i] / (ulong)roundSize);
+            int roundIdx = (int)((ulong)suitIndex[suit] % (ulong)roundSize);
+            suitIndex[suit] = (long)((ulong)suitIndex[suit] / (ulong)roundSize);
             int shiftedCards = indexToRankSet[n][roundIdx], rankSet = 0;
             for (int k = 0; k < n; ++k)
             {
@@ -453,7 +453,7 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
                 shiftedCards ^= shiftedCard;
                 int card = nthUnset[used][__builtin_ctz(shiftedCard)];
                 rankSet |= (1 << card);
-                cards[location[j]++] = card << 2 | i;
+                cards[location[r]++] = card << 2 | suit;
             }
             used |= rankSet;
         }
