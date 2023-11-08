@@ -68,3 +68,14 @@ TEST(DeckTest, AllCardsStillInDeckAfterShuffle)
 
     EXPECT_EQ(deck.Draw(totalCards), allCardsBitmap);
 }
+
+TEST(DeckTest, DrawDeckMatchCardCount)
+{
+    Deck deck = Deck();
+    int totalCards = Global::CARDS;
+    deck.Shuffle();
+
+    EXPECT_EQ(__builtin_popcount(deck.Draw(1)), 1);
+    EXPECT_EQ(__builtin_popcount(deck.Draw(3)), 3);
+    EXPECT_EQ(__builtin_popcount(deck.Draw(6)), 6);
+}
