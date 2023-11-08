@@ -3,6 +3,8 @@
 
 #include "game/deck.h"
 
+using namespace testing;
+
 TEST(DeckTest, NewDeckInitialSize)
 {
     Deck deck = Deck();
@@ -78,4 +80,14 @@ TEST(DeckTest, DrawDeckMatchCardCount)
     EXPECT_EQ(__builtin_popcount(deck.Draw(1)), 1);
     EXPECT_EQ(__builtin_popcount(deck.Draw(3)), 3);
     EXPECT_EQ(__builtin_popcount(deck.Draw(6)), 6);
+}
+
+TEST(DeckTest, PeekCards)
+{
+    Deck deck = Deck();
+
+    // deck is not shuffled
+    EXPECT_EQ(deck.Peek(0), 0b1);
+    EXPECT_EQ(deck.Peek(1), 0b10);
+    EXPECT_EQ(deck.Peek(7), 1<<7);
 }

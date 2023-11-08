@@ -3,6 +3,7 @@
 
 #include "utils/random.h"
 #include "abstraction/global.h"
+#include "enums/betting_round.h"
 
 #include <string>
 
@@ -15,6 +16,7 @@ public:
     Deck(ulong removedCards = 0);
     void Shuffle();
     ulong Draw(int count);
+    ulong Peek(int idx);
 
 private:
     vector<ulong> cards;

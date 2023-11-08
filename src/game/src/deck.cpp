@@ -43,3 +43,10 @@ ulong Deck::Draw(int count)
     }
     return hand;
 }
+
+/* WARN: this doesn't take into account removedCards
+    but removedCards appears to be legacy.
+*/
+ulong Deck::Peek(int idx) {
+    return cards[idx];
+}
