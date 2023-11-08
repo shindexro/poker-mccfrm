@@ -8,6 +8,7 @@ add_executable(
   hand.cpp
   hand_strength.cpp
   deck.cpp
+  hand_indexer.cpp
 )
 
 target_link_libraries(
@@ -16,7 +17,8 @@ target_link_libraries(
   GTest::gmock_main
   sub::game
   sub::abstraction
+  sub::tables
 )
 
 include(GoogleTest)
-gtest_discover_tests(test)
+gtest_discover_tests(test PROPERTIES DISCOVERY_TIMEOUT 60)
