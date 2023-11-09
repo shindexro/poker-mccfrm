@@ -380,7 +380,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
  */
 bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
 {
-    cout << "Unindexing round " << round << " index " << index << endl;
+    // cout << "Unindexing round " << round << " index " << index << endl;
     if (round >= rounds || index >= roundSize[round])
         return false;
 
@@ -474,7 +474,7 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
             used |= rankSet;
         }
     }
-    cout << "unindex canonical card output: ";
+    // cout << "unindex canonical card output: ";
     for (auto card : cards)
         cout << card << " ";
     cout << endl;
