@@ -275,19 +275,14 @@ vector<vector<float>> Kmeans::CalculateNewCenters(vector<vector<float>> &data, v
 
 void Kmeans::CalculateClusterDistancesL2(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters)
 {
-    oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
-                              [&](int i)
-                              {
-                                  auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices(clusterCenters.size(), Global::NOF_THREADS, i);
-
-                                  for (int j = startItemIdx; j < endItemIdx; ++j)
-                                  {
-                                      for (int m = 0; m < j; ++m)
-                                      {
-                                          distances[j][m] = (float)sqrt(GetL2DistanceSquared(clusterCenters, clusterCenters, j, m));
-                                      }
-                                  }
-                              });
+    utils::parallelise(clusterCenters.size(),
+                       [&](int threadIdx, int itemIdx)
+                       {
+                           for (int m = 0; m < itemIdx; ++m)
+                           {
+                               distances[itemIdx][m] = (float)sqrt(GetL2DistanceSquared(clusterCenters, clusterCenters, itemIdx, m));
+                           }
+                       });
     for (int j = 0; j < clusterCenters.size(); ++j)
     {
         for (int m = 0; m < j; ++m)
@@ -299,19 +294,14 @@ void Kmeans::CalculateClusterDistancesL2(vector<vector<float>> &distances, vecto
 
 void Kmeans::CalculateClusterDistancesEMD(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters)
 {
-    oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
-                              [&](int i)
-                              {
-                                  auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices(clusterCenters.size(), Global::NOF_THREADS, i);
-
-                                  for (int j = startItemIdx; j < endItemIdx; ++j)
-                                  {
-                                      for (int m = 0; m < j; ++m)
-                                      {
-                                          distances[j][m] = GetEarthMoverDistance(clusterCenters, clusterCenters, j, m);
-                                      }
-                                  }
-                              });
+    utils::parallelise(clusterCenters.size(),
+                       [&](int threadIdx, int itemIdx)
+                       {
+                           for (int m = 0; m < itemIdx; ++m)
+                           {
+                               distances[itemIdx][m] = GetEarthMoverDistance(clusterCenters, clusterCenters, itemIdx, m);
+                           }
+                       });
     for (int j = 0; j < clusterCenters.size(); ++j)
     {
         for (int m = 0; m < j; ++m)
@@ -376,23 +366,17 @@ vector<vector<float>> Kmeans::FindStartingCentersL2(vector<vector<float>> &data,
         }
         else
         {
-            oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
-                                      [&](int i)
-                                      {
-                                          auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices(dataTemp.size(), Global::NOF_THREADS, i);
-
-                                          for (int j = startItemIdx; j < endItemIdx; ++j)
-                                          {                               // go through all dataTemp
-                                              for (int m = 0; m < c; ++m) // go through centers
-                                              {
-                                                  double tempDistance = GetL2DistanceSquared(dataTemp, centers, j, m);
-                                                  if (tempDistance < distancesToBestCenter[j])
+            utils::parallelise(dataTemp.size(),
+                               [&](int threadIdx, int itemIdx)
+                               {
+                                    for (int m = 0; m < c; ++m) // go through centers
+                                    {
+                                        double tempDistance = GetL2DistanceSquared(dataTemp, centers, itemIdx, m);
+                                                  if (tempDistance < distancesToBestCenter[itemIdx])
                                                   {
-                                                      distancesToBestCenter[j] = tempDistance;
+                                                      distancesToBestCenter[itemIdx] = tempDistance;
                                                   }
-                                              }
-                                          }
-                                      });
+                                } });
             double sum = accumulate(distancesToBestCenter.begin(), distancesToBestCenter.end(), 0.0);
             for (int p = 0; p < distancesToBestCenter.size(); ++p)
             {
