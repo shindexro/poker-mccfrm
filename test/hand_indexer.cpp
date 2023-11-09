@@ -27,6 +27,7 @@ protected:
 
 bool HandIndexerTest::handIndexerInitialised = false;
 
+// TODO: try fuzz test for isomorphic hands
 TEST_F(HandIndexerTest, IsomorphicHandsHaveSameIndex)
 {
     vector<int> cards1{1, 2};
