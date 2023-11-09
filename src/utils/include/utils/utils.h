@@ -65,7 +65,7 @@ namespace utils
             option::MaxProgress{maxCount}};
 
         atomic<long> iterations = 0;
-        const long barUpdateInterval = max(1L, maxCount / 10000 / Global::NOF_THREADS);
+        const long barUpdateInterval = max(1L, maxCount / 100);
         oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
                                   [&](int threadIdx)
                                   {
