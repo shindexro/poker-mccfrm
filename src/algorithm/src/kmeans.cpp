@@ -373,10 +373,10 @@ vector<vector<float>> Kmeans::FindStartingCentersL2(vector<vector<float>> &data,
                                     for (int m = 0; m < c; ++m) // go through centers
                                     {
                                         double tempDistance = GetL2DistanceSquared(dataTemp, centers, itemIdx, m);
-                                                  if (tempDistance < distancesToBestCenter[itemIdx])
-                                                  {
-                                                      distancesToBestCenter[itemIdx] = tempDistance;
-                                                  }
+                                        if (tempDistance < distancesToBestCenter[itemIdx])
+                                        {
+                                            distancesToBestCenter[itemIdx] = tempDistance;
+                                        }
                                 } });
             double sum = accumulate(distancesToBestCenter.begin(), distancesToBestCenter.end(), 0.0);
             for (int p = 0; p < distancesToBestCenter.size(); ++p)
