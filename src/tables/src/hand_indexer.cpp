@@ -37,7 +37,7 @@ void HandIndexer::Initialise()
     {
         for (int j = 0, set = ~i & (1 << Global::RANKS) - 1; j < Global::RANKS; ++j, set &= set - 1)
         {
-            nthUnset[i][j] = set == 0 ? 0xff : __builtin_ctz(set);
+            nthUnset[i][j] = set == 0 ? 0xff : __builtin_ctzll(set);
         }
     }
 
@@ -47,7 +47,7 @@ void HandIndexer::Initialise()
     {
         for (int set = i, j = 1; set != 0; ++j, set &= set - 1)
         {
-            rankSetToIndex[i] += nCrRanks[__builtin_ctz(set)][j];
+            rankSetToIndex[i] += nCrRanks[__builtin_ctzll(set)][j];
         }
         indexToRankSet[__builtin_popcountll((unsigned int)i)][rankSetToIndex[i]] = i;
     }
@@ -467,7 +467,7 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
             {
                 int shiftedCard = shiftedCards & -shiftedCards;
                 shiftedCards ^= shiftedCard;
-                int card = nthUnset[used][__builtin_ctz(shiftedCard)];
+                int card = nthUnset[used][__builtin_ctzll(shiftedCard)];
                 rankSet |= (1 << card);
                 cards[location[r]++] = card << 2 | suit;
             }
