@@ -354,6 +354,7 @@ vector<vector<float>> Kmeans::FindStartingCentersL2(vector<vector<float>> &data,
 
     for (int c = 0; c < k; ++c) // get a new cluster center one by one
     {
+        cout << "Finding center for " << c << "-th cluster" << endl;
         auto distancesToBestCenter = vector<double>(dataTemp.size(), DBL_MAX);
 
         if (c == 0)
