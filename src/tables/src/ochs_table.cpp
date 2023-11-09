@@ -54,12 +54,12 @@ void OCHSTable::CalculateOCHSOpponentClusters()
 
     histogramsPreflop = vector<vector<float>>(Global::RANKS * Global::RANKS, vector<float>((Global::preflopHistogramSize)));
 
-    for (int i = 0; i < Global::RANKS * Global::RANKS; i++)
+    for (auto i = 0; i < Global::RANKS * Global::RANKS; i++)
     {
         auto cards = vector<int>(2);
         Global::indexer_2.Unindex(Global::indexer_2.rounds - 1, i, cards);
         long deadCardMask = (1L << cards[0]) + (1L << cards[1]);
-        for (int steps = 0; steps < Global::nofMCSimsPerPreflopHand; steps++)
+        for (auto steps = 0; steps < Global::nofMCSimsPerPreflopHand; steps++)
         {
             int cardFlop1 = randint(0, Global::CARDS);
             while (((1L << cardFlop1) & deadCardMask) != 0)
@@ -87,14 +87,14 @@ void OCHSTable::CalculateOCHSOpponentClusters()
             deadCardMask |= (1L << cardRiver);
 
             auto strength = vector<int>(3);
-            for (int card1Opponent = 0; card1Opponent < 51; card1Opponent++)
+            for (auto card1Opponent = 0; card1Opponent < 51; card1Opponent++)
             {
                 if (((1L << card1Opponent) & deadCardMask) != 0)
                 {
                     continue;
                 }
                 // deadCardMask |= (1L << card1Opponent); // card2Opponent is anyway > card1Opponent
-                for (int card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
+                for (auto card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
                 {
                     if (((1L << card2Opponent) & deadCardMask) != 0)
                     {
@@ -126,7 +126,7 @@ void OCHSTable::CalculateOCHSOpponentClusters()
 
     cout << "Calculated histograms: " << endl;
     auto cardsOutput = vector<int>(2);
-    for (int i = 0; i < Global::RANKS * Global::RANKS; ++i)
+    for (auto i = 0; i < Global::RANKS * Global::RANKS; ++i)
     {
         cardsOutput.clear();
         Global::indexer_2.Unindex(Global::indexer_2.rounds - 1, i, cardsOutput);
@@ -136,7 +136,7 @@ void OCHSTable::CalculateOCHSOpponentClusters()
         hand.cards.push_back(Card(cardsOutput[1]));
         hand.PrintColoredCards();
         cout << ": ";
-        for (int j = 0; j < Global::preflopHistogramSize; ++j)
+        for (auto j = 0UL; j < Global::preflopHistogramSize; ++j)
         {
             cout << histogramsPreflop[i][j] << " ";
         }
@@ -154,7 +154,7 @@ void OCHSTable::ClusterPreflopHands()
     cout << "Created the following cluster for starting hands: " << endl;
     vector<Hand> startingHands = utils::GetStartingHandChart();
 
-    for (int i = 0; i < Global::RANKS * Global::RANKS; ++i)
+    for (auto i = 0; i < Global::RANKS * Global::RANKS; ++i)
     {
         auto toIndex = vector<int>({startingHands[i].cards[0].Index(),
                                     startingHands[i].cards[1].Index()});
@@ -189,7 +189,7 @@ void OCHSTable::ClusterRiver()
     cout << "Created the following clusters for the River: " << endl;
 
     int nofExamplesToPrint = 10;
-    for (int i = 0; i < Global::indexer_2_5.roundSize[1]; ++i)
+    for (auto i = 0L; i < Global::indexer_2_5.roundSize[1]; ++i)
     {
         if (riverIndices[i] == 0 && nofExamplesToPrint > 0)
         {
@@ -240,19 +240,19 @@ void OCHSTable::GenerateRiverHistograms()
                               {
                                   long iter = 0;
                                   auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices((int)Global::indexer_2_5.roundSize[1], Global::NOF_THREADS, t);
-                                  for (int i = startItemIdx; i < endItemIdx; ++i)
+                                  for (auto i = startItemIdx; i < endItemIdx; ++i)
                                   {
                                       auto cards = std::vector<int>(7);
                                       Global::indexer_2_5.Unindex(Global::indexer_2_5.rounds - 1, i, cards);
                                       long deadCardMask = (1L << cards[0]) + (1L << cards[1]) + (1L << cards[2]) + (1L << cards[3]) + (1L << cards[4]) + (1L << cards[5]) + (1L << cards[6]);
 
-                                      for (int card1Opponent = 0; card1Opponent < 51; card1Opponent++)
+                                      for (auto card1Opponent = 0; card1Opponent < 51; card1Opponent++)
                                       {
                                           if (((1L << card1Opponent) & deadCardMask) != 0)
                                           {
                                               continue;
                                           }
-                                          for (int card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
+                                          for (auto card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
                                           {
                                               if (((1L << card2Opponent) & deadCardMask) != 0)
                                               {

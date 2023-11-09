@@ -111,7 +111,7 @@ void EMDTable::GenerateTurnHistograms()
                               [&](int t)
                               {
                                   auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices((int)Global::indexer_2_4.roundSize[1], Global::NOF_THREADS, t);
-                                  for (int i = startItemIdx; i < endItemIdx; ++i)
+                                  for (auto i = startItemIdx; i < endItemIdx; ++i)
                                   {
                                       auto cardsTurn = vector<int>(6);
                                       auto countTable = vector<vector<int>>(3, vector<int>(3));
@@ -123,7 +123,7 @@ void EMDTable::GenerateTurnHistograms()
                                       ulong handTurn = (1uL << cardsTurn[0]) + (1uL << cardsTurn[1]) + shared;
                                       int valueTurn = Global::handEvaluator.Evaluate(handTurn);
 
-                                      for (int cardRiver = 0; cardRiver < Global::CARDS; cardRiver++)
+                                      for (auto cardRiver = 0; cardRiver < Global::CARDS; cardRiver++)
                                       {
                                           countTable = vector<vector<int>>(3, vector<int>(3));
                                           if (((1L << cardRiver) & deadCardMask) != 0)
@@ -135,13 +135,13 @@ void EMDTable::GenerateTurnHistograms()
                                           ulong handRiver = (1uL << cardsTurn[0]) + (1uL << cardsTurn[1]) + shared + (1uL << cardRiver);
                                           int valueRiver = Global::handEvaluator.Evaluate(handRiver);
 
-                                          for (int card1Opponent = 0; card1Opponent < Global::CARDS - 1; card1Opponent++)
+                                          for (auto card1Opponent = 0; card1Opponent < Global::CARDS - 1; card1Opponent++)
                                           {
                                               if (((1L << card1Opponent) & deadCardMask) != 0)
                                               {
                                                   continue;
                                               }
-                                              for (int card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
+                                              for (auto card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
                                               {
                                                   if (((1L << card2Opponent) & deadCardMask) != 0)
                                                   {
@@ -218,7 +218,7 @@ void EMDTable::GenerateFlopHistograms()
                               [&](int t)
                               {
                                   auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices((int)Global::indexer_2_3.roundSize[1], Global::NOF_THREADS, t);
-                                  for (int i = startItemIdx; i < endItemIdx; ++i)
+                                  for (auto i = startItemIdx; i < endItemIdx; ++i)
                                   {
                                       auto cardsFlop = vector<int>(5);
                                       auto countTable = vector<vector<int>>(3, vector<int>(3));
@@ -230,14 +230,14 @@ void EMDTable::GenerateFlopHistograms()
                                                        (1uL << cardsFlop[3]) + (1uL << cardsFlop[4]);
                                       int valueFlop = Global::handEvaluator.Evaluate(handFlop);
 
-                                      for (int cardTurn = 0; cardTurn < Global::CARDS - 1; cardTurn++)
+                                      for (auto cardTurn = 0; cardTurn < Global::CARDS - 1; cardTurn++)
                                       {
                                           if (((1L << cardTurn) & deadCardMask) != 0)
                                           {
                                               continue;
                                           }
                                           deadCardMask |= (1L << cardTurn);
-                                          for (int cardRiver = cardTurn + 1; cardRiver < Global::CARDS; cardRiver++)
+                                          for (auto cardRiver = cardTurn + 1; cardRiver < Global::CARDS; cardRiver++)
                                           {
                                               countTable = vector<vector<int>>(3, vector<int>(3));
 
@@ -251,13 +251,13 @@ void EMDTable::GenerateFlopHistograms()
                                                                 (1uL << cardsFlop[4]) + (1uL << cardTurn) + (1uL << cardRiver);
                                               int valueRiver = Global::handEvaluator.Evaluate(handRiver);
 
-                                              for (int card1Opponent = 0; card1Opponent < Global::CARDS - 1; card1Opponent++)
+                                              for (auto card1Opponent = 0; card1Opponent < Global::CARDS - 1; card1Opponent++)
                                               {
                                                   if (((1L << card1Opponent) & deadCardMask) != 0)
                                                   {
                                                       continue;
                                                   }
-                                                  for (int card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
+                                                  for (auto card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
                                                   {
                                                       if (((1L << card2Opponent) & deadCardMask) != 0)
                                                       {
@@ -322,7 +322,7 @@ void EMDTable::ClusterTurn()
 
     std::cout << "Created the following clusters for the Turn (extract of one cluster): " << endl;
     int nofEntriesToDisplay = 20;
-    for (int i = 0; i < Global::indexer_2_4.roundSize[1] && nofEntriesToDisplay > 0; ++i)
+    for (auto i = 0L; i < Global::indexer_2_4.roundSize[1] && nofEntriesToDisplay > 0; ++i)
     {
         if (turnIndices[i] == 0)
         {
@@ -355,7 +355,7 @@ void EMDTable::ClusterFlop()
 
     cout << "Created the following clusters for the Flop (extract of one cluster): " << endl;
     int nofEntriesToDisplay = 20;
-    for (int i = 0; i < Global::indexer_2_3.roundSize[1] && nofEntriesToDisplay > 0; ++i)
+    for (auto i = 0L; i < Global::indexer_2_3.roundSize[1] && nofEntriesToDisplay > 0; ++i)
     {
         if (turnIndices[i] == 0)
         {

@@ -14,11 +14,11 @@ vector<float> Infoset::CalculateStrategy()
 {
     float sum = 0;
     auto moveProbs = vector<float>(regret.size());
-    for (int a = 0; a < regret.size(); ++a)
+    for (auto a = 0UL; a < regret.size(); ++a)
     {
         sum += max(0.0f, regret[a]);
     }
-    for (int a = 0; a < regret.size(); ++a)
+    for (auto a = 0UL; a < regret.size(); ++a)
     {
         if (sum > 0.00001)
         {
@@ -36,11 +36,11 @@ vector<float> Infoset::GetFinalStrategy()
 {
     float sum = 0;
     auto moveProbs = vector<float>(regret.size());
-    for (int a = 0; a < regret.size(); ++a)
+    for (auto a = 0UL; a < regret.size(); ++a)
     {
         sum += actionCounter[a];
     }
-    for (int a = 0; a < regret.size(); ++a)
+    for (auto a = 0UL; a < regret.size(); ++a)
     {
         if (sum > 0.00001)
         {

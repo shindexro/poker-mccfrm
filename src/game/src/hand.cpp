@@ -9,9 +9,9 @@ Hand::Hand(ulong bitmap)
     char ranks[] = "23456789TJQKA";
     char suits[] = "shdc";
 
-    for (int r = 0; r < 14; r++)
+    for (auto r = 0; r < 14; r++)
     {
-        for (int s = 0; s < 4; s++)
+        for (auto s = 0; s < 4; s++)
         {
             int shift = r * 4 + s;
             if (((1ul << shift) & bitmap) != 0)
@@ -173,7 +173,7 @@ HandStrength Hand::GetStrength()
 
 void Hand::PrintColoredCards(const string &end)
 {
-    for (int i = 0; i < cards.size(); i++)
+    for (auto i = 0UL; i < cards.size(); i++)
     {
         Card card = cards[i];
         cout << card.ToString();
@@ -203,7 +203,7 @@ bool Hand::operator==(const Hand &other) const
     sort(cardsCopy.begin(), cardsCopy.end());
     sort(otherCardsCopy.begin(), otherCardsCopy.end());
 
-    for (int i = 0; i < cards.size(); i++)
+    for (auto i = 0UL; i < cards.size(); i++)
     {
         if (cardsCopy[i] != otherCardsCopy[i])
             return false;

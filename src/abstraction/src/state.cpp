@@ -53,7 +53,7 @@ namespace poker
 
     int State::GetNextPlayer(int lastToMoveTemp)
     {
-        for (int i = (playerToMove + 1) % Global::nofPlayers; i != (lastToMoveTemp + 1) % Global::nofPlayers;
+        for (auto i = (playerToMove + 1) % Global::nofPlayers; i != (lastToMoveTemp + 1) % Global::nofPlayers;
              i = (i + 1) % Global::nofPlayers)
         {
             if (isPlayerIn[i] && lastActions[i] != Action::ALLIN)
@@ -67,7 +67,7 @@ namespace poker
     int State::GetLastPlayer(int playerThatRaised)
     {
         int last = -1;
-        for (int i = (playerThatRaised + 1) % Global::nofPlayers; i != (playerThatRaised) % Global::nofPlayers;
+        for (auto i = (playerThatRaised + 1) % Global::nofPlayers; i != (playerThatRaised) % Global::nofPlayers;
              i = (i + 1) % Global::nofPlayers)
         {
             if (isPlayerIn[i] && lastActions[i] != Action::ALLIN)
@@ -82,7 +82,7 @@ namespace poker
     {
         // does not include all-in players
         int count = 0;
-        for (int i = 0; i < Global::nofPlayers; i++)
+        for (auto i = 0; i < Global::nofPlayers; i++)
         {
             if (isPlayerIn[i] == true && lastActions[i] != Action::ALLIN)
                 count++;
@@ -125,7 +125,7 @@ namespace poker
 
     void TerminalState::CreateRewards()
     {
-        for (int i = 0; i < Global::nofPlayers; ++i)
+        for (auto i = 0; i < Global::nofPlayers; ++i)
         {
             rewards[i] -= bets[i]; // the bet amounts are considered lost
         }
@@ -133,7 +133,7 @@ namespace poker
 
         if (playersInHand == 1)
         {
-            for (int i = 0; i < Global::nofPlayers; ++i)
+            for (auto i = 0; i < Global::nofPlayers; ++i)
             {
                 if (isPlayerIn[i])
                 {
@@ -145,13 +145,13 @@ namespace poker
         {
             // at least 2 players are in
             auto handValues = vector<int>(Global::nofPlayers, -1);
-            for (int i = 0; i < Global::nofPlayers; ++i)
+            for (auto i = 0; i < Global::nofPlayers; ++i)
             {
                 if (!isPlayerIn[i])
                     continue;
 
                 ulong cardsBitmask = get<0>(playerCards[i]) + get<1>(playerCards[i]);
-                for (int k = 0; k < tableCards.size(); ++k)
+                for (auto k = 0UL; k < tableCards.size(); ++k)
                 {
                     cardsBitmask |= tableCards[k];
                 }
@@ -169,7 +169,7 @@ namespace poker
                 *maxIt = -1;
                 maxIt = find(handValues.begin(), handValues.end(), maxVal);
             }
-            for (int i = 0; i < indicesWithBestHands.size(); ++i)
+            for (auto i = 0UL; i < indicesWithBestHands.size(); ++i)
             {
                 rewards[indicesWithBestHands[i]] += accumulate(bets.begin(), bets.end(), 0) / indicesWithBestHands.size();
             }
@@ -179,7 +179,7 @@ namespace poker
 
     ChanceState::ChanceState()
     {
-        for (int i = 0; i < Global::nofPlayers; ++i)
+        for (auto i = 0; i < Global::nofPlayers; ++i)
         {
             isPlayerIn[i] = true;
             stacks[i] = Global::buyIn;
@@ -212,7 +212,7 @@ namespace poker
         int newBettingRound = bettingRound + 1;
         if (bettingRound == 0)
         {
-            for (int i = 2 % Global::nofPlayers;; i = (i + 1) % Global::nofPlayers)
+            for (auto i = 2 % Global::nofPlayers;; i = (i + 1) % Global::nofPlayers)
             {
                 if (isPlayerIn[i] && lastActions[i] != Action::ALLIN)
                 {
@@ -224,7 +224,7 @@ namespace poker
         }
         else if (bettingRound > 0)
         {
-            for (int i = 0; i < Global::nofPlayers; ++i)
+            for (auto i = 0; i < Global::nofPlayers; ++i)
             {
                 if (isPlayerIn[i] && stacks[i] != 0)
                 {
@@ -241,7 +241,7 @@ namespace poker
         {
         case 0: // preflop, deal player hands
             Global::deck.Shuffle();
-            for (int i = 0; i < Global::nofPlayers; ++i)
+            for (auto i = 0; i < Global::nofPlayers; ++i)
             {
                 // cout << "adding player cards in chancestate: " << Global::deck.Peek(i * 2) << " " << Global::deck.Peek(i * 2 + 1) << endl;
                 playerCardsNew.push_back({Global::deck.Peek(i * 2), Global::deck.Peek(i * 2 + 1)});
@@ -306,7 +306,7 @@ namespace poker
 
         if (bettingRound == 0)
         {
-            for (int i = 2 % Global::nofPlayers;; i = (i + 1) % Global::nofPlayers)
+            for (auto i = 2 % Global::nofPlayers;; i = (i + 1) % Global::nofPlayers)
             {
                 if (isPlayerIn[i] && lastActions[i] != Action::ALLIN)
                 {
@@ -318,7 +318,7 @@ namespace poker
         }
         else if (bettingRound > 0)
         {
-            for (int i = 0; i < Global::nofPlayers; ++i)
+            for (auto i = 0; i < Global::nofPlayers; ++i)
             {
                 if (isPlayerIn[i] && stacks[i] != 0)
                 {
@@ -329,7 +329,7 @@ namespace poker
 
         vector<Hand> startingHands = utils::GetStartingHandChart();
 
-        for (int i = 0; i < Global::RANKS * Global::RANKS; ++i)
+        for (auto i = 0; i < Global::RANKS * Global::RANKS; ++i)
         {
             auto playerCardsNew = vector<tuple<ulong, ulong>>();
             auto tableCardsNew = vector<ulong>();
@@ -369,7 +369,7 @@ namespace poker
         if (isBettingOpen)
         {
             // raises
-            for (int i = 0; i < Global::raises.size(); ++i)
+            for (auto i = 0UL; i < Global::raises.size(); ++i)
             {
                 auto newHistory = vector<Action>(history);
                 auto newStacks = vector<int>(stacks);
@@ -627,7 +627,7 @@ namespace poker
         if (isBettingOpen)
         {
             int raise;
-            for (int i = 0; i < Global::raises.size(); ++i)
+            for (auto i = 0UL; i < Global::raises.size(); ++i)
             {
                 raise = (int)(Global::raises[i] * pot);
                 int actualRaise = raise - (currentCall - bets[playerToMove]);
@@ -695,7 +695,7 @@ namespace poker
             auto cards = vector<int>{
                 Card::GetIndexFromBitmask(get<0>(playerCards[playerToMove])),
                 Card::GetIndexFromBitmask(get<1>(playerCards[playerToMove]))};
-            for (int i = 0; i < tableCards.size(); ++i)
+            for (auto i = 0UL; i < tableCards.size(); ++i)
             {
                 cards.push_back(Card::GetIndexFromBitmask(tableCards[i]));
             }
@@ -754,7 +754,7 @@ namespace poker
 
             auto cards = vector<int>({Card::GetIndexFromBitmask(get<0>(playerCards[playerToMove])),
                                       Card::GetIndexFromBitmask(get<1>(playerCards[playerToMove]))});
-            for (int i = 0; i < tableCards.size(); ++i)
+            for (auto i = 0UL; i < tableCards.size(); ++i)
             {
                 cards.push_back(Card::GetIndexFromBitmask(tableCards[i]));
             }

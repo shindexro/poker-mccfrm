@@ -102,7 +102,7 @@ private:
                                   {
                                       Trainer trainer = Trainer(index);
 
-                                      for (int t = 1;; t++) // bb rounds
+                                      for (auto t = 1;; t++) // bb rounds
                                       {
                                           if (t % 1000 == 0)
                                           {
@@ -117,14 +117,14 @@ private:
 
                                               cout << "Sample games (against self)" << endl;
                                               ;
-                                              for (int z = 0; z < 20; z++)
+                                              for (auto z = 0; z < 20; z++)
                                               {
                                                   trainer.PlayOneGame();
                                               }
 
                                               // cout << "Sample games (against baseline)");
                                               // float mainScore = 0.0f;
-                                              // for (int x = 0; x < 100; x++) // 100 games not statistically significant
+                                              // for (auto x = 0; x < 100; x++) // 100 games not statistically significant
                                               //{
                                               //     if (x < 20)
                                               //     {
@@ -139,7 +139,7 @@ private:
                                               auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
                                               cout << "Iterations per second: " << sharedLoopCounter / (elapsed + 1) << std::endl;
                                           }
-                                          for (int traverser = 0; traverser < Global::nofPlayers; traverser++) // traverser
+                                          for (auto traverser = 0; traverser < Global::nofPlayers; traverser++) // traverser
                                           {
                                               if (t % StrategyInterval == 0 && index == 0)
                                               {

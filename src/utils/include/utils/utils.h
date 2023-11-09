@@ -71,7 +71,7 @@ namespace utils
                                   {
                                       long threadIterations = 0;
                                       auto [startItemIdx, endItemIdx] = GetWorkItemsIndices(maxCount, Global::NOF_THREADS, threadIdx);
-                                      for (int i = startItemIdx; i < endItemIdx; i++)
+                                      for (auto i = startItemIdx; i < endItemIdx; i++)
                                       {
                                           if (threadIterations == barUpdateInterval)
                                           {

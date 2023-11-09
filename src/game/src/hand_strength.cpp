@@ -11,7 +11,7 @@ int HandStrength::Compare(const HandStrength &other) const
     else if (this->handRanking < other.handRanking)
         return -1;
 
-    for (auto i = 0; i < this->kickers.size(); i++)
+    for (auto i = 0UL; i < this->kickers.size(); i++)
     {
         if (this->kickers[i] > other.kickers[i])
             return 1;

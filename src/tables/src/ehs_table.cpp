@@ -38,7 +38,7 @@ void EHSTable::Generate5CardsTable()
     int cards[5] = {};
     long deadCardMask = 0;
 
-    for (int i = 0; i < NUM_ISOMORPHIC_FLOP; i++)
+    for (auto i = 0; i < NUM_ISOMORPHIC_FLOP; i++)
     {
         memset(tableFlop, 0, sizeof(tableFlop));
     }

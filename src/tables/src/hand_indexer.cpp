@@ -25,17 +25,17 @@ vector<vector<int>> HandIndexer::suitPermutations;
 
 void HandIndexer::Initialise()
 {
-    for (int i = 0; i < 1 << (Global::SUITS - 1); i++)
+    for (auto i = 0; i < 1 << (Global::SUITS - 1); i++)
     {
-        for (int j = 1; j < Global::SUITS; j++)
+        for (auto j = 1; j < Global::SUITS; j++)
         {
             equal[i][j] = (i & 1 << (j - 1)) != 0;
         }
     }
 
-    for (int i = 0; i < 1 << Global::RANKS; i++)
+    for (auto i = 0; i < 1 << Global::RANKS; i++)
     {
-        for (int j = 0, set = ~i & (1 << Global::RANKS) - 1; j < Global::RANKS; ++j, set &= set - 1)
+        for (auto j = 0, set = ~i & ((1 << Global::RANKS) - 1); j < Global::RANKS; ++j, set &= set - 1)
         {
             nthUnset[i][j] = set == 0 ? 0xff : __builtin_ctzll(set);
         }
@@ -43,9 +43,9 @@ void HandIndexer::Initialise()
 
     CacheNCRCalculation();
 
-    for (int i = 0; i < 1 << Global::RANKS; i++)
+    for (auto i = 0; i < 1 << Global::RANKS; i++)
     {
-        for (int set = i, j = 1; set != 0; ++j, set &= set - 1)
+        for (auto set = i, j = 1; set != 0; ++j, set &= set - 1)
         {
             rankSetToIndex[i] += nCrRanks[__builtin_ctzll(set)][j];
         }
@@ -53,15 +53,15 @@ void HandIndexer::Initialise()
     }
 
     int numPermutations = 1;
-    for (int i = 2; i <= Global::SUITS; ++i)
+    for (auto i = 2; i <= Global::SUITS; ++i)
     {
         numPermutations *= i;
     }
 
     suitPermutations = vector<vector<int>>(numPermutations, vector<int>(Global::SUITS));
-    for (int i = 0; i < numPermutations; ++i)
+    for (auto i = 0; i < numPermutations; ++i)
     {
-        for (int j = 0, index = i, used = 0; j < Global::SUITS; ++j)
+        for (auto j = 0, index = i, used = 0; j < Global::SUITS; ++j)
         {
             int suit = index % (Global::SUITS - j);
             index /= Global::SUITS - j;
@@ -75,24 +75,24 @@ void HandIndexer::Initialise()
 void HandIndexer::CacheNCRCalculation()
 {
     nCrRanks[0][0] = 1;
-    for (int i = 1; i < Global::RANKS + 1; ++i)
+    for (auto i = 1; i < Global::RANKS + 1; ++i)
     {
         nCrRanks[i][0] = nCrRanks[i][i] = 1;
-        for (int j = 1; j < i; ++j)
+        for (auto j = 1; j < i; ++j)
         {
             nCrRanks[i][j] = nCrRanks[i - 1][j - 1] + nCrRanks[i - 1][j];
         }
     }
 
     nCrGroups[0][0] = 1;
-    for (int i = 1; i < MAX_GROUP_INDEX; ++i)
+    for (auto i = 1; i < MAX_GROUP_INDEX; ++i)
     {
         nCrGroups[i][0] = 1;
         if (i < Global::SUITS + 1)
         {
             nCrGroups[i][i] = 1;
         }
-        for (int j = 1; j < (i < (Global::SUITS + 1) ? i : (Global::SUITS + 1)); ++j)
+        for (auto j = 1; j < (i < (Global::SUITS + 1) ? i : (Global::SUITS + 1)); ++j)
         {
             nCrGroups[i][j] = nCrGroups[i - 1][j - 1] + nCrGroups[i - 1][j];
         }
@@ -115,7 +115,7 @@ void HandIndexer::Construct(vector<int> &cardsPerRound)
     configurationToSuitSize = vector<vector<vector<int>>>(rounds, vector<vector<int>>());
     configurationToOffset = vector<vector<long>>(rounds, vector<long>());
 
-    for (int i = 0, count = 0; i < rounds; ++i)
+    for (auto i = 0, count = 0; i < rounds; ++i)
     {
         count += cardsPerRound[i];
         if (count > Global::CARDS)
@@ -126,7 +126,7 @@ void HandIndexer::Construct(vector<int> &cardsPerRound)
 
     roundStart = vector<int>(rounds);
 
-    for (int i = 0, j = 0; i < rounds; ++i)
+    for (auto i = 0, j = 0; i < rounds; ++i)
     {
         roundStart[i] = j;
         j += cardsPerRound[i];
@@ -135,14 +135,14 @@ void HandIndexer::Construct(vector<int> &cardsPerRound)
     configurations = vector<int>(rounds);
     EnumerateConfigurations(false);
 
-    for (int i = 0; i < rounds; ++i)
+    for (auto i = 0; i < rounds; ++i)
     {
         configurationToEqual[i] = vector<int>(configurations[i]);
         configurationToOffset[i] = vector<long>(configurations[i]);
         configuration[i] = vector<vector<int>>(configurations[i], vector<int>());
         configurationToSuitSize[i] = vector<vector<int>>(configurations[i], vector<int>());
 
-        for (int j = 0; j < configuration[i].size(); ++j)
+        for (auto j = 0UL; j < configuration[i].size(); ++j)
         {
             configuration[i][j] = vector<int>(Global::SUITS);
             configurationToSuitSize[i][j] = vector<int>(Global::SUITS);
@@ -153,11 +153,11 @@ void HandIndexer::Construct(vector<int> &cardsPerRound)
     EnumerateConfigurations(true);
 
     roundSize = vector<long>(rounds);
-    for (int i = 0; i < rounds; ++i)
+    for (auto i = 0; i < rounds; ++i)
     {
         long accum = 0;
         // cout << "configuration[i]: " << configurations[i] << endl;
-        for (int j = 0; j < configurations[i]; ++j)
+        for (auto j = 0; j < configurations[i]; ++j)
         {
             long next = accum + configurationToOffset[i][j];
             // cout << "configurationToOffset[i][j]: " << configurationToOffset[i][j] << endl;
@@ -171,7 +171,7 @@ void HandIndexer::Construct(vector<int> &cardsPerRound)
     permutations = vector<int>(rounds);
     EnumeratePermutations(false);
 
-    for (int i = 0; i < rounds; ++i)
+    for (auto i = 0; i < rounds; ++i)
     {
         permutationToConfiguration[i] = vector<int>(permutations[i]);
         permutationToPi[i] = vector<int>(permutations[i]);
@@ -187,11 +187,11 @@ void HandIndexer::CreatePublicFlopHands()
     vector<bool> publicFlopHandsFound(roundSize[0]);
     publicFlopHands = vector<vector<int>>(roundSize[0], vector<int>(cardsPerRound[0]));
 
-    for (int card1 = 0; card1 < Global::CARDS; card1++)
+    for (auto card1 = 0; card1 < Global::CARDS; card1++)
     {
-        for (int card2 = 0; card2 < Global::CARDS; card2++)
+        for (auto card2 = 0; card2 < Global::CARDS; card2++)
         {
-            for (int card3 = 0; card3 < Global::CARDS; card3++)
+            for (auto card3 = 0; card3 < Global::CARDS; card3++)
             {
                 if (card1 != card2 && card2 != card3 && card1 != card3)
                 {
@@ -224,7 +224,7 @@ long HandIndexer::IndexAllRounds(vector<int> &cards, vector<long> &indices)
     }
 
     HandIndexerState state = HandIndexerState();
-    for (int i = 0; i < rounds; i++)
+    for (auto i = 0; i < rounds; i++)
     {
         indices[i] = IndexNextRound(state, cards);
     }
@@ -272,7 +272,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
     vector<int> ranks(Global::SUITS);
     vector<int> shiftedRanks(Global::SUITS);
 
-    for (int i = 0, j = roundStart[round]; i < cardsPerRound[round]; ++i, ++j)
+    for (auto i = 0, j = roundStart[round]; i < cardsPerRound[round]; ++i, ++j)
     {
         int rank = cards[j] >> 2;
         int suit = cards[j] & 3;
@@ -282,7 +282,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
         shiftedRanks[suit] |= (rankBit >> __builtin_popcountll((unsigned int)((rankBit - 1) & state.usedRanks[suit])));
     }
 
-    for (int i = 0; i < Global::SUITS; i++)
+    for (auto i = 0; i < Global::SUITS; i++)
     {
         int usedSize = __builtin_popcountll((unsigned int)state.usedRanks[i]);
         int thisSize = __builtin_popcountll((unsigned int)ranks[i]);
@@ -292,7 +292,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
         state.usedRanks[i] |= ranks[i];
     }
 
-    for (int i = 0, remaining = cardsPerRound[round]; i < Global::SUITS - 1; ++i)
+    for (auto i = 0, remaining = cardsPerRound[round]; i < Global::SUITS - 1; ++i)
     {
         int thisSize = __builtin_popcountll((unsigned int)ranks[i]);
         state.permutationIndex += state.permutationMultiplier * thisSize;
@@ -308,7 +308,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
 
     vector<int> suitIndex(Global::SUITS);
     vector<int> suitMultiplier(Global::SUITS);
-    for (int i = 0; i < Global::SUITS; ++i)
+    for (auto i = 0; i < Global::SUITS; ++i)
     {
         suitIndex[i] = state.suitIndex[pi[i]];
         suitMultiplier[i] = state.suitMultiplier[pi[i]];
@@ -316,7 +316,7 @@ long HandIndexer::IndexNextRound(HandIndexerState &state, vector<int> &cards)
 
     long index = offset;
     long multiplier = 1;
-    for (int i = 0; i < Global::SUITS;)
+    for (auto i = 0; i < Global::SUITS;)
     {
         long part, size;
         if (i + 1 < Global::SUITS && equal[equalIndex][i + 1])
@@ -404,7 +404,7 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
     index -= configurationToOffset[round][configurationIdx];
 
     vector<long> suitIndex(Global::SUITS);
-    for (int i = 0; i < Global::SUITS;)
+    for (auto i = 0; i < Global::SUITS;)
     {
         int j = i + 1;
         while (j < Global::SUITS && configuration[round][configurationIdx][j] == configuration[round][configurationIdx][i])
@@ -452,10 +452,10 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
 
     vector<int> location(roundStart);
 
-    for (int suit = 0; suit < Global::SUITS; ++suit)
+    for (auto suit = 0; suit < Global::SUITS; ++suit)
     {
         int used = 0, m = 0;
-        for (int r = 0; r < rounds; ++r)
+        for (auto r = 0; r < rounds; ++r)
         {
             int n = configuration[round][configurationIdx][suit] >> (ROUND_SHIFT * (rounds - r - 1)) & ROUND_MASK;
             int roundSize = nCrRanks[Global::RANKS - m][n];
@@ -463,7 +463,7 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
             int roundIdx = (int)((ulong)suitIndex[suit] % (ulong)roundSize);
             suitIndex[suit] = (long)((ulong)suitIndex[suit] / (ulong)roundSize);
             int shiftedCards = indexToRankSet[n][roundIdx], rankSet = 0;
-            for (int k = 0; k < n; ++k)
+            for (auto k = 0; k < n; ++k)
             {
                 int shiftedCard = shiftedCards & -shiftedCards;
                 shiftedCards ^= shiftedCard;
@@ -547,7 +547,7 @@ void HandIndexer::EnumerateConfigurationsR(int round,
         }
 
         int oldConfiguration = configuration[suit], oldUsed = used[suit];
-        for (int i = min; i <= max; ++i)
+        for (auto i = min; i <= max; ++i)
         {
             int newConfiguration = oldConfiguration | i << (ROUND_SHIFT * (rounds - round - 1));
             int newEqual = ((equal & ~(1 << suit)) | (wasEqual & (i == previous) ? 1 : 0) << suit);
@@ -568,7 +568,7 @@ void HandIndexer::TabulateConfigurations(int round, vector<int> &configuration)
 
     for (; id > 0; --id)
     {
-        for (int i = 0; i < Global::SUITS; ++i)
+        for (auto i = 0; i < Global::SUITS; ++i)
         {
             if (configuration[i] < this->configuration[round][id - 1][i])
             {
@@ -579,7 +579,7 @@ void HandIndexer::TabulateConfigurations(int round, vector<int> &configuration)
                 goto OUT;
             }
         }
-        for (int i = 0; i < Global::SUITS; ++i)
+        for (auto i = 0; i < Global::SUITS; ++i)
         {
             this->configuration[round][id][i] = this->configuration[round][id - 1][i];
             configurationToSuitSize[round][id][i] = configurationToSuitSize[round][id - 1][i];
@@ -591,17 +591,17 @@ void HandIndexer::TabulateConfigurations(int round, vector<int> &configuration)
 OUT:
 
     configurationToOffset[round][id] = 1;
-    for (int i = 0; i < Global::SUITS; i++)
+    for (auto i = 0; i < Global::SUITS; i++)
     {
         this->configuration[round][id][i] = configuration[i];
     }
 
     int equal = 0;
-    for (int i = 0; i < Global::SUITS;)
+    for (auto i = 0; i < Global::SUITS;)
     {
         int size = 1;
         int j = 0;
-        for (int remaining = Global::RANKS; j <= round; ++j)
+        for (auto remaining = Global::RANKS; j <= round; ++j)
         {
             int ranks = configuration[i] >> (ROUND_SHIFT * (rounds - j - 1)) & ROUND_MASK;
             size *= nCrRanks[remaining][ranks];
@@ -614,14 +614,14 @@ OUT:
             ++j;
         }
 
-        for (int k = i; k < j; ++k)
+        for (auto k = i; k < j; ++k)
         {
             configurationToSuitSize[round][id][k] = size;
         }
 
         configurationToOffset[round][id] *= nCrGroups[size + j - i - 1][j - i];
 
-        for (int k = i + 1; k < j; ++k)
+        for (auto k = i + 1; k < j; ++k)
         {
             equal |= 1 << k;
         }
@@ -673,7 +673,7 @@ void HandIndexer::EnumeratePermutationsR(int round, int remaining, int suit, vec
         }
 
         int oldCount = count[suit], oldUsed = used[suit];
-        for (int i = min; i <= max; ++i)
+        for (auto i = min; i <= max; ++i)
         {
             int newCount = oldCount | i << (ROUND_SHIFT * (rounds - round - 1));
 
@@ -689,9 +689,9 @@ void HandIndexer::EnumeratePermutationsR(int round, int remaining, int suit, vec
 void HandIndexer::CountPermutations(int round, vector<int> &count)
 {
     int idx = 0, mult = 1;
-    for (int i = 0; i <= round; ++i)
+    for (auto i = 0; i <= round; ++i)
     {
-        for (int j = 0, remaining = cardsPerRound[i]; j < Global::SUITS - 1; ++j)
+        for (auto j = 0, remaining = cardsPerRound[i]; j < Global::SUITS - 1; ++j)
         {
             int size = count[j] >> ((rounds - i - 1) * ROUND_SHIFT) & ROUND_MASK;
             idx += mult * size;
@@ -709,9 +709,9 @@ void HandIndexer::CountPermutations(int round, vector<int> &count)
 void HandIndexer::TabulatePermutations(int round, vector<int> &count)
 {
     int idx = 0, mult = 1;
-    for (int i = 0; i <= round; ++i)
+    for (auto i = 0; i <= round; ++i)
     {
-        for (int j = 0, remaining = cardsPerRound[i]; j < Global::SUITS - 1; ++j)
+        for (auto j = 0, remaining = cardsPerRound[i]; j < Global::SUITS - 1; ++j)
         {
             int size = count[j] >> ((rounds - i - 1) * ROUND_SHIFT) & ROUND_MASK;
             idx += mult * size;
@@ -721,12 +721,12 @@ void HandIndexer::TabulatePermutations(int round, vector<int> &count)
     }
 
     vector<int> pi(Global::SUITS);
-    for (int i = 0; i < Global::SUITS; ++i)
+    for (auto i = 0; i < Global::SUITS; ++i)
     {
         pi[i] = i;
     }
 
-    for (int i = 1; i < Global::SUITS; ++i)
+    for (auto i = 1; i < Global::SUITS; ++i)
     {
         int j = i, pi_i = pi[i];
         for (; j > 0; --j)
@@ -744,7 +744,7 @@ void HandIndexer::TabulatePermutations(int round, vector<int> &count)
     }
 
     int pi_idx = 0, pi_mult = 1, pi_used = 0;
-    for (int i = 0; i < Global::SUITS; ++i)
+    for (auto i = 0; i < Global::SUITS; ++i)
     {
         int this_bit = (1 << pi[i]);
         int smaller = __builtin_popcountll((uint)((this_bit - 1) & pi_used));
@@ -761,7 +761,7 @@ void HandIndexer::TabulatePermutations(int round, vector<int> &count)
         int mid = (low + high) / 2;
 
         int compare = 0;
-        for (int i = 0; i < Global::SUITS; ++i)
+        for (auto i = 0; i < Global::SUITS; ++i)
         {
             int that = count[pi[i]];
             int other = configuration[round][mid][i];

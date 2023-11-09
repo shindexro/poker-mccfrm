@@ -23,7 +23,7 @@ vector<int> Kmeans::ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, 
 
     double recordDistance = DBL_MAX;
 
-    for (int run = 0; run < nofRuns; ++run)
+    for (auto run = 0; run < nofRuns; ++run)
     {
         auto centers = vector<vector<float>>(k, vector<float>(data[0].size()));
 
@@ -56,7 +56,7 @@ vector<int> Kmeans::ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, 
                                {
                                     double distance = GetEarthMoverDistance(data, centers, itemIdx, bestCenters[itemIdx]);
                                     int bestIndex = bestCenters[itemIdx];
-                                    for (int m = 0; m < k; m++) // go through centers
+                                    for (auto m = 0; m < k; m++) // go through centers
                                     {
                                         if (centerCenterDistances[bestIndex][m] < 2 * distance && bestIndex != m)
                                         {
@@ -128,7 +128,7 @@ vector<int> Kmeans::ClusterL2(vector<vector<float>> &data, int k, int nofRuns, v
     }
     double recordDistance = DBL_MAX;
 
-    for (int run = 0; run < nofRuns; ++run)
+    for (auto run = 0; run < nofRuns; ++run)
     {
         auto centers = vector<vector<float>>(k, vector<float>(data[0].size()));
 
@@ -177,13 +177,13 @@ vector<int> Kmeans::ClusterL2(vector<vector<float>> &data, int k, int nofRuns, v
                                           long iter = 0;
                                           auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices(data.size(), Global::NOF_THREADS, i);
 
-                                          for (int j = startItemIdx; j < endItemIdx; ++j)
+                                          for (auto j = startItemIdx; j < endItemIdx; ++j)
                                           { // go through all data
                                               // assume previous cluster was good, this is better for the triangle inequality
                                               double distance = GetL2DistanceSquared(data, centers, j, bestCenters[j]);
                                               int bestIndex = bestCenters[j];
 
-                                              for (int m = 0; m < k; m++) // go through centers
+                                              for (auto m = 0; m < k; m++) // go through centers
                                               {
                                                   if (centerCenterDistances[bestIndex][m] < 2 * (float)sqrt(distance) && bestIndex != m)
                                                   {
@@ -252,17 +252,17 @@ vector<vector<float>> Kmeans::CalculateNewCenters(vector<vector<float>> &data, v
 {
     auto centers = vector<vector<float>>(k, vector<float>(data[0].size()));
     auto occurrences = vector<int>(k);
-    for (int j = 0; j < data.size(); j++)
+    for (auto j = 0UL; j < data.size(); j++)
     {
-        for (int m = 0; m < data[0].size(); ++m)
+        for (auto m = 0UL; m < data[0].size(); ++m)
         {
             centers[bestCenters[j]][m] += data[j][m];
         }
         occurrences[bestCenters[j]]++;
     }
-    for (int n = 0; n < k; ++n)
+    for (auto n = 0; n < k; ++n)
     {
-        for (int m = 0; m < data[0].size(); ++m)
+        for (auto m = 0UL; m < data[0].size(); ++m)
         {
             if (occurrences[n] != 0)
                 centers[n][m] /= occurrences[n];
@@ -278,14 +278,14 @@ void Kmeans::CalculateClusterDistancesL2(vector<vector<float>> &distances, vecto
     utils::parallelise(clusterCenters.size(),
                        [&](int threadIdx, int itemIdx)
                        {
-                           for (int m = 0; m < itemIdx; ++m)
+                           for (auto m = 0; m < itemIdx; ++m)
                            {
                                distances[itemIdx][m] = (float)sqrt(GetL2DistanceSquared(clusterCenters, clusterCenters, itemIdx, m));
                            }
                        });
-    for (int j = 0; j < clusterCenters.size(); ++j)
+    for (auto j = 0UL; j < clusterCenters.size(); ++j)
     {
-        for (int m = 0; m < j; ++m)
+        for (auto m = 0UL; m < j; ++m)
         {
             distances[m][j] = distances[j][m];
         }
@@ -297,14 +297,14 @@ void Kmeans::CalculateClusterDistancesEMD(vector<vector<float>> &distances, vect
     utils::parallelise(clusterCenters.size(),
                        [&](int threadIdx, int itemIdx)
                        {
-                           for (int m = 0; m < itemIdx; ++m)
+                           for (auto m = 0; m < itemIdx; ++m)
                            {
                                distances[itemIdx][m] = GetEarthMoverDistance(clusterCenters, clusterCenters, itemIdx, m);
                            }
                        });
-    for (int j = 0; j < clusterCenters.size(); ++j)
+    for (auto j = 0UL; j < clusterCenters.size(); ++j)
     {
-        for (int m = 0; m < j; ++m)
+        for (auto m = 0UL; m < j; ++m)
         {
             distances[m][j] = distances[j][m];
         }
@@ -352,7 +352,7 @@ vector<vector<float>> Kmeans::FindStartingCentersL2(vector<vector<float>> &data,
     auto centerIndices = vector<int>();
     int index = -1;
 
-    for (int c = 0; c < k; ++c) // get a new cluster center one by one
+    for (auto c = 0; c < k; ++c) // get a new cluster center one by one
     {
         cout << "Finding center for " << c << "-th cluster" << endl;
         auto distancesToBestCenter = vector<double>(dataTemp.size(), DBL_MAX);
@@ -370,7 +370,7 @@ vector<vector<float>> Kmeans::FindStartingCentersL2(vector<vector<float>> &data,
             utils::parallelise(dataTemp.size(),
                                [&](int threadIdx, int itemIdx)
                                {
-                                    for (int m = 0; m < c; ++m) // go through centers
+                                    for (auto m = 0; m < c; ++m) // go through centers
                                     {
                                         double tempDistance = GetL2DistanceSquared(dataTemp, centers, itemIdx, m);
                                         if (tempDistance < distancesToBestCenter[itemIdx])
@@ -379,7 +379,7 @@ vector<vector<float>> Kmeans::FindStartingCentersL2(vector<vector<float>> &data,
                                         }
                                 } });
             double sum = accumulate(distancesToBestCenter.begin(), distancesToBestCenter.end(), 0.0);
-            for (int p = 0; p < distancesToBestCenter.size(); ++p)
+            for (auto p = 0UL; p < distancesToBestCenter.size(); ++p)
             {
                 distancesToBestCenter[p] /= sum;
             }
@@ -411,7 +411,7 @@ vector<vector<float>> Kmeans::FindStartingCentersEMD(vector<vector<float>> &data
     auto centerIndices = vector<int>();
     int index = -1;
 
-    for (int c = 0; c < k; ++c) // get a new cluster center one by one
+    for (auto c = 0; c < k; ++c) // get a new cluster center one by one
     {
         auto distancesToBestCenter = vector<float>(dataTemp.size(), FLT_MAX);
 
@@ -426,7 +426,7 @@ vector<vector<float>> Kmeans::FindStartingCentersEMD(vector<vector<float>> &data
             utils::parallelise(dataTemp.size(),
                                [&](int threadIdx, int itemIdx)
                                {
-                                    for (int m = 0; m < c; ++m) // go through centers
+                                    for (auto m = 0; m < c; ++m) // go through centers
                                     {
                                         float tempDistance = GetEarthMoverDistance(dataTemp, centers, itemIdx, m);
                                         if (tempDistance < distancesToBestCenter[itemIdx])
@@ -436,8 +436,8 @@ vector<vector<float>> Kmeans::FindStartingCentersEMD(vector<vector<float>> &data
                                     } });
 
             SquareArray(distancesToBestCenter);
-            float sum = sum = accumulate(distancesToBestCenter.begin(), distancesToBestCenter.end(), 0.0);
-            for (int p = 0; p < distancesToBestCenter.size(); ++p)
+            float sum = accumulate(distancesToBestCenter.begin(), distancesToBestCenter.end(), 0.0);
+            for (auto p = 0UL; p < distancesToBestCenter.size(); ++p)
             {
                 distancesToBestCenter[p] /= sum;
             }
@@ -456,7 +456,7 @@ vector<vector<float>> Kmeans::FindStartingCentersEMD(vector<vector<float>> &data
 
 void Kmeans::SquareArray(vector<float> &a)
 {
-    for (int i = 0; i < a.size(); i++)
+    for (auto i = 0UL; i < a.size(); i++)
     {
         a[i] *= a[i];
     }
@@ -465,7 +465,7 @@ void Kmeans::SquareArray(vector<float> &a)
 void Kmeans::CopyArray(vector<vector<float>> &dataSource, vector<vector<float>> &dataDestination, int indexSource, int indexDestination)
 {
     // probably should use buffer.blockcopy (todo)
-    for (int i = 0; i < dataSource[0].size(); ++i)
+    for (auto i = 0UL; i < dataSource[0].size(); ++i)
     {
         dataDestination[indexDestination][i] = dataSource[indexSource][i];
     }
@@ -474,7 +474,7 @@ void Kmeans::CopyArray(vector<vector<float>> &dataSource, vector<vector<float>> 
 float Kmeans::GetEarthMoverDistance(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2)
 {
     float emd = 0, totalDistance = 0;
-    for (int i = 0; i < data[0].size(); i++)
+    for (auto i = 0UL; i < data[0].size(); i++)
     {
         emd = (data[index1][i] + emd) - centers[index2][i];
         totalDistance += abs(emd);
@@ -485,15 +485,15 @@ float Kmeans::GetEarthMoverDistance(vector<vector<float>> &data, vector<vector<f
 float Kmeans::GetL2DistanceSquared(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2)
 {
     double totalDistance = 0;
-    for (int i = 0; i < data[0].size() - 4; i += 4)
+    for (auto i = 0UL; i < data[0].size() - 4; i += 4)
     {
-        for (int j = 0; j < 4; j++)
+        for (auto j = 0; j < 4; j++)
         {
             float diff = data[index1][i + j] - centers[index2][i + j];
             totalDistance += diff * diff;
         }
     }
-    for (int i = data[0].size() - data[0].size() % 4; i < data[0].size(); i++) // if the histogram is not a multiple of 4
+    for (auto i = data[0].size() - data[0].size() % 4; i < data[0].size(); i++) // if the histogram is not a multiple of 4
     {
         totalDistance += (data[index1][i] - centers[index2][i]) * (double)(data[index1][i] - centers[index2][i]);
     }

@@ -18,7 +18,7 @@ namespace utils
     {
         double rand = randDouble();
         double sum = 0.0;
-        for (int i = 0; i < probabilities.size(); ++i)
+        for (auto i = 0UL; i < probabilities.size(); ++i)
         {
             sum += probabilities[i];
             if (sum >= rand)
@@ -33,7 +33,7 @@ namespace utils
     {
         double rand = randDouble();
         double sum = 0.0;
-        for (int i = 0; i < probabilities.size(); ++i)
+        for (auto i = 0UL; i < probabilities.size(); ++i)
         {
             sum += probabilities[i];
             if (sum >= rand)
@@ -48,7 +48,7 @@ namespace utils
     {
         auto result = vector<Hand>();
 
-        for (int i = 0; i < Global::RANKS * Global::RANKS; ++i)
+        for (auto i = 0; i < Global::RANKS * Global::RANKS; ++i)
         {
             string firstCardRank = "";
             switch (i / Global::RANKS)

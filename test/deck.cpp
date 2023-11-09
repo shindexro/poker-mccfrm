@@ -74,7 +74,6 @@ TEST(DeckTest, AllCardsStillInDeckAfterShuffle)
 TEST(DeckTest, DrawDeckMatchCardCount)
 {
     Deck deck = Deck();
-    int totalCards = Global::CARDS;
     deck.Shuffle();
 
     EXPECT_EQ(__builtin_popcountll(deck.Draw(1)), 1);

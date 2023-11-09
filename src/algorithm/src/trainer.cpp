@@ -101,7 +101,7 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
             gs->CreateChildren();
             auto expectedValsChildren = vector<float>();
             auto explored = vector<bool>();
-            for (int i = 0; i < gs->children.size(); ++i)
+            for (auto i = 0UL; i < gs->children.size(); ++i)
             {
                 if (infoset.regret[i] > Global::C)
                 {
@@ -114,7 +114,7 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
                     explored.push_back(false);
                 }
             }
-            for (int i = 0; i < gs->children.size(); ++i)
+            for (auto i = 0UL; i < gs->children.size(); ++i)
             {
                 if (explored[i])
                 {
@@ -135,12 +135,12 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
 
             gs->CreateChildren();
             auto expectedValsChildren = vector<float>();
-            for (int i = 0; i < gs->children.size(); ++i)
+            for (auto i = 0UL; i < gs->children.size(); ++i)
             {
                 expectedValsChildren.push_back(TraverseMCCFRPruned(gs->children[i], traverser));
                 expectedVal += sigma[i] * expectedValsChildren[expectedValsChildren.size() - 1];
             }
-            for (int i = 0; i < gs->children.size(); ++i)
+            for (auto i = 0UL; i < gs->children.size(); ++i)
             {
                 infoset.regret[i] += expectedValsChildren[i] - expectedVal;
                 infoset.regret[i] = max({(float)Global::regretFloor, infoset.regret[i]});
@@ -178,7 +178,7 @@ void Trainer::PlayOneGame()
             if (first)
             {
                 std::cout << "Player Cards: ";
-                for (int i = 0; i < Global::nofPlayers; ++i)
+                for (auto i = 0; i < Global::nofPlayers; ++i)
                 {
                     auto [card1, card2] = gs->playerCards[i];
                     auto playerCards = vector<Card>({Card(card1), Card(card2)});
@@ -191,7 +191,7 @@ void Trainer::PlayOneGame()
             {
                 if (gs->tableCards.size() != 0)
                     std::cout << "Table Cards: " << endl;
-                for (int i = 0; i < gs->tableCards.size(); ++i)
+                for (auto i = 0UL; i < gs->tableCards.size(); ++i)
                 {
                     Card(gs->tableCards[i]).PrintBeautifulString();
                 }
@@ -212,7 +212,7 @@ void Trainer::PlayOneGame()
     }
     std::cout << endl;
     std::cout << "Rewards: ";
-    for (int i = 0; i < Global::nofPlayers; ++i)
+    for (auto i = 0; i < Global::nofPlayers; ++i)
     {
         std::cout << gs->GetReward(i) << " ";
     }
@@ -238,7 +238,7 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
             {
                 if (display)
                     std::cout << "Player Cards: ";
-                for (int i = 0; i < Global::nofPlayers; ++i)
+                for (auto i = 0; i < Global::nofPlayers; ++i)
                 {
                     auto [card1, card2] = gs->playerCards[i];
                     auto playerCards = vector<Card>({Card(card1), Card(card2)});
@@ -254,7 +254,7 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
                 if (gs->tableCards.size() != 0)
                     if (display)
                         std::cout << "Table Cards: ";
-                for (int i = 0; i < gs->tableCards.size(); ++i)
+                for (auto i = 0UL; i < gs->tableCards.size(); ++i)
                 {
                     if (display)
                         Card(gs->tableCards[i]).PrintBeautifulString();
@@ -291,7 +291,7 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
         std::cout << endl;
     if (display)
         std::cout << "Rewards: ";
-    for (int i = 0; i < Global::nofPlayers; ++i)
+    for (auto i = 0; i < Global::nofPlayers; ++i)
     {
         if (display)
             std::cout << gs->GetReward(i) << " ";
@@ -325,7 +325,7 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
 
         gs->CreateChildren();
         auto expectedValsChildren = vector<float>();
-        for (int i = 0; i < gs->children.size(); ++i)
+        for (auto i = 0UL; i < gs->children.size(); ++i)
         {
             auto childVal = TraverseMCCFR(gs->children[i], traverser, iteration);
             expectedValsChildren.push_back(childVal);
@@ -333,7 +333,7 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
             // cout << "state temp expected value is " << expectedVal << " with child node value "
             //      << childVal << endl;
         }
-        for (int i = 0; i < gs->children.size(); ++i)
+        for (auto i = 0UL; i < gs->children.size(); ++i)
         {
             infoset.regret[i] += expectedValsChildren[i] - expectedVal;
             infoset.regret[i] = max({(float)Global::regretFloor, infoset.regret[i]});
@@ -362,7 +362,7 @@ void Trainer::DiscountInfosets(float d)
 {
     for (auto [infosetString, infoset] : Global::nodeMap)
     {
-        for (int i = 0; i < infoset.regret.size(); ++i)
+        for (auto i = 0UL; i < infoset.regret.size(); ++i)
         {
             infoset.regret[i] *= d;
             infoset.actionCounter[i] *= d;
@@ -375,7 +375,7 @@ void Trainer::PrintStartingHandsChart()
     // ResetGame();
     auto gs = dynamic_cast<ChanceState *>(rootState.get())->GetFirstActionStates();
 
-    for (int i = 0; i < gs[0]->GetValidActions().size(); ++i)
+    for (auto i = 0UL; i < gs[0]->GetValidActions().size(); ++i)
     {
         if (gs[0]->GetValidActions()[i] == Action::FOLD)
         {
@@ -406,7 +406,7 @@ void Trainer::PrintStartingHandsChart()
         }
 
         std::cout << "    2    3    4    5    6    7    8    9    T    J    Q    K    A (suited)" << endl;
-        for (int j = 0; j < gs.size(); ++j)
+        for (auto j = 0UL; j < gs.size(); ++j)
         {
             auto ps = gs[j];
             Infoset infoset = ps->GetInfoset();
@@ -472,7 +472,7 @@ void Trainer::PrintStatistics(long iterations)
         hand.PrintColoredCards("\n");
         auto actions = ps->GetValidActions();
 
-        for (int j = 0; j < actions.size(); ++j)
+        for (auto j = 0UL; j < actions.size(); ++j)
         {
             if (actions[j] == Action::FOLD)
             {
@@ -555,7 +555,7 @@ void Trainer::EnumerateActionSpace(shared_ptr<State> gs)
         gs->CreateChildren();
         // cout << "Enumerating action space for state: " << gs.get()
         //      << " with " << gs->children.size() << " children" << endl;
-        for (int i = 0; i < gs->children.size(); ++i)
+        for (auto i = 0UL; i < gs->children.size(); ++i)
         {
             EnumerateActionSpace(gs->children[i]);
         }

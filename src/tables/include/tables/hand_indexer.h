@@ -14,11 +14,11 @@ class HandIndexerState
 {
 
 public:
-    vector<int> suitIndex;
-    vector<int> suitMultiplier;
     int round;
     int permutationIndex;
     int permutationMultiplier;
+    vector<int> suitIndex;
+    vector<int> suitMultiplier;
     vector<int> usedRanks;
 
     HandIndexerState();

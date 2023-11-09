@@ -4,7 +4,7 @@ Deck::Deck(ulong removedCards) : removedCards{removedCards},
                                  position{0},
                                  cards(Global::CARDS)
 {
-    for (int i = 0; i < cards.size(); i++)
+    for (auto i = 0UL; i < cards.size(); i++)
     {
         cards[i] = 1ul << i;
     }
@@ -24,7 +24,7 @@ void Deck::Shuffle()
 ulong Deck::Draw(int count)
 {
     ulong hand = 0ul;
-    for (int i = 0; i < count; i++)
+    for (auto i = 0; i < count; i++)
     {
         while (position < cards.size() && (cards[position] & removedCards))
         {

@@ -83,7 +83,7 @@ void Evaluator::LoadFromFile(string &fileName)
 void Evaluator::GenerateFiveCardTable()
 {
     vector<int> combo(Global::CARDS);
-    for (int i = 0; i < Global::CARDS; i++)
+    for (auto i = 0; i < Global::CARDS; i++)
         combo[i] = i;
 
     int comboSize = 5;
@@ -91,7 +91,7 @@ void Evaluator::GenerateFiveCardTable()
     do
     {
         ulong bitmap = 0ul;
-        for (int i = 0; i < comboSize; i++)
+        for (auto i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
         handBitmaps.push_back(bitmap);
     } while (next_combination(combo.begin(), combo.begin() + comboSize, combo.end()));
@@ -160,7 +160,7 @@ void Evaluator::GenerateHandValueTable(int comboSize)
     }
 
     vector<int> combo(Global::CARDS);
-    for (int i = 0; i < Global::CARDS; i++)
+    for (auto i = 0; i < Global::CARDS; i++)
         combo[i] = i;
 
     using namespace indicators;
@@ -185,7 +185,7 @@ void Evaluator::GenerateHandValueTable(int comboSize)
         do
         {
             ulong subsetBitmap = 0ul;
-            for (int i = 0; i < subsetSize; i++)
+            for (auto i = 0; i < subsetSize; i++)
             {
                 int card = subset[i];
                 subsetBitmap |= 1ul << card;
@@ -194,7 +194,7 @@ void Evaluator::GenerateHandValueTable(int comboSize)
         } while (next_combination(subset.begin(), subset.begin() + subsetSize, subset.end()));
 
         ulong bitmap = 0ul;
-        for (int i = 0; i < comboSize; i++)
+        for (auto i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
 
         handRankMap[bitmap] = *max_element(subsetValues.begin(), subsetValues.end());
@@ -216,7 +216,7 @@ void Evaluator::GenerateMonteCarloMap(int iterations)
     monteCarloMap = unordered_map<ulong, ulong>();
 
     vector<int> combo(Global::CARDS);
-    for (int i = 0; i < Global::CARDS; i++)
+    for (auto i = 0; i < Global::CARDS; i++)
     {
         combo[i] = i;
     }
@@ -228,14 +228,14 @@ void Evaluator::GenerateMonteCarloMap(int iterations)
         std::cout << count++ << '\r' << endl;
 
         ulong bitmap = 0ul;
-        for (int i = 0; i < comboSize; i++)
+        for (auto i = 0; i < comboSize; i++)
             bitmap |= 1ul << combo[i];
 
         Hand hand = Hand(bitmap);
         Deck deck = Deck(bitmap);
 
         ulong evaluationSum = 0;
-        for (int i = 0; i < iterations; i++)
+        for (auto i = 0; i < iterations; i++)
         {
             if (deck.NumRemainingCards() < 13)
                 deck.Shuffle();
