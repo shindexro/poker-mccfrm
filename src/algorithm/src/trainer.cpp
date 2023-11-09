@@ -438,7 +438,7 @@ void Trainer::PrintStartingHandsChart()
             else if (phi[i] <= 1.0)
                 std::cout << "\033[1;34m";
 
-            std::cout << setprecision(4) << phi[i] << " ";
+            std::cout << fixed << setprecision(2) << phi[i] << " ";
             std::cout << "\033[0m";
 
             if ((j + 1) % Global::RANKS == 0)
