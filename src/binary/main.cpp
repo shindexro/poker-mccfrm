@@ -137,7 +137,7 @@ private:
 
                                               chrono::steady_clock::time_point end = chrono::steady_clock::now();
                                               auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
-                                              cout << "Iterations per second: " << 1000 * sharedLoopCounter / (elapsed + 1) << std::endl;
+                                              cout << "Iterations per second: " << sharedLoopCounter / (elapsed + 1) << std::endl;
                                           }
                                           for (int traverser = 0; traverser < Global::nofPlayers; traverser++) // traverser
                                           {
