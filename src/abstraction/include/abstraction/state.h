@@ -14,6 +14,8 @@
 #include <oneapi/tbb/concurrent_hash_map.h>
 #include <boost/algorithm/string.hpp>
 
+typedef tbb::concurrent_hash_map<string, Infoset>::accessor NodeMapAccessor;
+
 using namespace std;
 
 namespace poker
@@ -60,6 +62,8 @@ namespace poker
 
         virtual Infoset GetInfoset(){throw invalid_argument("Not implemented");};
         virtual Infoset GetInfosetSecondary(){throw invalid_argument("Not implemented");};
+        virtual void UpdateInfoset(Infoset& infoset){throw invalid_argument("Not implemented");};
+
         virtual bool IsPlayerTurn(int traverser){throw invalid_argument("Not implemented");};
         int BettingRound();
         virtual shared_ptr<State> DoRandomAction(){throw invalid_argument("Not implemented");};
@@ -96,6 +100,7 @@ namespace poker
         bool IsPlayerInHand(int player);
         Infoset GetInfoset();
         Infoset GetInfosetSecondary();
+        void UpdateInfoset(Infoset &infoset);
     };
 
     class ChanceState : public State

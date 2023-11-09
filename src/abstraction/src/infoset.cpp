@@ -20,7 +20,7 @@ vector<float> Infoset::CalculateStrategy()
     }
     for (int a = 0; a < regret.size(); ++a)
     {
-        if (sum > 0)
+        if (sum > 0.00001)
         {
             moveProbs[a] = max(0.0f, regret[a]) / sum;
         }
@@ -42,7 +42,7 @@ vector<float> Infoset::GetFinalStrategy()
     }
     for (int a = 0; a < regret.size(); ++a)
     {
-        if (sum > 0)
+        if (sum > 0.00001)
         {
             moveProbs[a] = actionCounter[a] / sum;
         }

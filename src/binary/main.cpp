@@ -164,8 +164,8 @@ private:
                                           }
                                           if (t % SaveToDiskInterval == 0 && index == 0) // allow only one thread to do saving
                                           {
-                                              cout << "Saving nodeMap to disk disabled!" << endl;
-                                              // SaveToFile();
+                                              //   cout << "Saving nodeMap to disk disabled!" << endl;
+                                              SaveToFile();
                                           }
 
                                           // discount all infosets (for all players)
