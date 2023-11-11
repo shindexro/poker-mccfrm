@@ -46,7 +46,7 @@ TEST_F(StateTest, ChanceStateHasAPlayStateChild)
     EXPECT_TRUE(dynamic_cast<PlayState *>(state.children[0].get()));
 }
 
-TEST_F(StateTest, ChanceStateHasNoCommunityCardsInitially)
+TEST_F(StateTest, ChanceStateDealPlayerCardsPreflop)
 {
     ChanceState state = ChanceState(preflopCommunity, players, history);
     state.CreateChildren();
@@ -54,6 +54,11 @@ TEST_F(StateTest, ChanceStateHasNoCommunityCardsInitially)
 
     ASSERT_EQ(state.community.cards.size(), 0);
     ASSERT_EQ(nextState->community.cards.size(), 0);
+
+    for (auto &player : nextState->players)
+    {
+        ASSERT_EQ(player.cards.size(), 2);
+    }
 }
 
 TEST_F(StateTest, ChanceStateDealThreeCardsOnFlop)
