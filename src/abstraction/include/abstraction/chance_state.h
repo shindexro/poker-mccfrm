@@ -2,15 +2,13 @@
 #define __CLASS_CHANCE_STATE_H__
 
 #include "abstraction/state.h"
+#include "abstraction/play_state.h"
+#include "abstraction/terminal_state.h"
 
 using namespace std;
 
 namespace poker
 {
-    class State;
-    class PlayState;
-    class TerminalState;
-
     class ChanceState : public State
     {
         // this is the root state
