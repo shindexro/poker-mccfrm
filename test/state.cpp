@@ -25,7 +25,7 @@ protected:
         riverCommunity.bettingRound = BettingRound::River;
 
         players = vector<PlayerInfo>(Global::nofPlayers);
-        history = vector<Action>();
+        history = vector<poker::Action>();
     }
 
     CommunityInfo preflopCommunity;
@@ -33,7 +33,7 @@ protected:
     CommunityInfo turnCommunity;
     CommunityInfo riverCommunity;
     vector<PlayerInfo> players;
-    vector<Action> history;
+    vector<poker::Action> history;
 };
 
 TEST_F(StateTest, ChanceStateHasAPlayStateChild)
