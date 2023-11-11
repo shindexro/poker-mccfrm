@@ -33,8 +33,8 @@ namespace poker
         auto newPlayers = vector<PlayerInfo>(players);
         auto newCommunity = CommunityInfo(community);
 
-        DealCards();
-        newCommunity.bettingRound =  community.bettingRound + 1;
+        DealCards(newCommunity, newPlayers);
+        newCommunity.bettingRound = community.bettingRound + 1;
 
         if (GetNumberOfPlayersThatNeedToAct() >= 2)
         {
@@ -61,7 +61,7 @@ namespace poker
         }
     }
 
-    void ChanceState::DealCards()
+    void ChanceState::DealCards(CommunityInfo &newCommunity, vector<PlayerInfo> &newPlayers)
     {
         switch (community.bettingRound)
         {

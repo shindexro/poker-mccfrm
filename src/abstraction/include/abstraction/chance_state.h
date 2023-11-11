@@ -25,7 +25,7 @@ namespace poker
         bool IsPlayerInHand(int player);
 
     private:
-        void DealCards();
+        void DealCards(CommunityInfo &newCommunity, vector<PlayerInfo> &newPlayers);
     };
 }
 
