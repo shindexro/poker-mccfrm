@@ -2,6 +2,8 @@
 #include <gmock/gmock.h>
 
 #include "abstraction/state.h"
+#include "abstraction/chance_state.h"
+#include "abstraction/play_state.h"
 
 using namespace testing;
 using namespace poker;
