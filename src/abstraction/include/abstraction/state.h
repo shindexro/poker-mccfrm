@@ -11,6 +11,9 @@
 #include "tables/emd_table.h"
 #include "abstraction/community_info.h"
 #include "abstraction/player_info.h"
+#include "abstraction/chance_state.h"
+#include "abstraction/player_state.h"
+#include "abstraction/terminal_state.h"
 
 #include <vector>
 #include <string>

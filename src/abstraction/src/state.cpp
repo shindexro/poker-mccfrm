@@ -100,8 +100,6 @@ namespace poker
         return community.bettingRound;
     }
 
-   
-
     int PlayState::GetValidActionsCount()
     {
         if (community.actionCount != -1)
