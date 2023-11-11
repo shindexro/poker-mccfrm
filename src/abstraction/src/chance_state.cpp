@@ -83,6 +83,8 @@ namespace poker
         default:
             throw invalid_argument("Unknown betting round");
         }
+
+        newCommunity.bettingRound = bettingRound;
         if (GetNumberOfPlayersThatNeedToAct() >= 2)
         {
             // there is someone left that plays
