@@ -172,3 +172,16 @@ TEST_F(StateTest, TerminalStateSingleWinnerRewards)
     EXPECT_EQ(state.GetReward(0), -7 + 7 + 5);
     EXPECT_EQ(state.GetReward(1), -5);
 }
+
+TEST_F(StateTest, TerminalStateMultipleWinnersRewards)
+{
+    players[0].bet = 5;
+    players[1].bet = 5;
+    players[0].isStillInGame = true;
+    players[1].isStillInGame = true;
+    auto state = TerminalState(flopCommunity, players, history);
+
+    EXPECT_EQ(state.GetReward(0), 0);
+    EXPECT_EQ(state.GetReward(1), 0);
+}
+
