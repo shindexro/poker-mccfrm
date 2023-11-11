@@ -4,6 +4,9 @@ add_library(${PROJECT_NAME}
     src/global.cpp
     src/infoset.cpp
     src/state.cpp
+    src/chance_state.cpp
+    src/player_state.cpp
+    src/terminal_state.cpp
     src/community_info.cpp
     src/player_info.cpp
 )
