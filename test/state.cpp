@@ -48,14 +48,17 @@ TEST_F(StateTest, ChanceStateHasAPlayStateChild)
 
 TEST_F(StateTest, ChanceStateHasNoCommunityCardsInitially)
 {
-    ChanceState state = ChanceState(flopCommunity, players, history);
+    ChanceState state = ChanceState(preflopCommunity, players, history);
+    state.CreateChildren();
+    auto nextState = state.children[0];
 
     ASSERT_EQ(state.community.cards.size(), 0);
+    ASSERT_EQ(nextState->community.cards.size(), 0);
 }
 
 TEST_F(StateTest, ChanceStateDealThreeCardsOnFlop)
 {
-    ChanceState state = ChanceState();
+    ChanceState state = ChanceState(flopCommunity, players, history);
     state.CreateChildren();
     auto nextState = state.children[0];
 
@@ -64,7 +67,7 @@ TEST_F(StateTest, ChanceStateDealThreeCardsOnFlop)
 
 TEST_F(StateTest, ChanceStateDealOneCardOnTurn)
 {
-    ChanceState state = ChanceState();
+    ChanceState state = ChanceState(turnCommunity, players, history);
     state.CreateChildren();
     auto nextState = state.children[0];
 
@@ -73,7 +76,7 @@ TEST_F(StateTest, ChanceStateDealOneCardOnTurn)
 
 TEST_F(StateTest, ChanceStateDealOneCardOnRiver)
 {
-    ChanceState state = ChanceState();
+    ChanceState state = ChanceState(riverCommunity, players, history);
     state.CreateChildren();
     auto nextState = state.children[0];
 
