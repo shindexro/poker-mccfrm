@@ -103,8 +103,9 @@ TEST_F(StateTest, ChanceStateChildHasBBMinRaise)
     ChanceState state = ChanceState();
     state.CreateChildren();
     auto nextState = state.children[0];
+    auto BB = Global:BB;
 
-    ASSERT_EQ(nextState->community.minRaise, Global::BB);
+    ASSERT_EQ(nextState->community.minRaise, BB);
 }
 
 TEST_F(StateTest, ChanceStateChildIsBettingRound)
