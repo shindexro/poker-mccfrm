@@ -37,6 +37,9 @@ protected:
     vector<poker::Action> history;
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////
+// ChanceState tests
+
 TEST_F(StateTest, ChanceStateHasAPlayStateChild)
 {
     ChanceState state = ChanceState();
@@ -153,4 +156,19 @@ TEST_F(StateTest, ChanceStateSkipPlayeStateIfNoPlayersCanAct)
     ASSERT_EQ(riverState->GetNumberOfPlayersThatNeedToAct(), 0);
     ASSERT_EQ(riverState->children.size(), 1);
     ASSERT_TRUE(dynamic_cast<TerminalState *>(riverState->children[0].get()));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// TerminalState tests
+
+TEST_F(StateTest, TerminalStateSingleWinnerRewards)
+{
+    players[0].bet = 7;
+    players[1].bet = 5;
+    players[0].isStillInGame = true;
+    players[1].isStillInGame = false;
+    auto state = TerminalState(flopCommunity, players, history);
+
+    EXPECT_EQ(state.GetReward(0), -7 + 7 + 5);
+    EXPECT_EQ(state.GetReward(1), -5);
 }
