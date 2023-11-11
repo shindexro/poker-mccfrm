@@ -23,6 +23,9 @@ namespace poker
         vector<shared_ptr<PlayState>> GetFirstActionStates();
 
         bool IsPlayerInHand(int player);
+
+    private:
+        void DealCards();
     };
 }
 

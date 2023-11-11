@@ -33,33 +33,36 @@ namespace poker
         auto newPlayers = vector<PlayerInfo>(players);
         auto newCommunity = CommunityInfo(community);
 
-        // create one playstate child after chance
-        int lastToMoveTemp = -1;
-        int minRaiseTemp = Global::BB;
-        int bettingRound = community.bettingRound + 1;
-        if (community.bettingRound == 0)
-        {
-            for (auto i = 2 % Global::nofPlayers;; i = (i + 1) % Global::nofPlayers)
-            {
-                if (players[i].isStillInGame && players[i].lastAction != Action::ALLIN)
-                {
-                    lastToMoveTemp = i;
-                }
-                if (i == 1)
-                    break;
-            }
-        }
-        else if (community.bettingRound > 0)
-        {
-            for (auto i = 0; i < Global::nofPlayers; ++i)
-            {
-                if (players[i].isStillInGame && players[i].stack != 0)
-                {
-                    lastToMoveTemp = i;
-                }
-            }
-        }
+        DealCards();
+        newCommunity.bettingRound =  community.bettingRound + 1;
 
+        if (GetNumberOfPlayersThatNeedToAct() >= 2)
+        {
+            // there is someone left that plays
+            newCommunity.isBettingOpen = true;
+            newCommunity.minRaise = Global::BB;
+            children.push_back(make_shared<PlayState>(newCommunity, newPlayers, history));
+        }
+        else
+        {
+            if (GetNumberOfPlayersThatNeedToAct() == 1)
+            {
+                throw invalid_argument("We just dealt new cards but only 1 player has any actions left");
+            }
+            if (community.bettingRound < BettingRound::River && GetNumberOfAllInPlayers() >= 2)
+            {
+                // directly go to next chance node
+                children.push_back(make_shared<ChanceState>(newCommunity, newPlayers, history));
+            }
+            else
+            {
+                children.push_back(make_shared<TerminalState>(newCommunity, newPlayers, history));
+            }
+        }
+    }
+
+    void ChanceState::DealCards()
+    {
         switch (community.bettingRound)
         {
         case BettingRound::Preflop:
@@ -82,32 +85,6 @@ namespace poker
             break;
         default:
             throw invalid_argument("Unknown betting round");
-        }
-
-        newCommunity.bettingRound = bettingRound;
-        if (GetNumberOfPlayersThatNeedToAct() >= 2)
-        {
-            // there is someone left that plays
-            newCommunity.isBettingOpen = true;
-            newCommunity.lastPlayer = lastToMoveTemp;
-            newCommunity.minRaise = minRaiseTemp;
-            children.push_back(make_shared<PlayState>(newCommunity, newPlayers, history));
-        }
-        else
-        {
-            if (GetNumberOfPlayersThatNeedToAct() == 1)
-            {
-                throw invalid_argument("We just dealt new cards but only 1 player has any actions left");
-            }
-            if (community.bettingRound < BettingRound::River && GetNumberOfAllInPlayers() >= 2)
-            {
-                // directly go to next chance node
-                children.push_back(make_shared<ChanceState>(newCommunity, newPlayers, history));
-            }
-            else
-            {
-                children.push_back(make_shared<TerminalState>(newCommunity, newPlayers, history));
-            }
         }
     }
 
