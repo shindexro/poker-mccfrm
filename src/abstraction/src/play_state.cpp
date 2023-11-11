@@ -1,6 +1,13 @@
 #include "abstraction/play_state.h"
 
-namespace poker{
+namespace poker
+{
+    PlayState::PlayState(CommunityInfo &community,
+                         vector<PlayerInfo> &players,
+                         vector<Action> &history) : State(community, players, history)
+    {
+    }
+
     int PlayState::GetValidActionsCount()
     {
         if (community.actionCount != -1)

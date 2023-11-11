@@ -19,6 +19,12 @@ namespace poker
         community.minRaise = Global::BB;
     }
 
+    ChanceState::ChanceState(CommunityInfo &community,
+                             vector<PlayerInfo> &players,
+                             vector<Action> &history) : State(community, players, history)
+    {
+    }
+
     void ChanceState::CreateChildren()
     {
         if (children.size() != 0)
