@@ -140,7 +140,7 @@ TEST_F(StateTest, ChanceStateSkipPlayeStateIfNoPlayersCanAct)
     ASSERT_EQ(flopState.children.size(), 1);
     ASSERT_TRUE(dynamic_cast<ChanceState *>(flopState.children[0].get()));
 
-    auto turnState = flopState->children[0];
+    auto turnState = flopState.children[0];
     turnState->CreateChildren();
 
     ASSERT_EQ(turnState->GetNumberOfPlayersThatNeedToAct(), 0);
