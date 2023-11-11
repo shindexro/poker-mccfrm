@@ -114,7 +114,7 @@ TEST_F(StateTest, ChanceStateChildIsBettingRound)
     state.CreateChildren();
     auto nextState = state.children[0];
 
-    ASSERT_EQ(nextState->community.bettingRound, true);
+    ASSERT_EQ(nextState->community.isBettingOpen, true);
 }
 
 TEST_F(StateTest, ChanceStateChildPlayerToPlayUnchanged)
