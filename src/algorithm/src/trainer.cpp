@@ -373,7 +373,7 @@ void Trainer::DiscountInfosets(float d)
 void Trainer::PrintStartingHandsChart()
 {
     // ResetGame();
-    auto gs = dynamic_cast<ChanceState *>(rootState.get())->GetFirstActionStates();
+    auto gs = (dynamic_cast<ChanceState *>(rootState.get()))->GetFirstActionStates();
 
     for (auto i = 0UL; i < gs[0]->GetValidActions().size(); ++i)
     {
