@@ -2,6 +2,9 @@
 #define __CLASS_TRAINER_H__
 
 #include "abstraction/state.h"
+#include "abstraction/play_state.h"
+#include "abstraction/chance_state.h"
+#include "abstraction/terminal_state.h"
 #include "utils/utils.h"
 #include "enums/action.h"
 
