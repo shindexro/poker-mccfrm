@@ -36,7 +36,7 @@ protected:
     vector<Action> history;
 };
 
-TEST(StateTest, ChanceStateHasAPlayStateChild)
+TEST_F(StateTest, ChanceStateHasAPlayStateChild)
 {
     ChanceState state = ChanceState();
 
