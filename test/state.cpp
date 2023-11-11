@@ -4,6 +4,7 @@
 #include "abstraction/state.h"
 #include "abstraction/chance_state.h"
 #include "abstraction/play_state.h"
+#include "enums/action.h"
 
 using namespace testing;
 using namespace poker;
