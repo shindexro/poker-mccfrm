@@ -9,13 +9,14 @@ namespace poker
 {
     class TerminalState : public State
     {
-    private:
-        bool rewardGenerated;
-
     public:
         TerminalState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
         float GetReward(int player);
+
+    private:
+        bool rewardGenerated;
+
         void CreateRewards();
     };
 }
