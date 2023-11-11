@@ -8,6 +8,33 @@
 using namespace testing;
 using namespace poker;
 
+class StateTest : public Test
+{
+protected:
+    void SetUp() override
+    {
+        preflopCommunity = CommunityInfo();
+        flopCommunity = CommunityInfo();
+        turnCommunity = CommunityInfo();
+        riverCommunity = CommunityInfo();
+
+        preflopCommunity.bettingRound = BettingRound::Preflop;
+        flopCommunity.bettingRound = BettingRound::Flop;
+        turnCommunity.bettingRound = BettingRound::Turn;
+        riverCommunity.bettingRound = BettingRound::River;
+
+        players = vector<PlayerInfo>(Global::nofPlayers);
+        history = vector<Action>();
+    }
+
+    CommunityInfo preflopCommunity;
+    CommunityInfo flopCommunity;
+    CommunityInfo turnCommunity;
+    CommunityInfo riverCommunity;
+    vector<PlayerInfo> players;
+    vector<Action> history;
+};
+
 TEST(StateTest, ChanceStateHasAPlayStateChild)
 {
     ChanceState state = ChanceState();
@@ -18,13 +45,36 @@ TEST(StateTest, ChanceStateHasAPlayStateChild)
     EXPECT_TRUE(dynamic_cast<PlayState *>(state.children[0].get()));
 }
 
-TEST(StateTest, ChanceStateDealThreeCardsOnFlop)
+TEST(StateTest, ChanceStateHasNoCommunityCardsInitially)
 {
-    ChanceState state = ChanceState();
+    ChanceState state = ChanceState(flopCommunity, players, history);
 
-    EXPECT_EQ(state.children.size(), 0UL);
-    state.CreateChildren();
-    ASSERT_EQ(state.children.size(), 1UL);
-    EXPECT_TRUE(dynamic_cast<PlayState *>(state.children[0].get()));
+    ASSERT_EQ(state.community.cards.size(), 0);
 }
 
+TEST_F(StateTest, ChanceStateDealThreeCardsOnFlop)
+{
+    ChanceState state = ChanceState();
+    state.CreateChildren();
+    auto nextState = state.children[0];
+
+    ASSERT_EQ(nextState->community.cards.size(), state.community.cards.size() + 3);
+}
+
+TEST_F(StateTest, ChanceStateDealOneCardOnTurn)
+{
+    ChanceState state = ChanceState();
+    state.CreateChildren();
+    auto nextState = state.children[0];
+
+    ASSERT_EQ(nextState->community.cards.size(), state.community.cards.size() + 1);
+}
+
+TEST_F(StateTest, ChanceStateDealOneCardOnRiver)
+{
+    ChanceState state = ChanceState();
+    state.CreateChildren();
+    auto nextState = state.children[0];
+
+    ASSERT_EQ(nextState->community.cards.size(), state.community.cards.size() + 1);
+}
