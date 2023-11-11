@@ -5,7 +5,7 @@ namespace poker
     PlayerInfo::PlayerInfo() : stack{0},
                                bet{0},
                                reward{0},
-                               isStillInGame{false},
+                               isStillInGame{true},
                                cards(),
                                lastAction{Action::NONE}
     {

@@ -179,9 +179,21 @@ TEST_F(StateTest, TerminalStateMultipleWinnersRewards)
     players[1].bet = 5;
     players[0].isStillInGame = true;
     players[1].isStillInGame = true;
+    // players have same hand strength
     auto state = TerminalState(flopCommunity, players, history);
 
     EXPECT_EQ(state.GetReward(0), 0);
     EXPECT_EQ(state.GetReward(1), 0);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
+// PlayState tests
+
+TEST_F(StateTest, PlayStateHasChildren)
+{
+    auto state = PlayState(preflopCommunity, players, history);
+    state.CreateChildren();
+
+    EXPECT_GT(state.children.size(), 0);
 }
 
