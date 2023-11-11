@@ -35,12 +35,12 @@ namespace poker
 
         DealCards(newCommunity, newPlayers);
         newCommunity.bettingRound = community.bettingRound + 1;
+        newCommunity.minRaise = Global::BB;
 
         if (GetNumberOfPlayersThatNeedToAct() >= 2)
         {
             // there is someone left that plays
             newCommunity.isBettingOpen = true;
-            newCommunity.minRaise = Global::BB;
             children.push_back(make_shared<PlayState>(newCommunity, newPlayers, history));
         }
         else
