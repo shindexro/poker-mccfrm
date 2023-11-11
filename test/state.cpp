@@ -4,6 +4,7 @@
 #include "abstraction/state.h"
 #include "abstraction/chance_state.h"
 #include "abstraction/play_state.h"
+#include "abstraction/terminal_state.h"
 #include "enums/action.h"
 
 using namespace testing;
@@ -52,13 +53,13 @@ TEST_F(StateTest, ChanceStateDealPlayerCardsPreflop)
     state.CreateChildren();
     auto nextState = state.children[0];
 
-    ASSERT_EQ(state.community.cards.size(), 0);
-    ASSERT_EQ(nextState->community.cards.size(), 0);
+    EXPECT_EQ(state.community.cards.size(), 0);
+    EXPECT_EQ(nextState->community.cards.size(), 0);
 
     for (auto &player : nextState->players)
     {
         int cardCount = __builtin_popcountll(player.GetCardBitmask());
-        ASSERT_EQ(cardCount, 2);
+        EXPECT_EQ(cardCount, 2);
     }
 }
 
@@ -68,7 +69,7 @@ TEST_F(StateTest, ChanceStateDealThreeCardsOnFlop)
     state.CreateChildren();
     auto nextState = state.children[0];
 
-    ASSERT_EQ(nextState->community.cards.size(), state.community.cards.size() + 3);
+    EXPECT_EQ(nextState->community.cards.size(), state.community.cards.size() + 3);
 }
 
 TEST_F(StateTest, ChanceStateDealOneCardOnTurn)
@@ -77,7 +78,7 @@ TEST_F(StateTest, ChanceStateDealOneCardOnTurn)
     state.CreateChildren();
     auto nextState = state.children[0];
 
-    ASSERT_EQ(nextState->community.cards.size(), state.community.cards.size() + 1);
+    EXPECT_EQ(nextState->community.cards.size(), state.community.cards.size() + 1);
 }
 
 TEST_F(StateTest, ChanceStateDealOneCardOnRiver)
@@ -86,7 +87,7 @@ TEST_F(StateTest, ChanceStateDealOneCardOnRiver)
     state.CreateChildren();
     auto nextState = state.children[0];
 
-    ASSERT_EQ(nextState->community.cards.size(), state.community.cards.size() + 1);
+    EXPECT_EQ(nextState->community.cards.size(), state.community.cards.size() + 1);
 }
 
 TEST_F(StateTest, ChanceStateChildIsOneBettingRoundAfter)
@@ -95,7 +96,7 @@ TEST_F(StateTest, ChanceStateChildIsOneBettingRoundAfter)
     state.CreateChildren();
     auto nextState = state.children[0];
 
-    ASSERT_EQ(nextState->community.bettingRound, state.community.bettingRound + 1);
+    EXPECT_EQ(nextState->community.bettingRound, state.community.bettingRound + 1);
 }
 
 TEST_F(StateTest, ChanceStateChildHasBBMinRaise)
@@ -105,7 +106,7 @@ TEST_F(StateTest, ChanceStateChildHasBBMinRaise)
     auto nextState = state.children[0];
     auto BB = Global::BB;
 
-    ASSERT_EQ(nextState->community.minRaise, BB);
+    EXPECT_EQ(nextState->community.minRaise, BB);
 }
 
 TEST_F(StateTest, ChanceStateChildIsBettingRound)
@@ -114,15 +115,42 @@ TEST_F(StateTest, ChanceStateChildIsBettingRound)
     state.CreateChildren();
     auto nextState = state.children[0];
 
-    ASSERT_EQ(nextState->community.isBettingOpen, true);
+    EXPECT_EQ(nextState->community.isBettingOpen, true);
 }
 
-TEST_F(StateTest, ChanceStateChildPlayerToPlayUnchanged)
+TEST_F(StateTest, ChanceStateChildUnchangedInfo)
 {
     ChanceState state = ChanceState();
     state.CreateChildren();
     auto nextState = state.children[0];
 
-    ASSERT_EQ(nextState->community.lastPlayer, state.community.lastPlayer);
-    ASSERT_EQ(nextState->community.playerToMove, state.community.playerToMove);
+    EXPECT_EQ(nextState->community.lastPlayer, state.community.lastPlayer);
+    EXPECT_EQ(nextState->community.playerToMove, state.community.playerToMove);
+    EXPECT_THAT(nextState->history, ElementsAreArray(state->history));
+}
+
+TEST_F(StateTest, ChanceStateSkipPlayeStateIfNoPlayersCanAct)
+{
+    for (auto &player : players)
+        player.lastAction = Action::ALLIN;
+    auto flopState = ChanceState(flopCommunity, players, history);
+    flopState.CreateChildren();
+
+    ASSERT_EQ(flopState.GetNumberOfPlayersThatNeedToAct(), 0);
+    ASSERT_EQ(flopState.children.size(), 1);
+    ASSERT_TRUE(dynamic_cast<ChanceState *>(flopState.children[0].get()));
+
+    auto turnState = flopState.children[0];
+    turnState->CreateChildren();
+
+    ASSERT_EQ(turnState.GetNumberOfPlayersThatNeedToAct(), 0);
+    ASSERT_EQ(turnState.children.size(), 1);
+    ASSERT_TRUE(dynamic_cast<ChanceState *>(turnState.children[0].get()));
+
+    auto riverState = turnState.children[0];
+    riverState->CreateChildren();
+
+    ASSERT_EQ(riverState.GetNumberOfPlayersThatNeedToAct(), 0);
+    ASSERT_EQ(riverState.children.size(), 1);
+    ASSERT_TRUE(dynamic_cast<TerminalState *>(riverState.children[0].get()));
 }
