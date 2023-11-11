@@ -4,13 +4,9 @@ add_library(${PROJECT_NAME}
     src/global.cpp
     src/infoset.cpp
     src/state.cpp
+    src/community_info.cpp
+    src/player_info.cpp
 )
-
-set_source_files_properties(
-    src/global.cpp
-    src/infoset.cpp
-    src/state.cpp
-PROPERTIES COMPILE_OPTIONS "-g")
 
 add_library(sub::abstraction ALIAS ${PROJECT_NAME})
 

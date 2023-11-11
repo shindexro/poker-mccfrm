@@ -9,6 +9,7 @@ add_executable(
   hand_strength.cpp
   deck.cpp
   hand_indexer.cpp
+  state.cpp
 )
 
 target_link_libraries(

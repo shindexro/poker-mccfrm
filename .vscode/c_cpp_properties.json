@@ -3,13 +3,13 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/src/**",
                 "${workspaceFolder}/src/abstraction/**",
                 "${workspaceFolder}/src/algorithm/**",
                 "${workspaceFolder}/src/enums/**",
                 "${workspaceFolder}/src/game/**",
                 "${workspaceFolder}/src/tables/**",
+                "${workspaceFolder}/src/utils/**",
+                "${workspaceFolder}/include",
                 "/usr/local/boost_1_83_0",
                 "/usr/local/onetbb/include",
                 "${workspaceFolder}/src/binary/include",

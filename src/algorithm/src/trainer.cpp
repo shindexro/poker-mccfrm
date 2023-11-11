@@ -54,7 +54,7 @@ void Trainer::UpdateStrategy(shared_ptr<State> gs, int traverser)
 void Trainer::UpdateStrategy(int traverser)
 {
     ResetGame();
-    if (rootState->bettingRound > 0)
+    if (rootState->community.bettingRound > 0)
     {
         throw invalid_argument("DAFUQ");
     }
@@ -81,7 +81,7 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
     }
     else if (!gs->IsPlayerInHand(traverser)) // we cant get the reward because this function is not implemented
     {
-        return -gs->bets[traverser]; // correct?
+        return -gs->players[traverser].bet; // correct?
     }
     else if (dynamic_cast<ChanceState *>(gs.get()))
     {
@@ -91,7 +91,7 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
     else if (gs->IsPlayerTurn(traverser))
     {
         // according to supp. mat. page 3, we do full MCCFR on the last betting round, otherwise skip low regret
-        if (gs->bettingRound != 4)
+        if (gs->community.bettingRound != 4)
         {
             // Infoset of player i that corresponds to h
             Infoset infoset = gs->GetInfoset();
@@ -180,7 +180,7 @@ void Trainer::PlayOneGame()
                 std::cout << "Player Cards: ";
                 for (auto i = 0; i < Global::nofPlayers; ++i)
                 {
-                    auto [card1, card2] = gs->playerCards[i];
+                    auto [card1, card2] = gs->players[i].cards;
                     auto playerCards = vector<Card>({Card(card1), Card(card2)});
                     playerCards[0].PrintBeautifulString();
                     playerCards[1].PrintBeautifulString(" ");
@@ -189,18 +189,18 @@ void Trainer::PlayOneGame()
             }
             else
             {
-                if (gs->tableCards.size() != 0)
+                if (gs->community.cards.size() != 0)
                     std::cout << "Table Cards: " << endl;
-                for (auto i = 0UL; i < gs->tableCards.size(); ++i)
+                for (auto i = 0UL; i < gs->community.cards.size(); ++i)
                 {
-                    Card(gs->tableCards[i]).PrintBeautifulString();
+                    Card(gs->community.cards[i]).PrintBeautifulString();
                 }
             }
         }
         else if (dynamic_cast<PlayState *>(gs.get()))
         {
             std::cout << endl;
-            std::cout << "Player " << gs->playerToMove << "'s turn : ";
+            std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
             Infoset infoset = gs->GetInfoset();
             auto sigma = infoset.CalculateStrategy();
 
@@ -240,7 +240,7 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
                     std::cout << "Player Cards: ";
                 for (auto i = 0; i < Global::nofPlayers; ++i)
                 {
-                    auto [card1, card2] = gs->playerCards[i];
+                    auto [card1, card2] = gs->players[i].cards;
                     auto playerCards = vector<Card>({Card(card1), Card(card2)});
                     if (display)
                         playerCards[0].PrintBeautifulString();
@@ -251,13 +251,13 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
             }
             else
             {
-                if (gs->tableCards.size() != 0)
+                if (gs->community.cards.size() != 0)
                     if (display)
                         std::cout << "Table Cards: ";
-                for (auto i = 0UL; i < gs->tableCards.size(); ++i)
+                for (auto i = 0UL; i < gs->community.cards.size(); ++i)
                 {
                     if (display)
-                        Card(gs->tableCards[i]).PrintBeautifulString();
+                        Card(gs->community.cards[i]).PrintBeautifulString();
                 }
             }
         }
@@ -266,10 +266,10 @@ float Trainer::PlayOneGame_d(int mainPlayer, bool display)
             if (display)
                 std::cout << endl;
             if (display)
-                std::cout << "Player " << gs->playerToMove << "'s turn : ";
+                std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
 
             Infoset infoset;
-            if (mainPlayer == gs->playerToMove)
+            if (mainPlayer == gs->community.playerToMove)
             {
                 infoset = gs->GetInfoset();
             }
@@ -309,7 +309,7 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
     }
     else if (!gs->IsPlayerInHand(traverser)) // we cant get the reward because this function is not implemented
     {
-        return -gs->bets[traverser]; // correct?
+        return -gs->players[traverser].bet; // correct?
     }
     else if (dynamic_cast<ChanceState *>(gs.get()))
     {
@@ -387,17 +387,17 @@ void Trainer::PrintStartingHandsChart()
         }
         if (gs[0]->GetValidActions()[i] == Action::RAISE1)
         {
-            std::cout << Global::raises[0] << "*POT RAISE "
+            std::cout << Global::raiseRatios[0] << "*POT RAISE "
                       << "Table" << endl;
         }
         if (gs[0]->GetValidActions()[i] == Action::RAISE2)
         {
-            std::cout << Global::raises[1] << "*POT RAISE "
+            std::cout << Global::raiseRatios[1] << "*POT RAISE "
                       << "Table" << endl;
         }
         if (gs[0]->GetValidActions()[i] == Action::RAISE3)
         {
-            std::cout << Global::raises[2] << "*POT RAISE "
+            std::cout << Global::raiseRatios[2] << "*POT RAISE "
                       << "Table" << endl;
         }
         if (gs[0]->GetValidActions()[i] == Action::ALLIN)
@@ -464,7 +464,7 @@ void Trainer::PrintStatistics(long iterations)
 
         Infoset infoset = ps->GetInfoset();
 
-        auto [card1, card2] = ps->playerCards[ps->playerToMove];
+        auto [card1, card2] = ps->players[ps->community.playerToMove].cards;
         Hand hand = Hand();
         hand.cards.push_back(card1);
         hand.cards.push_back(card2);
@@ -484,15 +484,15 @@ void Trainer::PrintStatistics(long iterations)
             }
             if (actions[j] == Action::RAISE1)
             {
-                std::cout << Global::raises[0] << "*POT ";
+                std::cout << Global::raiseRatios[0] << "*POT ";
             }
             if (actions[j] == Action::RAISE2)
             {
-                std::cout << Global::raises[1] << "*POT ";
+                std::cout << Global::raiseRatios[1] << "*POT ";
             }
             if (actions[j] == Action::RAISE3)
             {
-                std::cout << Global::raises[2] << "*POT ";
+                std::cout << Global::raiseRatios[2] << "*POT ";
             }
             if (actions[j] == Action::ALLIN)
             {
