@@ -7,6 +7,10 @@ using namespace std;
 
 namespace poker
 {
+    class State;
+    class PlayState;
+    class TerminalState;
+
     class ChanceState : public State
     {
         // this is the root state
