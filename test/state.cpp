@@ -126,7 +126,7 @@ TEST_F(StateTest, ChanceStateChildUnchangedInfo)
 
     EXPECT_EQ(nextState->community.lastPlayer, state.community.lastPlayer);
     EXPECT_EQ(nextState->community.playerToMove, state.community.playerToMove);
-    EXPECT_THAT(nextState->history, ElementsAreArray(state->history));
+    EXPECT_THAT(nextState->history, ElementsAreArray(state.history));
 }
 
 TEST_F(StateTest, ChanceStateSkipPlayeStateIfNoPlayersCanAct)
