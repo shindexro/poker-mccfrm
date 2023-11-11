@@ -12,7 +12,9 @@
 #include <unordered_map>
 #include <fstream>
 #include <sys/stat.h>
+#ifdef __linux__ 
 #include <unistd.h>
+#endif
 #include <algorithm>
 
 #include <indicators/cursor_control.hpp>
