@@ -57,7 +57,8 @@ TEST_F(StateTest, ChanceStateDealPlayerCardsPreflop)
 
     for (auto &player : nextState->players)
     {
-        ASSERT_EQ(player.cards.size(), 2);
+        int cardCount = __builtin_popcountll(player.GetCardBitmask());
+        ASSERT_EQ(cardCount, 2);
     }
 }
 
