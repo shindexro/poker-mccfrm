@@ -132,7 +132,7 @@ TEST_F(StateTest, ChanceStateChildUnchangedInfo)
 TEST_F(StateTest, ChanceStateSkipPlayeStateIfNoPlayersCanAct)
 {
     for (auto &player : players)
-        player.lastAction = Action::ALLIN;
+        player.lastAction = poker::Action::ALLIN;
     auto flopState = ChanceState(flopCommunity, players, history);
     flopState.CreateChildren();
 
