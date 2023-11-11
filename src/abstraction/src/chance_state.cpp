@@ -83,7 +83,7 @@ namespace poker
             newCommunity.isBettingOpen = true;
             newCommunity.lastPlayer = lastToMoveTemp;
             newCommunity.minRaise = minRaiseTemp;
-            children.push_back(make_shared<PlayState>(newCommunity, newPlayers, history));
+            children.push_back(dynamic_pointer_cast<State>(make_shared<PlayState>(newCommunity, newPlayers, history)));
         }
         else
         {
