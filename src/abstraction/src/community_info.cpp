@@ -11,4 +11,13 @@ namespace poker
                                      cards()
     {
     }
+
+    ulong CommunityInfo::GetCardBitmask() const {
+        ulong bitmask = 0ul;
+        for (auto card : cards)
+        {
+            bitmask |= card;
+        }
+        return bitmask;
+    }
 }

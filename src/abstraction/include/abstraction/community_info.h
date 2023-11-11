@@ -5,6 +5,8 @@
 
 #include <string>
 
+typedef unsigned long ulong;
+
 using namespace std;
 
 namespace poker
@@ -22,6 +24,8 @@ namespace poker
         vector<ulong> cards;
 
         CommunityInfo();
+
+        ulong GetCardBitmask() const;
     };
 
 }

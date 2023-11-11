@@ -37,28 +37,24 @@ namespace poker
                 if (!players[i].isStillInGame)
                     continue;
 
-                ulong cardsBitmask = players[i].GetCardBitmask();
-                for (auto k = 0UL; k < community.cards.size(); ++k)
-                {
-                    cardsBitmask |= community.cards[k];
-                }
+                ulong cardsBitmask = players[i].GetCardBitmask() | community.GetCardBitmask();
                 handValues[i] = Global::handEvaluator.Evaluate(cardsBitmask);
             }
-            // temphandval contains values of each players hand who is in
-            auto indicesWithBestHands = vector<int>();
+            auto playersWithBestHand = vector<int>();
+            auto maxHandValue = *max_element(handValues.begin(), handValues.end());
 
-            auto maxIt = max_element(handValues.begin(), handValues.end());
-            int maxVal = *maxIt;
-            int maxIndex = maxIt - handValues.begin();
-            while (maxIt != handValues.end())
+            for (int i = 0; i < Global::nofPlayers; i++)
             {
-                indicesWithBestHands.push_back(maxIndex);
-                *maxIt = -1;
-                maxIt = find(handValues.begin(), handValues.end(), maxVal);
+                if (handValues[i] == maxHandValue)
+                {
+                    playersWithBestHand.push_back(i);
+                }
             }
-            for (auto i = 0UL; i < indicesWithBestHands.size(); ++i)
+
+            // winners chop the pot
+            for (auto i = 0UL; i < playersWithBestHand.size(); ++i)
             {
-                players[indicesWithBestHands[i]].reward += GetPot() / indicesWithBestHands.size();
+                players[playersWithBestHand[i]].reward += GetPot() / playersWithBestHand.size();
             }
         }
         rewardGenerated = true;
