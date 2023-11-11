@@ -46,7 +46,7 @@ TEST(StateTest, ChanceStateHasAPlayStateChild)
     EXPECT_TRUE(dynamic_cast<PlayState *>(state.children[0].get()));
 }
 
-TEST(StateTest, ChanceStateHasNoCommunityCardsInitially)
+TEST_F(StateTest, ChanceStateHasNoCommunityCardsInitially)
 {
     ChanceState state = ChanceState(flopCommunity, players, history);
 
