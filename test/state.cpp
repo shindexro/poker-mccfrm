@@ -293,7 +293,7 @@ TEST_F(PlayStateTest, HasChildren)
     }
 }
 
-TEST_F(PlayStateTest, ChanceStateChild)
+TEST_F(PlayStateTest, ChanceStateChildGoToNextRound)
 {
     CreateChildren();
     for (auto state : playStates)
@@ -301,16 +301,64 @@ TEST_F(PlayStateTest, ChanceStateChild)
         BettingRound expectedBettingRound = state->community.bettingRound;
         ++expectedBettingRound;
 
-        int chanceChildCount = 0;
-
         for (auto child : state->children)
         {
             if (!dynamic_cast<ChanceState *>(child.get()))
                 continue;
 
             EXPECT_EQ(child->community.bettingRound, expectedBettingRound);
+        }
+    }
+}
+
+TEST_F(PlayStateTest, AtMostOneChanceStateChild)
+{
+    CreateChildren();
+    for (auto state : playStates)
+    {
+        int chanceChildCount = 0;
+        for (auto child : state->children)
+        {
+            if (!dynamic_cast<ChanceState *>(child.get()))
+                continue;
+
             chanceChildCount++;
         }
         EXPECT_LE(chanceChildCount, 1);
+    }
+}
+
+TEST_F(PlayStateTest, PlayStateChildrenInSameRound)
+{
+    CreateChildren();
+    for (auto state : playStates)
+    {
+        for (auto child : state->children)
+        {
+            if (!dynamic_cast<PlayState *>(child.get()))
+                continue;
+
+            EXPECT_EQ(child->community.bettingRound, community.bettingRound);
+        }
+    }
+}
+
+TEST_F(PlayStateTest, AtMostOnePlayStateChildThatCalled)
+{
+    CreateChildren();
+    for (auto &state : playStates)
+    {
+        int calledChildCount = 0;
+        for (auto child : state->children)
+        {
+            if (!dynamic_cast<ChanceState *>(child.get()))
+                continue;
+
+            calledChildCount++;
+        }
+        EXPECT_LE(calledChildCount, 1);
+
+        if (state == &preflopSBPlayState)
+            EXPECT_EQ(calledChildCount, 2);
     }
 }
