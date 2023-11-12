@@ -343,24 +343,35 @@ TEST_F(PlayStateTest, PlayStateChildrenInSameRound)
     }
 }
 
-TEST_F(PlayStateTest, AtMostOnePlayStateChildThatCalled)
+TEST_F(PlayStateTest, PlayStateChildrenTypeAmount)
 {
     CreateChildren();
     for (auto &state : playStates)
     {
         int calledChildCount = 0;
+        int allinChildCount = 0;
+
         for (auto child : state->children)
         {
             if (!dynamic_cast<PlayState *>(child.get()))
                 continue;
 
-            calledChildCount++;
+            if (child->history.back() == poker::Action::Call)
+            {
+                calledChildCount++;
+            }
+            else if (child->history.back() == poker::Action::Allin)
+            {
+                allinChildCount++;
+            }
         }
         EXPECT_LE(calledChildCount, 1);
+        EXPECT_LE(allinChildCount, 1);
 
         if (state == &preflopSBPlayState)
         {
             EXPECT_EQ(calledChildCount, 1);
+            EXPECT_EQ(allinChildCount, 1);
         }
     }
 }
