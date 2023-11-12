@@ -160,18 +160,16 @@ TEST_F(ChanceStateTest, NextBettingRoundAfterCardDealt)
     EXPECT_EQ(turnChanceState.children[0]->community.bettingRound, BettingRound::River);
 }
 
-TEST_F(ChanceStateTest, ChildIsBettingRound)
+TEST_F(ChanceStateTest, ChildConfigurations)
 {
     CreateChildren();
-    for (auto state : chanceStates)
-        EXPECT_TRUE(state->children[0]->community.isBettingOpen);
-}
+    int BB = Global::BB;
 
-TEST_F(ChanceStateTest, ChildUnchangedInfo)
-{
-    CreateChildren();
     for (auto state : chanceStates)
     {
+        EXPECT_TRUE(state->children[0]->community.isBettingOpen);
+        EXPECT_EQ(state->children[0]->community.minRaise, BB);
+        EXPECT_EQ(state->children[0]->community.playerToMove, 0);
         EXPECT_EQ(state->children[0]->community.lastPlayer, state->community.lastPlayer);
         EXPECT_EQ(state->children[0]->community.playerToMove, state->community.playerToMove);
         EXPECT_THAT(state->children[0]->history, ElementsAreArray(state->history));
