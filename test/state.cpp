@@ -103,7 +103,7 @@ protected:
 
         history = vector<poker::Action>(8, poker::Action::CALL);
 
-        state = PlayState(community, players, history);
+        state = TerminalState(community, players, history);
     }
 
     TerminalState state;
@@ -131,7 +131,7 @@ protected:
 
         history = vector<poker::Action>();
 
-        preflopSBPlayState = TerminalState(community, players, history);
+        preflopSBPlayState = PlayState(community, players, history);
     }
 
     PlayState preflopSBPlayState;
