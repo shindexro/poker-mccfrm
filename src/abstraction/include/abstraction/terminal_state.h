@@ -10,6 +10,7 @@ namespace poker
     class TerminalState : public State
     {
     public:
+        TerminalState();
         TerminalState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
         float GetReward(int player);

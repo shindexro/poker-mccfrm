@@ -4,6 +4,10 @@ using namespace std;
 
 namespace poker
 {
+    TerminalState::TerminalState() : State()
+    {
+    }
+
     TerminalState::TerminalState(CommunityInfo &community,
                                  vector<PlayerInfo> &players,
                                  vector<Action> &history) : State(community, players, history),
