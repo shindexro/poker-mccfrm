@@ -192,6 +192,10 @@ TEST_F(StateTest, TerminalStateMultipleWinnersRewards)
 TEST_F(StateTest, PlayStateHasChildren)
 {
     preflopCommunity.isBettingOpen = true;
+    players[0].bet = 5;
+    players[1].bet = 5;
+    players[0].isStillInGame = true;
+    players[1].isStillInGame = true;
     auto state = PlayState(preflopCommunity, players, history);
     state.CreateChildren();
 
