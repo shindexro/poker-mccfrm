@@ -222,9 +222,6 @@ namespace poker
         if (children.size() != 0)
             return;
 
-        int pot = GetPot();
-        int currentCall = MinimumCall();
-
         CreateCallChildren();
         CreateRaiseChildren();
         CreateAllInChildren();
