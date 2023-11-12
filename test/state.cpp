@@ -103,7 +103,7 @@ protected:
 
         history = vector<poker::Action>(8, poker::Action::CALL);
 
-        state = TerminalState(community, players, history);
+        state = PlayState(community, players, history);
     }
 
     TerminalState state;
