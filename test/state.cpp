@@ -206,13 +206,14 @@ TEST_F(ChanceStateTest, DealCommunityCards)
     EXPECT_EQ(riverChanceState.children[0]->community.cards.size(), 5);
 }
 
-TEST_F(ChanceStateTest, NextBettingRoundAfterCardDealt)
+TEST_F(ChanceStateTest, SameBettingRoundAfterCardDealt)
 {
     CreateChildren();
 
-    EXPECT_EQ(preflopChanceState.children[0]->community.bettingRound, BettingRound::Flop);
-    EXPECT_EQ(flopChanceState.children[0]->community.bettingRound, BettingRound::Turn);
-    EXPECT_EQ(turnChanceState.children[0]->community.bettingRound, BettingRound::River);
+    EXPECT_EQ(preflopChanceState.children[0]->community.bettingRound, BettingRound::Preflop);
+    EXPECT_EQ(flopChanceState.children[0]->community.bettingRound, BettingRound::Flop);
+    EXPECT_EQ(turnChanceState.children[0]->community.bettingRound, BettingRound::Turn);
+    EXPECT_EQ(riverChanceState.children[0]->community.bettingRound, BettingRound::River);
 }
 
 TEST_F(ChanceStateTest, ChildConfigurations)
