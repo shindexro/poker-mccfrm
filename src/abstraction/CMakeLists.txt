@@ -1,14 +1,14 @@
 project (abstraction)
 
 add_library(${PROJECT_NAME}
+    src/chance_state.cpp
+    src/community_info.cpp
     src/global.cpp
     src/infoset.cpp
-    src/state.cpp
-    src/chance_state.cpp
     src/play_state.cpp
-    src/terminal_state.cpp
-    src/community_info.cpp
     src/player_info.cpp
+    src/state.cpp
+    src/terminal_state.cpp
 )
 
 add_library(sub::abstraction ALIAS ${PROJECT_NAME})
