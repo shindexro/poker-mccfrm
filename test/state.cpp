@@ -162,7 +162,6 @@ protected:
 
     vector<PlayState *> playStates;
     PlayState preflopSBPlayState;
-    PlayState preflopSBPlayState;
     CommunityInfo community;
     vector<PlayerInfo> players;
     vector<poker::Action> history;
