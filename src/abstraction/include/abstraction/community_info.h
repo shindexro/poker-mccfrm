@@ -28,6 +28,8 @@ namespace poker
         ulong GetCardBitmask() const;
     };
 
+    ostream &operator<<(ostream &out, const CommunityInfo &info);
+
 }
 
 #endif

@@ -59,7 +59,11 @@ namespace poker
         int BettingRound();
         virtual shared_ptr<State> DoRandomAction() { throw invalid_argument("Not implemented"); };
         virtual float GetReward(int traverser) { throw invalid_argument("Not implemented"); };
+
+        void PrettyPrintTree(int depth = 0);
     };
+
+    ostream &operator<<(ostream &out, const State &state);
 }
 
 #endif

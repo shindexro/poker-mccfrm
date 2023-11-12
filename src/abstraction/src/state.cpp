@@ -104,4 +104,27 @@ namespace poker
         return community.bettingRound;
     }
 
+    void State::PrettyPrintTree(int depth)
+    {
+        for (int i = 0; i < depth; i++)
+            cout << "  ";
+
+        cout << "└" << *this << endl;
+
+        for (auto child : children)
+        {
+            child->PrettyPrintTree();
+        }
+    }
+
+    ostream &operator<<(ostream &out, const State &state)
+    {
+        cout << state.community << " ";
+        for (auto &player : state.players)
+            cout << player << " ";
+        cout << " ";
+        for (auto action : state.history)
+            cout << action << " ";
+    }
+
 }

@@ -2,8 +2,10 @@
 #define __CLASS_PLAYER_INFO_H__
 
 #include "enums/action.h"
+#include "game/hand.h"
 
 #include <tuple>
+#include <iostream>
 
 typedef unsigned long ulong;
 
@@ -23,8 +25,10 @@ namespace poker
 
         PlayerInfo();
 
-        ulong GetCardBitmask();
+        ulong GetCardBitmask() const;
     };
+
+     ostream &operator<<(ostream &out, const PlayerInfo &info);
 }
 
 #endif

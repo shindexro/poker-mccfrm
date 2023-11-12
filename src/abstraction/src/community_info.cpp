@@ -12,12 +12,24 @@ namespace poker
     {
     }
 
-    ulong CommunityInfo::GetCardBitmask() const {
+    ulong CommunityInfo::GetCardBitmask() const
+    {
         ulong bitmask = 0ul;
         for (auto card : cards)
         {
             bitmask |= card;
         }
         return bitmask;
+    }
+
+    ostream &operator<<(ostream &out, const CommunityInfo &info)
+    {
+        cout << info.bettingRound << " "
+             << info.playerToMove << " "
+             << info.lastPlayer << " "
+             << info.minRaise << " "
+             << info.isBettingOpen << " "
+             << info.actionCount << " "
+             << Hand(info.GetCardBitmask()).ToString();
     }
 }
