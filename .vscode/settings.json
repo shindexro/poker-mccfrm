@@ -93,7 +93,8 @@
         "xhash": "cpp",
         "xstring": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "stack": "cpp"
     },
     "cmake.configureOnOpen": false
 }
