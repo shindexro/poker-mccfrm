@@ -19,6 +19,8 @@ class Program
 public:
     static void Main()
     {
+        auto community = CommunityInfo();
+        cout << community << endl;
         auto state = ChanceState();
         state.PrettyPrintTree();
 
@@ -86,9 +88,9 @@ private:
         cout << "Starting Monte Carlo Counterfactual Regret Minimization (MCCFRM)..." << endl;
 
         long StrategyInterval = max(1, 10000 / Global::NOF_THREADS); // bb rounds before updating player strategy (recursive through tree) 10k
-        long PruneThreshold = 20000000 / Global::NOF_THREADS;       // bb rounds after this time we stop checking all actions, 200 minutes
-        long LCFRThreshold = 20000000 / Global::NOF_THREADS;        // bb rounds when to stop discounting old regrets, no clue what it should be
-        long DiscountInterval = 1000000 / Global::NOF_THREADS;      // bb rounds, discount values periodically but not every round, 10 minutes
+        long PruneThreshold = 20000000 / Global::NOF_THREADS;        // bb rounds after this time we stop checking all actions, 200 minutes
+        long LCFRThreshold = 20000000 / Global::NOF_THREADS;         // bb rounds when to stop discounting old regrets, no clue what it should be
+        long DiscountInterval = 1000000 / Global::NOF_THREADS;       // bb rounds, discount values periodically but not every round, 10 minutes
         long SaveToDiskInterval = 100000 / Global::NOF_THREADS;
         long testGamesInterval = 100000 / Global::NOF_THREADS;
 
