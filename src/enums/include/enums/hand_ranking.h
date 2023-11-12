@@ -30,6 +30,7 @@ std::ostream &operator<<(std::ostream &out, const HandRanking &value)
             PROCESS_VAL(FourOfAKind);
             PROCESS_VAL(StraightFlush);
         }
+        return "N/A";
 #undef PROCESS_VAL
     }();
     return out << s;

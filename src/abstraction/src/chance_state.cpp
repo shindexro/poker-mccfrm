@@ -14,7 +14,7 @@ namespace poker
         players[1].bet = Global::BB;
         players[0].stack = Global::buyIn - Global::SB;
         players[1].stack = Global::buyIn - Global::BB;
-        community.bettingRound = 0;
+        community.bettingRound = BettingRound::Preflop;
         community.lastPlayer = 1; // initially the BB player is last to act
         community.minRaise = Global::BB;
     }
@@ -34,7 +34,7 @@ namespace poker
         auto newCommunity = CommunityInfo(community);
 
         DealCards(newCommunity, newPlayers);
-        newCommunity.bettingRound = community.bettingRound + 1;
+        ++newCommunity.bettingRound;
         newCommunity.minRaise = Global::BB;
 
         if (GetNumberOfPlayersThatNeedToAct() >= 2)
@@ -106,7 +106,8 @@ namespace poker
         // create one playstate child after chance
         int lastToMoveTemp = -1;
         int minRaiseTemp = Global::BB;
-        int bettingRound = community.bettingRound + 1;
+        auto bettingRound = community.bettingRound;
+        ++bettingRound;
 
         if (community.bettingRound == 0)
         {
