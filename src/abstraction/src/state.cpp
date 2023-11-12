@@ -127,4 +127,9 @@ namespace poker
             out << action << " ";
         return out;
     }
+
+    ostream &operator<<(ostream &out, const State &state)
+    {
+        return state.Print(out);
+    }
 }
