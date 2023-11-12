@@ -251,7 +251,7 @@ namespace poker
     };
 } // namespace poker
 
-int main(int argc, char *argv[])
+int main()
 {
     poker::Program program;
     program.Main();
