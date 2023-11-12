@@ -112,6 +112,34 @@ protected:
     vector<poker::Action> history;
 };
 
+class PlayStateTest : public Test
+{
+protected:
+    void SetUp() override
+    {
+        community = CommunityInfo();
+        community.isBettingOpen = true;
+
+        players = vector<PlayerInfo>(2);
+        players[0].cards = {32, 64};
+        players[1].cards = {128, 256};
+
+        players[0].bet = 1;
+        players[1].bet = 2;
+        players[0].stack = 199;
+        players[1].stack = 198;
+
+        history = vector<poker::Action>();
+
+        preflopSBPlayState = TerminalState(community, players, history);
+    }
+
+    PlayState preflopSBPlayState;
+    CommunityInfo community;
+    vector<PlayerInfo> players;
+    vector<poker::Action> history;
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ChanceState tests
 
@@ -222,19 +250,12 @@ TEST_F(ShowDownTerminalStateTest, MultipleWinnersRewards)
     EXPECT_EQ(state.GetReward(1), 0);
 }
 
-// ///////////////////////////////////////////////////////////////////////////////////////////
-// // PlayState tests
+///////////////////////////////////////////////////////////////////////////////////////////
+// PlayState tests
 
-// TEST_F(StateTest, PlayStateHasChildren)
-// {
-//     preflopCommunity.isBettingOpen = true;
-//     players[0].stack = 5;
-//     players[1].stack = 5;
-//     players[0].isStillInGame = true;
-//     players[1].isStillInGame = true;
-//     auto state = PlayState(preflopCommunity, players, history);
-//     state.CreateChildren();
+TEST_F(PlayStateTest, HasChildren)
+{
+    preflopSBPlayState.CreateChildren();
 
-//     EXPECT_GT(state.children.size(), 0);
-//     EXPECT_THAT(state.children, )
-// }
+    EXPECT_GT(preflopSBPlayState.children.size(), 0);
+}
