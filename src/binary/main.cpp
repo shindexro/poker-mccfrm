@@ -14,6 +14,8 @@
 #include <iostream>
 #include <string>
 
+using namespace poker;
+
 class Program
 {
 public:
