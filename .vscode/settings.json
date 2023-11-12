@@ -96,7 +96,23 @@
         "xutility": "cpp",
         "stack": "cpp",
         "xlocbuf": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "execution": "cpp",
+        "filesystem": "cpp",
+        "format": "cpp",
+        "ios": "cpp",
+        "locale": "cpp",
+        "stdfloat": "cpp",
+        "xfacet": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp",
+        "xlocinfo": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "xloctime": "cpp",
+        "xmemory": "cpp",
+        "xtr1common": "cpp"
     },
     "cmake.configureOnOpen": false
 }

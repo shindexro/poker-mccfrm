@@ -22,7 +22,7 @@ public:
     static void Main()
     {
         auto community = CommunityInfo();
-        cout << community << endl;
+        cout << community << std::endl;
         auto state = ChanceState();
         state.PrettyPrintTree();
 

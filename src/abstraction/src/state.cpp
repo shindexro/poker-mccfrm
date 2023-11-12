@@ -107,9 +107,9 @@ namespace poker
     void State::PrettyPrintTree(int depth)
     {
         for (int i = 0; i < depth; i++)
-            cout << "  ";
+            std::cout << "  ";
 
-        cout << "└" << *this << endl;
+        std::cout << "└" << *this << std::endl;
 
         for (auto child : children)
         {
