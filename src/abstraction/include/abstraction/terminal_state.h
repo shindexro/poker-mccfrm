@@ -14,6 +14,7 @@ namespace poker
         TerminalState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
         float GetReward(int player);
+        void CreateChildren() override;
 
     private:
         bool rewardGenerated;

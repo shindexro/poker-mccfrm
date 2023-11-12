@@ -73,4 +73,9 @@ namespace poker
         //     throw invalid_argument("Wrong reward calculation");
         return players[player].reward;
     }
+
+    void TerminalState::CreateChildren()
+    {
+        // do nothing
+    }
 } // namespace poker

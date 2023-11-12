@@ -35,9 +35,6 @@ namespace poker
 
         State();
         State(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
-        State(vector<int> &stacks, vector<int> &bets, vector<Action> &history,
-              vector<tuple<ulong, ulong>> &playerCards, vector<ulong> &tableCards, vector<Action> &lastActions,
-              vector<bool> &isPlayerIn, int playersInHand, int bettingRound);
 
         int GetNextPlayer();
         int GetNextPlayer(int lastToMoveTemp);
