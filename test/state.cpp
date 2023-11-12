@@ -50,7 +50,7 @@ protected:
         /////////1/////////2/////////3/////////4/////////5/////////6
         riverChanceState = ChanceState();
         riverChanceState.community.bettingRound = BettingRound::River;
-        turnChanceState.community.cards = vector<ulong>(4, 1UL);
+        riverChanceState.community.cards = vector<ulong>(4, 1UL);
         for (auto &player : riverChanceState.players)
         {
             player.bet = 5;
@@ -103,10 +103,10 @@ protected:
 
         history = vector<poker::Action>(8, poker::Action::CALL);
 
-        state = State(community, players, history);
+        state = TerminalState(community, players, history);
     }
 
-    State state;
+    TerminalState state;
     CommunityInfo community;
     vector<PlayerInfo> players;
     vector<poker::Action> history;
@@ -190,8 +190,11 @@ TEST_F(ChanceStateTest, SkipPlayeStateIfNoPlayersCanAct)
     {
         EXPECT_EQ(state->GetNumberOfPlayersThatNeedToAct(), 0);
         EXPECT_EQ(state->children.size(), 1);
-        EXPECT_TRUE(dynamic_cast<ChanceState *>(state->children[0].get()));
     }
+    EXPECT_TRUE(dynamic_cast<ChanceState *>(preflopChanceState.children[0].get()));
+    EXPECT_TRUE(dynamic_cast<ChanceState *>(flopChanceState.children[0].get()));
+    EXPECT_TRUE(dynamic_cast<ChanceState *>(turnChanceState.children[0].get()));
+    EXPECT_TRUE(dynamic_cast<TerminalState *>(riverChanceState.children[0].get()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
