@@ -16,12 +16,15 @@
 
 namespace poker
 {
-    void StateDFS(State &state)
+    void StateDFS(State &state, int depth = 0)
     {
+        if (depth > 3)
+            return;
+
         state.CreateChildren();
         for (auto &child : state.children)
         {
-            StateDFS(*child);
+            StateDFS(*child, depth + 1);
         }
     }
 
