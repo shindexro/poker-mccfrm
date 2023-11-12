@@ -31,5 +31,6 @@ namespace poker
             << info.isBettingOpen << " "
             << info.actionCount << " "
             << Hand(info.GetCardBitmask()).ToString();
+        return out;
     }
 }

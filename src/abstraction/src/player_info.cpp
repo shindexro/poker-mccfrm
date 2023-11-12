@@ -23,5 +23,6 @@ namespace poker
         out << info.stack << " " << info.bet << " " << info.reward << " "
             << info.isStillInGame << " " << info.lastAction << " "
             << Hand(info.GetCardBitmask()).ToString();
+        return out;
     }
 }

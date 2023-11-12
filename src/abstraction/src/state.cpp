@@ -125,6 +125,7 @@ namespace poker
         out << " ";
         for (auto action : state.history)
             out << action << " ";
+        return out;
     }
 
 }
