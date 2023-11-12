@@ -34,7 +34,6 @@ namespace poker
         static void Main()
         {
             auto state = ChanceState();
-            std::cout << state << std::endl;
             StateDFS(state);
             state.PrettyPrintTree();
 
