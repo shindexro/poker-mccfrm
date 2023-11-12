@@ -79,10 +79,10 @@ namespace poker
         // do nothing
     }
 
-    ostream &operator<<(ostream &out, const TerminalState &state)
+    ostream &TerminalState::Print(ostream &out) const
     {
-        out << "Terminal | " << static_cast<const State &>(state);
-        return out;
+        out << "Terminal | ";
+        return State::Print(out);
     }
 
 } // namespace poker

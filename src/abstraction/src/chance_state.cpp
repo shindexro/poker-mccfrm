@@ -155,9 +155,9 @@ namespace poker
         return players[player].isStillInGame;
     }
 
-    ostream &operator<<(ostream &out, const ChanceState &state)
+    ostream &ChanceState::Print(ostream &out) const
     {
-        out << "Chance | " << static_cast<const State &>(state);
-        return out;
+        out << "Chance | ";
+        return State::Print(out);
     }
 } // namespace poker

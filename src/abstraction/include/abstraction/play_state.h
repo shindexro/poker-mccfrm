@@ -30,14 +30,14 @@ namespace poker
         Infoset GetInfosetSecondary();
         void UpdateInfoset(Infoset &infoset);
 
+        ostream& Print(ostream &out) const override;
+
     private:
         void CreateCallChildren();
         void CreateRaiseChildren();
         void CreateAllInChildren();
         void CreateFoldChildren();
     };
-
-    ostream &operator<<(ostream &out, const PlayState &state);
 }
 
 #endif

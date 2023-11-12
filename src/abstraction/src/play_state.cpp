@@ -407,9 +407,9 @@ namespace poker
         }
     }
 
-    ostream &operator<<(ostream &out, const PlayState &state)
+    ostream &PlayState::Print(ostream &out) const
     {
-        out << "Play | " << static_cast<const State &>(state);
-        return out;
+        out << "Play | ";
+        return State::Print(out);
     }
 } // namespace poker

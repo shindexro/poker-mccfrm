@@ -117,15 +117,14 @@ namespace poker
         }
     }
 
-    ostream &operator<<(ostream &out, const State &state)
+    ostream &State::Print(ostream &out) const
     {
-        out << state.community << " | ";
-        for (auto &player : state.players)
+        out << community << " | ";
+        for (auto &player : players)
             out << player << " ";
         out << " ";
-        for (auto action : state.history)
+        for (auto action : history)
             out << action << " ";
         return out;
     }
-
 }

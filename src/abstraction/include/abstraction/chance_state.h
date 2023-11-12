@@ -28,11 +28,11 @@ namespace poker
 
         bool IsPlayerInHand(int player);
 
+        ostream &Print(ostream &out) const override;
+
     private:
         void DealCards(CommunityInfo &newCommunity, vector<PlayerInfo> &newPlayers);
     };
-
-    ostream &operator<<(ostream &out, const ChanceState &state);
 }
 
 #endif

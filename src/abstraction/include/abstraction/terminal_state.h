@@ -18,13 +18,13 @@ namespace poker
         float GetReward(int player);
         void CreateChildren() override;
 
+        ostream& Print(ostream &out) const override;
+
     private:
         bool rewardGenerated;
 
         void CreateRewards();
     };
-
-    ostream &operator<<(ostream &out, const TerminalState &state);
 }
 
 #endif
