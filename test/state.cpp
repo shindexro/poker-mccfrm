@@ -83,16 +83,34 @@ protected:
     ChanceState riverChanceState;
 };
 
-class TerminalStateTest : public Test
+class ShowDownTerminalStateTest : public Test
 {
 protected:
     void SetUp() override
     {
-        state = TerminalState(community, players, history);
+        community = CommunityInfo();
+        community.cards = vector<ulong>({1, 2, 4, 8, 16});
+        community.bettingRound = BettingRound::River;
+
+        players = vector<PlayerInfo>(2);
+        players[0].cards = {32, 64};
+        players[1].cards = {128, 256};
+        for (auto &player : players)
+        {
+            player.bet = 2;
+            player.stack = 198;
+        }
+
+        history = vector<poker::Action>(8, poker::Action::CALL);
+
+        state = State(community, players, history);
     }
 
-    TerminalState state;
-}
+    State state;
+    CommunityInfo community;
+    vector<PlayerInfo> players;
+    vector<poker::Action> history;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ChanceState tests
@@ -179,30 +197,28 @@ TEST_F(ChanceStateTest, SkipPlayeStateIfNoPlayersCanAct)
 ///////////////////////////////////////////////////////////////////////////////////////////
 // TerminalState tests
 
-// TEST_F(StateTest, TerminalStateSingleWinnerRewards)
-// {
-//     players[0].bet = 7;
-//     players[1].bet = 5;
-//     players[0].isStillInGame = true;
-//     players[1].isStillInGame = false;
-//     auto state = TerminalState(flopCommunity, players, history);
+TEST_F(ShowDownTerminalStateTest, SingleWinnerRewards)
+{
+    players[0].bet = 7;
+    players[1].bet = 5;
+    players[0].isStillInGame = true;
+    players[1].isStillInGame = false;
 
-//     EXPECT_EQ(state.GetReward(0), -7 + 7 + 5);
-//     EXPECT_EQ(state.GetReward(1), -5);
-// }
+    EXPECT_EQ(state.GetReward(0), -7 + 7 + 5);
+    EXPECT_EQ(state.GetReward(1), -5);
+}
 
-// TEST_F(StateTest, TerminalStateMultipleWinnersRewards)
-// {
-//     players[0].bet = 5;
-//     players[1].bet = 5;
-//     players[0].isStillInGame = true;
-//     players[1].isStillInGame = true;
-//     // players have same hand strength
-//     auto state = TerminalState(flopCommunity, players, history);
+TEST_F(ShowDownTerminalStateTest, MultipleWinnersRewards)
+{
+    players[0].bet = 5;
+    players[1].bet = 5;
+    players[0].isStillInGame = true;
+    players[1].isStillInGame = true;
+    // players have same hand strength
 
-//     EXPECT_EQ(state.GetReward(0), 0);
-//     EXPECT_EQ(state.GetReward(1), 0);
-// }
+    EXPECT_EQ(state.GetReward(0), 0);
+    EXPECT_EQ(state.GetReward(1), 0);
+}
 
 // ///////////////////////////////////////////////////////////////////////////////////////////
 // // PlayState tests
