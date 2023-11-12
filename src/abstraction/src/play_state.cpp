@@ -225,230 +225,184 @@ namespace poker
         int pot = GetPot();
         int currentCall = MinimumCall();
 
-        if (community.isBettingOpen)
+        CreateCallChildren();
+        CreateRaiseChildren();
+        CreateAllInChildren();
+        CreateFoldChildren();
+
+        //// TODO: add this assetion to test
+        // int totalStack = accumulate(stacks.begin(), stacks.end(), 0);
+        // int totalBet = accumulate(bets.begin(), bets.end(), 0);
+        // if (totalStack + totalBet != Global::buyIn * Global::nofPlayers)
+        // {
+        //     throw invalid_argument("Impossible chip counts");
+        // }
+    }
+
+    void PlayState::CreateCallChildren()
+    {
+        // call possible if needed chips is LESS (otherwise its all in), if same its a check
+        int call = MinimumCall();
+        int additionBet = call - players[community.playerToMove].bet;
+        if (additionBet >= players[community.playerToMove].stack)
+            return;
+
+        shared_ptr<State> nextState;
+        if (GetNextPlayer() == -1)
+            nextState = make_shared<PlayState>(community, players, history);
+        else if (community.bettingRound < BettingRound::River)
+            nextState = make_shared<ChanceState>(community, players, history);
+        else
+            nextState = make_shared<TerminalState>(community, players, history);
+
+        nextState->history.push_back(Action::CALL);
+        auto &playerWhoCalled = nextState->players[community.playerToMove];
+        playerWhoCalled.lastAction = Action::CALL;
+        playerWhoCalled.bet += additionBet;
+        playerWhoCalled.stack -= additionBet;
+
+        if (dynamic_cast<PlayState *>(nextState.get()))
         {
-            // raises
-            for (auto i = 0UL; i < Global::raiseRatios.size(); ++i)
-            {
-                auto nextState = make_shared<PlayState>(community, players, history);
-
-                // we add <raise> chips to our current bet
-                int raise = (int)(Global::raiseRatios[i] * pot);
-                int actualRaise = (raise + players[community.playerToMove].bet) - currentCall;
-                if (actualRaise < community.minRaise || raise >= players[community.playerToMove].stack)
-                    continue;
-
-                // valid raise, if stack is equal it would be an all in
-                // TODO: dont hardcode this
-                if (i == 0)
-                    nextState->history.push_back(Action::RAISE1);
-                if (i == 1)
-                    nextState->history.push_back(Action::RAISE2);
-                if (i == 2)
-                    nextState->history.push_back(Action::RAISE3);
-                // if (i == 3)
-                //     newHistory.push_back(Action::RAISE4);
-                // if (i == 4)
-                //     newHistory.push_back(Action::RAISE5);
-                // if (i == 5)
-                //     newHistory.push_back(Action::RAISE6);
-
-                nextState->players[community.playerToMove].stack -= raise;
-                nextState->players[community.playerToMove].bet += raise;
-                nextState->players[community.playerToMove].lastAction = Action::RAISE;
-
-                nextState->community.lastPlayer = GetLastPlayer(community.playerToMove);
-                nextState->community.playerToMove = GetNextPlayer(nextState->community.lastPlayer);
-
-                nextState->community.isBettingOpen = true;
-                nextState->community.minRaise = actualRaise;
-
-                if (nextState->community.playerToMove != -1)
-                {
-                    children.push_back(nextState);
-                }
-                else
-                {
-                    throw invalid_argument("Someone raised but there is no one left to play next");
-                }
-            }
-            /*
-
-            // all-in
-            if (players[community.playerToMove].stack > 0)
-            {
-                //(currently, multiple all-ins in a row dont accumulate the raises and re-open betting round but probably they should)
-                int raise = players[community.playerToMove].stack;
-                int actualRaise = (raise + players[community.playerToMove].bet) - currentCall;
-
-                auto newHistory = vector<Action>(history);
-                auto newStacks = vector<int>(stacks);
-                auto newBets = vector<int>(bets);
-
-                auto newLastActions = vector<Action>(lastActionOfPlayer);
-                auto newIsPlayerIn = vector<bool>(isPlayerIn);
-
-                if (actualRaise >= minRaise)
-                {
-                    // re-open betting if raise high enough
-                    newHistory.push_back(Action::ALLIN);
-                    newLastActions[community.playerToMove] = Action::ALLIN;
-
-                    newBets[community.playerToMove] += raise;
-                    newStacks[community.playerToMove] = 0;
-
-                    int newLastPlayer = GetLastPlayer(community.playerToMove);
-                    int nextPlayer = GetNextPlayer(newLastPlayer);
-
-                    // check if there is any player that has to play..
-                    if (nextPlayer != -1)
-                    {
-                        children.push_back(make_shared<PlayState>(community.bettingRound, nextPlayer, newLastPlayer,
-                                                                  actualRaise, playersInHand, newStacks, newBets, newHistory,
-                                                                  playerCards, community.cards, newLastActions, newIsPlayerIn, true));
-                    }
-                    else
-                    {
-                        // ...otherwise go to chance
-                        if (community.bettingRound != 4)
-                        {
-                            children.push_back(make_shared<ChanceState>(community.bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
-                                                                        newBets, newHistory, playerCards, community.cards, newLastActions, newIsPlayerIn));
-                        }
-                        else
-                        {
-                            children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
-                                                                          playerCards, community.cards, newLastActions, newIsPlayerIn));
-                        }
-                    }
-                }
-                else
-                {
-                    // all in possible but not re-open betting
-                    newHistory.push_back(Action::ALLIN);
-                    newLastActions[community.playerToMove] = Action::ALLIN;
-
-                    newBets[community.playerToMove] += raise;
-                    newStacks[community.playerToMove] = 0;
-
-                    int newLastPlayer = GetLastPlayer(community.playerToMove);
-                    int nextPlayer = GetNextPlayer(newLastPlayer);
-
-                    // check if there is any player that has to play..
-                    if (nextPlayer != -1)
-                    {
-                        children.push_back(make_shared<PlayState>(community.bettingRound, nextPlayer, newLastPlayer,
-                                                                  minRaise, playersInHand, newStacks, newBets, newHistory,
-                                                                  playerCards, community.cards, newLastActions, newIsPlayerIn, isBettingOpen));
-                    }
-                    else
-                    {
-                        // ...otherwise go to chance
-                        if (community.bettingRound != 4)
-                        {
-                            children.push_back(make_shared<ChanceState>(community.bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
-                                                                        newBets, newHistory, playerCards, community.cards, newLastActions, newIsPlayerIn));
-                        }
-                        else
-                        {
-                            children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
-                                                                          playerCards, community.cards, newLastActions, newIsPlayerIn));
-                        }
-                    }
-                }
-            }
+            nextState->community.lastPlayer = community.playerToMove;
+            nextState->community.playerToMove = GetNextPlayer(nextState->community.lastPlayer);
         }
-        if (currentCall > players[community.playerToMove].bet)
+
+        children.push_back(nextState);
+    }
+
+    void PlayState::CreateRaiseChildren()
+    {
+        if (!community.isBettingOpen)
+            return;
+
+        // raises
+        for (auto i = 0UL; i < Global::raiseRatios.size(); ++i)
         {
-            // fold
-            auto newHistory = vector<Action>(history);
-            auto newStacks = vector<int>(stacks);
-            auto newBets = vector<int>(bets);
-            auto newLastActions = vector<Action>(lastActionOfPlayer);
-            auto newIsPlayerIn = vector<bool>(isPlayerIn);
+            auto nextState = make_shared<PlayState>(community, players, history);
 
-            newHistory.push_back(Action::FOLD);
-            newLastActions[community.playerToMove] = Action::FOLD;
-            newIsPlayerIn[community.playerToMove] = false;
+            // we add <raise> chips to our current bet
+            int raise = (int)(Global::raiseRatios[i] * GetPot());
+            int additionalRaise = raise + players[community.playerToMove].bet - MinimumCall();
+            /* For example, if an opponent bets $5, a player must raise by at least another $5,
+                and they may not raise by only $2.
+                If a player raises a bet of $5 by $7 (for a total of $12),
+                the next re-raise would have to be by at least another $7 (the previous raise)
+                more than the $12 (for a total of at least $19).
+            */
+            if (additionalRaise < community.minRaise || raise >= players[community.playerToMove].stack)
+                continue;
 
-            int nextPlayer = GetNextPlayer();
+            // valid raise, if stack is equal it would be an all in
+            // TODO: dont hardcode this
+            if (i == 0)
+                nextState->history.push_back(Action::RAISE1);
+            if (i == 1)
+                nextState->history.push_back(Action::RAISE2);
+            if (i == 2)
+                nextState->history.push_back(Action::RAISE3);
 
-            if (GetActivePlayers(newIsPlayerIn) == 1)
+            auto &playerWhoRaised = nextState->players[community.playerToMove];
+            playerWhoRaised.stack -= raise;
+            playerWhoRaised.bet += raise;
+            playerWhoRaised.lastAction = Action::RAISE;
+
+            nextState->community.lastPlayer = community.playerToMove;
+            nextState->community.playerToMove = GetNextPlayer(nextState->community.lastPlayer);
+
+            nextState->community.isBettingOpen = true;
+            nextState->community.minRaise = additionalRaise;
+
+            if (nextState->community.playerToMove != -1)
             {
-                // terminal state
-                children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
-                                                              playerCards, community.cards, newLastActions, newIsPlayerIn));
-            }
-            else if (nextPlayer != -1)
-            {
-                children.push_back(make_shared<PlayState>(community.bettingRound, nextPlayer, lastPlayer,
-                                                          minRaise, playersInHand, newStacks, newBets, newHistory,
-                                                          playerCards, community.cards, newLastActions, newIsPlayerIn, isBettingOpen));
+                children.push_back(nextState);
             }
             else
             {
-                // here the betting round is over, there is more than 1 player left
-                if (community.bettingRound != 4)
-                {
-                    // chance
-                    children.push_back(make_shared<ChanceState>(community.bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
-                                                                newBets, newHistory, playerCards, community.cards, newLastActions, newIsPlayerIn));
-                }
-                else
-                {
-                    children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
-                                                                  playerCards, community.cards, newLastActions, newIsPlayerIn));
-                }
+                throw invalid_argument("Someone raised but there is no one left to play next");
             }
         }
-        if (currentCall - players[community.playerToMove] < players[community.playerToMove].bet.stack)
+    }
+
+    void PlayState::CreateAllInChildren()
+    {
+        // all-in
+        if (players[community.playerToMove].stack <= 0)
+            return;
+
+        // (currently, multiple all-ins in a row dont accumulate the raises and re-open betting round but probably they should)
+        int raise = players[community.playerToMove].stack;
+        int additionalRaise = (raise + players[community.playerToMove].bet) - MinimumCall();
+
+        auto nextState = make_shared<PlayState>(community, players, history);
+        auto &playerWhoAllIn = nextState->players[community.playerToMove];
+        nextState->history.push_back(Action::ALLIN);
+        playerWhoAllIn.lastAction = Action::ALLIN;
+        playerWhoAllIn.bet += raise;
+        playerWhoAllIn.stack = 0;
+
+        nextState->community.lastPlayer = community.playerToMove;
+        nextState->community.playerToMove = GetNextPlayer(nextState->community.lastPlayer);
+
+        if (additionalRaise >= community.minRaise)
         {
-            // call possible if needed chips is LESS (otherwise its all in), if same its a check
-            auto newHistory = vector<Action>(history);
-            auto newStacks = vector<int>(stacks);
-            auto newBets = vector<int>(bets);
-            auto newLastActions = vector<Action>(lastActionOfPlayer);
-            auto newIsPlayerIn = vector<bool>(isPlayerIn);
+            // re-open betting if raise high enough
+            nextState->community.minRaise = additionalRaise;
+        }
+        else
+        {
+            //// TODO: this doesn't consider players >=2
+            nextState->community.isBettingOpen = false;
+        }
 
-            newHistory.push_back(Action::CALL);
-            newLastActions[community.playerToMove] = Action::CALL;
+        // check if there is any player that has to play..
+        if (nextState->community.playerToMove != -1)
+        {
+            children.push_back(nextState);
+        }
+        else if (community.bettingRound < BettingRound::River)
+        {
+            children.push_back(make_shared<ChanceState>(nextState->community, nextState->players, nextState->history));
+        }
+        else
+        {
+            children.push_back(make_shared<TerminalState>(nextState->community, nextState->players, nextState->history));
+        }
+    }
 
-            newBets[community.playerToMove] += currentCall - players[community.playerToMove].bet;
-            newStacks[community.playerToMove] -= currentCall - players[community.playerToMove].bet;
+    void PlayState::CreateFoldChildren()
+    {
+        if (MinimumCall() <= players[community.playerToMove].bet)
+            return;
 
-            int nextPlayer = GetNextPlayer();
+        auto nextState = make_shared<PlayState>(community, players, history);
 
-            if (nextPlayer != -1) // the round isnt over
+        nextState->history.push_back(Action::FOLD);
+        nextState->players[community.playerToMove].lastAction = Action::FOLD;
+        nextState->players[community.playerToMove].isStillInGame = false;
+
+        int nextPlayer = GetNextPlayer();
+
+        if (nextState->GetActivePlayers() == 1)
+        {
+            // terminal state
+            children.push_back(make_shared<TerminalState>(nextState->community, nextState->players, nextState->history));
+        }
+        else if (nextPlayer != -1)
+        {
+            children.push_back(nextState);
+        }
+        else
+        {
+            // here the betting round is over, there is more than 1 player left
+            if (community.bettingRound != 4)
             {
-                children.push_back(make_shared<PlayState>(community.bettingRound, nextPlayer, lastPlayer,
-                                                          minRaise, playersInHand, newStacks, newBets, newHistory,
-                                                          playerCards, community.cards, newLastActions, newIsPlayerIn, isBettingOpen));
+                // chance
+                children.push_back(make_shared<ChanceState>(nextState->community, nextState->players, nextState->history));
             }
             else
             {
-                // all players have moved
-                if (community.bettingRound < 4)
-                {
-                    // some cards are missing still, chance
-                    children.push_back(make_shared<ChanceState>(community.bettingRound, GetActivePlayers(newIsPlayerIn), newStacks,
-                                                                newBets, newHistory, playerCards, community.cards, newLastActions, newIsPlayerIn));
-                }
-                else if (community.bettingRound == 4)
-                {
-                    // terminal, all cards are already dealt
-                    children.push_back(make_shared<TerminalState>(newStacks, newBets, newHistory,
-                                                                  playerCards, community.cards, lastActionOfPlayer, isPlayerIn));
-                }
+                children.push_back(make_shared<TerminalState>(nextState->community, nextState->players, nextState->history));
             }
-        }
-
-        int totalStack = accumulate(stacks.begin(), stacks.end(), 0);
-        int totalBet = accumulate(bets.begin(), bets.end(), 0);
-        if (totalStack + totalBet != Global::buyIn * Global::nofPlayers)
-        {
-            throw invalid_argument("Impossible chip counts");
-        }
-        */
         }
     }
 } // namespace poker

@@ -2,6 +2,8 @@
 #define __CLASS_PLAY_STATE_H__
 
 #include "abstraction/state.h"
+#include "abstraction/terminal_state.h"
+#include "abstraction/chance_state.h"
 
 using namespace std;
 
@@ -22,6 +24,12 @@ namespace poker
         Infoset GetInfoset();
         Infoset GetInfosetSecondary();
         void UpdateInfoset(Infoset &infoset);
+
+    private:
+        void CreateCallChildren();
+        void CreateRaiseChildren();
+        void CreateAllInChildren();
+        void CreateFoldChildren();
     };
 }
 
