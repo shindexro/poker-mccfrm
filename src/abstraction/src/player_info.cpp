@@ -20,8 +20,8 @@ namespace poker
 
     ostream &operator<<(ostream &out, const PlayerInfo &info)
     {
-        cout << info.stack << " " << info.bet << " " << info.reward << " "
-             << info.isStillInGame << " " << info.lastAction << " "
-             << Hand(info.GetCardBitmask()).ToString();
+        out << info.stack << " " << info.bet << " " << info.reward << " "
+            << info.isStillInGame << " " << info.lastAction << " "
+            << Hand(info.GetCardBitmask()).ToString();
     }
 }

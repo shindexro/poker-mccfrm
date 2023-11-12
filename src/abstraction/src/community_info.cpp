@@ -24,12 +24,12 @@ namespace poker
 
     ostream &operator<<(ostream &out, const CommunityInfo &info)
     {
-        cout << info.bettingRound << " "
-             << info.playerToMove << " "
-             << info.lastPlayer << " "
-             << info.minRaise << " "
-             << info.isBettingOpen << " "
-             << info.actionCount << " "
-             << Hand(info.GetCardBitmask()).ToString();
+        out << info.bettingRound << " "
+            << info.playerToMove << " "
+            << info.lastPlayer << " "
+            << info.minRaise << " "
+            << info.isBettingOpen << " "
+            << info.actionCount << " "
+            << Hand(info.GetCardBitmask()).ToString();
     }
 }
