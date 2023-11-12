@@ -36,9 +36,9 @@ namespace poker
         State();
         State(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
-        int GetNextPlayer();
-        int GetNextPlayer(int lastToMoveTemp);
-        int GetLastPlayer(int playerThatRaised);
+        int NextActivePlayer();
+        int PrevActivePlayer();
+
         int GetNumberOfPlayersThatNeedToAct();
         int GetPot() const;
         int MinimumCall() const;

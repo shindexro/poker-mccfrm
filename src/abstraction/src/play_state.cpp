@@ -249,7 +249,7 @@ namespace poker
             return;
 
         shared_ptr<State> nextState;
-        if (GetNextPlayer() != -1)
+        if (NextActivePlayer() != -1)
             nextState = make_shared<PlayState>(community, players, history);
         else if (community.bettingRound < BettingRound::River)
             nextState = make_shared<ChanceState>(community, players, history);
@@ -264,7 +264,7 @@ namespace poker
 
         if (dynamic_cast<PlayState *>(nextState.get()))
         {
-            nextState->community.playerToMove = GetNextPlayer(community.playerToMove);
+            nextState->community.playerToMove = NextActivePlayer();
         }
 
         children.push_back(nextState);
@@ -306,8 +306,8 @@ namespace poker
             playerWhoRaised.bet += raise;
             playerWhoRaised.lastAction = Action::Raise;
 
-            nextState->community.lastPlayer = GetLastPlayer(community.playerToMove);
-            nextState->community.playerToMove = nextState->GetNextPlayer();
+            nextState->community.lastPlayer = PrevActivePlayer();
+            nextState->community.playerToMove = NextActivePlayer();
 
             nextState->community.isBettingOpen = true;
             nextState->community.minRaise = additionalRaise;
@@ -341,8 +341,8 @@ namespace poker
         playerWhoAllIn.bet += raise;
         playerWhoAllIn.stack = 0;
 
-        nextState->community.lastPlayer = GetLastPlayer(community.playerToMove);
-        nextState->community.playerToMove = nextState->GetNextPlayer();
+        nextState->community.lastPlayer = PrevActivePlayer();
+        nextState->community.playerToMove = NextActivePlayer();
 
         if (additionalRaise >= community.minRaise)
         {
@@ -381,7 +381,7 @@ namespace poker
         nextState->players[community.playerToMove].lastAction = Action::Fold;
         nextState->players[community.playerToMove].isStillInGame = false;
 
-        int nextPlayer = GetNextPlayer();
+        int nextPlayer = NextActivePlayer();
 
         if (nextState->GetNumberOfActivePlayers() == 1)
         {

@@ -19,16 +19,11 @@ namespace poker
     {
     }
 
-    int State::GetNextPlayer()
-    {
-        return GetNextPlayer(community.lastPlayer);
-    }
-
     // The next player to act in the round
-    int State::GetNextPlayer(int player)
+    int State::NextActivePlayer()
     {
         for (auto i = (community.playerToMove + 1) % Global::nofPlayers;
-             i != (player + 1) % Global::nofPlayers;
+             i != community.lastPlayer;
              i = (i + 1) % Global::nofPlayers)
         {
             if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
@@ -40,11 +35,11 @@ namespace poker
     }
 
     // The last remaining player to act in the round
-    int State::GetLastPlayer(int playerWhoRaised)
+    int State::PrevActivePlayer()
     {
         int last = -1;
-        for (auto i = (playerWhoRaised + 1) % Global::nofPlayers;
-             i != playerWhoRaised % Global::nofPlayers;
+        for (auto i = (community.playerToMove + 1) % Global::nofPlayers;
+             i != community.playerToMove;
              i = (i + 1) % Global::nofPlayers)
         {
             if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
