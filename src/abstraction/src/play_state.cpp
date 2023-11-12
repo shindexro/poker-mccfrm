@@ -249,7 +249,7 @@ namespace poker
             return;
 
         shared_ptr<State> nextState;
-        if (GetNextPlayer() == -1)
+        if (GetNextPlayer() != -1)
             nextState = make_shared<PlayState>(community, players, history);
         else if (community.bettingRound < BettingRound::River)
             nextState = make_shared<ChanceState>(community, players, history);
@@ -342,7 +342,7 @@ namespace poker
         playerWhoAllIn.stack = 0;
 
         nextState->community.lastPlayer = GetLastPlayer(community.playerToMove);
-        nextState->community.playerToMove = GetNextPlayer(community.playerToMove);
+        nextState->community.playerToMove = nextState->GetNextPlayer();
 
         if (additionalRaise >= community.minRaise)
         {
