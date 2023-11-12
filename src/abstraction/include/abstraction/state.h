@@ -49,16 +49,16 @@ namespace poker
         int GetNumberOfActivePlayers();
         int GetNumberOfAllInPlayers();
         virtual void CreateChildren() { throw invalid_argument("Not implemented"); };
-        virtual bool IsPlayerInHand(int traverser) { throw invalid_argument("Not implemented"); };
+        virtual bool IsPlayerInHand(int /*traverser*/) { throw invalid_argument("Not implemented"); };
 
         virtual Infoset GetInfoset() { throw invalid_argument("Not implemented"); };
         virtual Infoset GetInfosetSecondary() { throw invalid_argument("Not implemented"); };
-        virtual void UpdateInfoset(Infoset &infoset) { throw invalid_argument("Not implemented"); };
+        virtual void UpdateInfoset(Infoset & /*infoset*/) { throw invalid_argument("Not implemented"); };
 
-        virtual bool IsPlayerTurn(int traverser) { throw invalid_argument("Not implemented"); };
+        virtual bool IsPlayerTurn(int /*traverser*/) { throw invalid_argument("Not implemented"); };
         int BettingRound();
         virtual shared_ptr<State> DoRandomAction() { throw invalid_argument("Not implemented"); };
-        virtual float GetReward(int traverser) { throw invalid_argument("Not implemented"); };
+        virtual float GetReward(int /*traverser*/) { throw invalid_argument("Not implemented"); };
 
         void PrettyPrintTree(int depth = 0);
     };
