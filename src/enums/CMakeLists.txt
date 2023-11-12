@@ -1,7 +1,5 @@
 project (enums)
 
-add_library(${PROJECT_NAME} INTERFACE)
-
 add_library(${PROJECT_NAME}
     src/betting_round.cpp
     src/hand_ranking.cpp
