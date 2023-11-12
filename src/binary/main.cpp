@@ -8,6 +8,8 @@
 #include "utils/utils.h"
 #include "utils/random.h"
 #include "algorithm/trainer.h"
+#include "abstraction/state.h"
+#include "abstraction/chance_state.h"
 
 #include <iostream>
 #include <string>
@@ -17,10 +19,13 @@ class Program
 public:
     static void Main()
     {
-        CreateIndexers();
-        Global::handEvaluator.Initialise();
-        CalculateInformationAbstraction();
-        Train();
+        auto state = ChanceState();
+        state.PrettyPrintTree();
+
+        // CreateIndexers();
+        // Global::handEvaluator.Initialise();
+        // CalculateInformationAbstraction();
+        // Train();
     }
 
 private:
