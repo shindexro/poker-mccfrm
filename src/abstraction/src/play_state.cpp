@@ -307,7 +307,7 @@ namespace poker
             playerWhoRaised.lastAction = Action::RAISE;
 
             nextState->community.lastPlayer = GetLastPlayer(community.playerToMove);
-            nextState->community.playerToMove = GetNextPlayer(community.playerToMove);
+            nextState->community.playerToMove = nextState->GetNextPlayer();
 
             nextState->community.isBettingOpen = true;
             nextState->community.minRaise = additionalRaise;
