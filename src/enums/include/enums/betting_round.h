@@ -13,7 +13,7 @@ enum BettingRound
 
 std::ostream &operator<<(std::ostream &out, const BettingRound &value)
 {
-    return out << [value]
+    string s = [value]
     {
 #define PROCESS_VAL(p) \
     case (p):          \
@@ -26,7 +26,8 @@ std::ostream &operator<<(std::ostream &out, const BettingRound &value)
             PROCESS_VAL(River);
         }
 #undef PROCESS_VAL
-    };
+    }();
+    return out << s;
 }
 
 #endif

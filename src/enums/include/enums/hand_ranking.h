@@ -13,7 +13,7 @@ enum HandRanking
 
 std::ostream &operator<<(std::ostream &out, const HandRanking &value)
 {
-    return out << [value]
+    string s = [value]
     {
 #define PROCESS_VAL(p) \
     case (p):          \
@@ -31,5 +31,6 @@ std::ostream &operator<<(std::ostream &out, const HandRanking &value)
             PROCESS_VAL(StraightFlush);
         }
 #undef PROCESS_VAL
-    };
+    }();
+    return out << s;
 }
