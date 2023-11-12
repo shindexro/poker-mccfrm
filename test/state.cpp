@@ -375,3 +375,18 @@ TEST_F(PlayStateTest, PlayStateChildrenTypeAmount)
         }
     }
 }
+
+TEST_F(PlayStateTest, PlayStateChildrenHasPlayerToMove)
+{
+    CreateChildren();
+    for (auto &state : playStates)
+    {
+        for (auto child : state->children)
+        {
+            if (!dynamic_cast<PlayState *>(child.get()))
+                continue;
+
+            EXPECT_NE(child->community.playerToMove, -1);
+        }
+    }
+}
