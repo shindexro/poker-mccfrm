@@ -14,6 +14,7 @@ namespace poker
     class PlayState : public State
     {
     public:
+        PlayState();
         PlayState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
         void CreateChildren();

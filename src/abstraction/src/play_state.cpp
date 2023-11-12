@@ -2,6 +2,10 @@
 
 namespace poker
 {
+    PlayState::PlayState() : State()
+    {
+    }
+
     PlayState::PlayState(CommunityInfo &community,
                          vector<PlayerInfo> &players,
                          vector<Action> &history) : State(community, players, history)
