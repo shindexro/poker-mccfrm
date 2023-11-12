@@ -181,7 +181,7 @@ TEST_F(ChanceStateTest, ChildUnchangedInfo)
 TEST_F(ChanceStateTest, SkipPlayeStateIfNoPlayersCanAct)
 {
     for (auto state : chanceStates)
-        for (auto player : state->players)
+        for (auto &player : state->players)
             player.lastAction = poker::Action::ALLIN;
 
     CreateChildren();
