@@ -21,8 +21,8 @@ namespace poker
     public:
         static void Main()
         {
-            auto community = CommunityInfo();
-            std::cout << community << std::endl;
+            auto round = BettingRound::Flop;
+            std::cout << round << std::endl;
             auto state = ChanceState();
             state.PrettyPrintTree();
 
