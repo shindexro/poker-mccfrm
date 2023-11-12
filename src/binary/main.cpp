@@ -16,14 +16,22 @@
 
 namespace poker
 {
+    void StateDFS(State &state)
+    {
+        state.CreateChildren();
+        for (auto &child : state.children)
+        {
+            StateDFS(*child);
+        }
+    }
+
     class Program
     {
     public:
         static void Main()
         {
-            auto round = BettingRound::Flop;
-            std::cout << round << std::endl;
             auto state = ChanceState();
+            StateDFS(state);
             state.PrettyPrintTree();
 
             // CreateIndexers();
