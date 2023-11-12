@@ -31,6 +31,8 @@ namespace poker
     private:
         void DealCards(CommunityInfo &newCommunity, vector<PlayerInfo> &newPlayers);
     };
+
+    ostream &operator<<(ostream &out, const ChanceState &state);
 }
 
 #endif

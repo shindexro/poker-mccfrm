@@ -36,6 +36,8 @@ namespace poker
         void CreateAllInChildren();
         void CreateFoldChildren();
     };
+
+    ostream &operator<<(ostream &out, const PlayState &state);
 }
 
 #endif

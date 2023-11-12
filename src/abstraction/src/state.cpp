@@ -2,8 +2,6 @@
 
 namespace poker
 {
-    const string State::type = "Base";
-
     State::State() : community(),
                      players(Global::nofPlayers, PlayerInfo()),
                      history()
@@ -121,7 +119,7 @@ namespace poker
 
     ostream &operator<<(ostream &out, const State &state)
     {
-        out << state.community << " | " << state.type << " | ";
+        out << state.community << " | ";
         for (auto &player : state.players)
             out << player << " ";
         out << " ";

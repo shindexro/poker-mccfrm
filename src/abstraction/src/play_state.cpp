@@ -2,8 +2,6 @@
 
 namespace poker
 {
-    const string PlayState::type = "Play";
-
     PlayState::PlayState() : State()
     {
     }
@@ -407,5 +405,11 @@ namespace poker
                 children.push_back(make_shared<TerminalState>(nextState->community, nextState->players, nextState->history));
             }
         }
+    }
+
+    ostream &operator<<(ostream &out, const PlayState &state)
+    {
+        out << "Play | " << static_cast<const State &>(state);
+        return out;
     }
 } // namespace poker

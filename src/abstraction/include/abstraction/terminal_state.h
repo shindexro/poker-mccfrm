@@ -23,6 +23,8 @@ namespace poker
 
         void CreateRewards();
     };
+
+    ostream &operator<<(ostream &out, const TerminalState &state);
 }
 
 #endif

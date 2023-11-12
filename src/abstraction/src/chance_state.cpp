@@ -2,8 +2,6 @@
 
 namespace poker
 {
-    const string ChanceState::type = "Chance";
-
     ChanceState::ChanceState()
     {
         for (auto i = 0; i < Global::nofPlayers; ++i)
@@ -155,5 +153,11 @@ namespace poker
     bool ChanceState::IsPlayerInHand(int player)
     {
         return players[player].isStillInGame;
+    }
+
+    ostream &operator<<(ostream &out, const PlayState &state)
+    {
+        out << "Chance | " << static_cast<const State &>(state);
+        return out;
     }
 } // namespace poker

@@ -4,8 +4,6 @@ using namespace std;
 
 namespace poker
 {
-    const string TerminalState::type = "Terminal";
-
     TerminalState::TerminalState() : State()
     {
     }
@@ -80,4 +78,11 @@ namespace poker
     {
         // do nothing
     }
+
+    ostream &operator<<(ostream &out, const TerminalState &state)
+    {
+        out << "Terminal | " << static_cast<const State &>(state);
+        return out;
+    }
+
 } // namespace poker
