@@ -23,7 +23,7 @@ namespace poker
     int State::NextActivePlayer()
     {
         for (auto i = (community.playerToMove + 1) % Global::nofPlayers;
-             i != community.lastPlayer;
+             i != (community.lastPlayer + 1) % Global::nofPlayers;
              i = (i + 1) % Global::nofPlayers)
         {
             if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
