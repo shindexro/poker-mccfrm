@@ -249,12 +249,12 @@ namespace poker
         //     return obj;
         // }
     };
-
-    int main(int argc, char *argv[])
-    {
-        Program program;
-        program.Main();
-
-        return 0;
-    }
 } // namespace poker
+
+int main(int argc, char *argv[])
+{
+    poker::Program program;
+    program.Main();
+
+    return 0;
+}
