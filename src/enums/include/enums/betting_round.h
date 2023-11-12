@@ -1,6 +1,7 @@
 #ifndef __ENUM_BETTING_ROUND_H__
 #define __ENUM_BETTING_ROUND_H__
 
+#include <string>
 
 enum BettingRound
 {
@@ -9,5 +10,23 @@ enum BettingRound
     Turn,
     River
 };
+
+std::ostream &operator<<(std::ostream &out, const BettingRound &value)
+{
+    return out << [value]
+    {
+#define PROCESS_VAL(p) \
+    case (p):          \
+        return #p;
+        switch (value)
+        {
+            PROCESS_VAL(Preflop);
+            PROCESS_VAL(Flop);
+            PROCESS_VAL(Turn);
+            PROCESS_VAL(River);
+        }
+#undef PROCESS_VAL
+    }();
+}
 
 #endif

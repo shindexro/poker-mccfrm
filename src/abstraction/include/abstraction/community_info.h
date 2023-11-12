@@ -2,6 +2,7 @@
 #define __CLASS_COMMUNITY_INFO_H__
 
 #include "abstraction/global.h"
+#include "enums/betting_round.h"
 
 #include <string>
 
@@ -14,8 +15,7 @@ namespace poker
     class CommunityInfo
     {
     public:
-        
-        int bettingRound;
+        BettingRound bettingRound;
         int playerToMove;
         int lastPlayer;
         int minRaise;

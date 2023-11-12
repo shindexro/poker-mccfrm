@@ -2,7 +2,7 @@
 
 namespace poker
 {
-    CommunityInfo::CommunityInfo() : bettingRound{0},
+    CommunityInfo::CommunityInfo() : bettingRound{BettingRound::Preflop},
                                      playerToMove{2 % Global::nofPlayers},
                                      lastPlayer{1},
                                      minRaise{Global::BB},
