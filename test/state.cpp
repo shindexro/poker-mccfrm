@@ -136,6 +136,8 @@ protected:
         /////////1/////////2/////////3/////////4/////////5/////////6
         community = CommunityInfo();
         community.isBettingOpen = true;
+        community.bettingRound = BettingRound::Flop;
+        community.cards = vector<ulong>({1, 2, 4});
 
         players = vector<PlayerInfo>(2);
         players[0].cards = {32, 64};
@@ -146,10 +148,10 @@ protected:
         players[0].stack = 199;
         players[1].stack = 198;
 
-        history = vector<poker::Action>();
+        history = vector<poker::Action>(2, poker::Action::Call);
 
-        preflopSBPlayState = PlayState(community, players, history);
-        playStates.push_back(&preflopSBPlayState);
+        flopPlayState = PlayState(community, players, history);
+        playStates.push_back(&flopPlayState);
     }
 
     void CreateChildren()
@@ -162,6 +164,7 @@ protected:
 
     vector<PlayState *> playStates;
     PlayState preflopSBPlayState;
+    PlayState flopPlayState;
     CommunityInfo community;
     vector<PlayerInfo> players;
     vector<poker::Action> history;
@@ -287,5 +290,27 @@ TEST_F(PlayStateTest, HasChildren)
     for (auto state : playStates)
     {
         EXPECT_GT(state->children.size(), 0);
+    }
+}
+
+TEST_F(PlayStateTest, ChanceStateChild)
+{
+    CreateChildren();
+    for (auto state : playStates)
+    {
+        BettingRound expectedBettingRound = state->community.bettingRound;
+        ++expectedBettingRound;
+
+        int chanceChildCount = 0;
+
+        for (auto child : state->children)
+        {
+            if (!dynamic_cast<ChanceState *>(child.get()))
+                continue;
+
+            EXPECT_EQ(child->community.bettingRound, expectedBettingRound);
+            chanceChildCount++;
+        }
+        EXPECT_LE(chanceChildCount, 1);
     }
 }
