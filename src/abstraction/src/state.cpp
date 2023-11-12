@@ -113,7 +113,7 @@ namespace poker
 
         for (auto child : children)
         {
-            child->PrettyPrintTree();
+            child->PrettyPrintTree(depth + 1);
         }
     }
 
