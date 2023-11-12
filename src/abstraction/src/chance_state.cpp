@@ -2,13 +2,15 @@
 
 namespace poker
 {
+    const string ChanceState::type = "Chance";
+
     ChanceState::ChanceState()
     {
         for (auto i = 0; i < Global::nofPlayers; ++i)
         {
             players[i].isStillInGame = true;
             players[i].stack = Global::buyIn;
-            players[i].lastAction = Action::NONE;
+            players[i].lastAction = Action::None;
         }
         players[0].bet = Global::SB;
         players[1].bet = Global::BB;
@@ -114,7 +116,7 @@ namespace poker
         {
             for (auto i = 2 % Global::nofPlayers;; i = (i + 1) % Global::nofPlayers)
             {
-                if (players[i].isStillInGame && players[i].lastAction != Action::ALLIN)
+                if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
                 {
                     lastToMoveTemp = i;
                 }

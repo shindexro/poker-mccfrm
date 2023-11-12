@@ -2,6 +2,8 @@
 
 namespace poker
 {
+    const string PlayState::type = "Play";
+
     PlayState::PlayState() : State()
     {
     }
@@ -54,11 +56,11 @@ namespace poker
 
                 // valid raise, if stack is equal it would be an all in
                 if (i == 0)
-                    validActions.push_back(Action::RAISE1);
+                    validActions.push_back(Action::Raise1);
                 if (i == 1)
-                    validActions.push_back(Action::RAISE2);
+                    validActions.push_back(Action::Raise2);
                 if (i == 2)
-                    validActions.push_back(Action::RAISE3);
+                    validActions.push_back(Action::Raise3);
             }
 
             raise = players[community.playerToMove].stack;
@@ -67,18 +69,18 @@ namespace poker
             {
                 //(currently, multiple all-ins in a row dont accumulate the raises and reopen betting round but probably they should)
                 // int actualRaise = (raise + players[community.playerToMove].bet) - currentCall;
-                validActions.push_back(Action::ALLIN);
+                validActions.push_back(Action::Allin);
             }
         }
         if (currentCall > players[community.playerToMove].bet)
         {
             // fold
-            validActions.push_back(Action::FOLD);
+            validActions.push_back(Action::Fold);
         }
         if (currentCall - players[community.playerToMove].bet < players[community.playerToMove].stack)
         {
             // call
-            validActions.push_back(Action::CALL);
+            validActions.push_back(Action::Call);
         }
 
         return validActions;
@@ -256,9 +258,9 @@ namespace poker
         else
             nextState = make_shared<TerminalState>(community, players, history);
 
-        nextState->history.push_back(Action::CALL);
+        nextState->history.push_back(Action::Call);
         auto &playerWhoCalled = nextState->players[community.playerToMove];
-        playerWhoCalled.lastAction = Action::CALL;
+        playerWhoCalled.lastAction = Action::Call;
         playerWhoCalled.bet += additionBet;
         playerWhoCalled.stack -= additionBet;
 
@@ -295,16 +297,16 @@ namespace poker
             // valid raise, if stack is equal it would be an all in
             // TODO: dont hardcode this
             if (i == 0)
-                nextState->history.push_back(Action::RAISE1);
+                nextState->history.push_back(Action::Raise1);
             if (i == 1)
-                nextState->history.push_back(Action::RAISE2);
+                nextState->history.push_back(Action::Raise2);
             if (i == 2)
-                nextState->history.push_back(Action::RAISE3);
+                nextState->history.push_back(Action::Raise3);
 
             auto &playerWhoRaised = nextState->players[community.playerToMove];
             playerWhoRaised.stack -= raise;
             playerWhoRaised.bet += raise;
-            playerWhoRaised.lastAction = Action::RAISE;
+            playerWhoRaised.lastAction = Action::Raise;
 
             nextState->community.lastPlayer = GetLastPlayer(community.playerToMove);
             nextState->community.playerToMove = nextState->GetNextPlayer();
@@ -336,8 +338,8 @@ namespace poker
 
         auto nextState = make_shared<PlayState>(*this);
         auto &playerWhoAllIn = nextState->players[community.playerToMove];
-        nextState->history.push_back(Action::ALLIN);
-        playerWhoAllIn.lastAction = Action::ALLIN;
+        nextState->history.push_back(Action::Allin);
+        playerWhoAllIn.lastAction = Action::Allin;
         playerWhoAllIn.bet += raise;
         playerWhoAllIn.stack = 0;
 
@@ -377,8 +379,8 @@ namespace poker
 
         auto nextState = make_shared<PlayState>(*this);
 
-        nextState->history.push_back(Action::FOLD);
-        nextState->players[community.playerToMove].lastAction = Action::FOLD;
+        nextState->history.push_back(Action::Fold);
+        nextState->players[community.playerToMove].lastAction = Action::Fold;
         nextState->players[community.playerToMove].isStillInGame = false;
 
         int nextPlayer = GetNextPlayer();

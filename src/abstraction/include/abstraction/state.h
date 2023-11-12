@@ -26,6 +26,8 @@ namespace poker
     class State
     {
     public:
+        static const string type;
+
         CommunityInfo community;
         vector<PlayerInfo> players;
         vector<Action> history;

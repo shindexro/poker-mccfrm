@@ -9,7 +9,7 @@ namespace poker
                                reward{0},
                                isStillInGame{true},
                                cards(),
-                               lastAction{Action::NONE}
+                               lastAction{Action::None}
     {
     }
 
@@ -20,9 +20,9 @@ namespace poker
 
     ostream &operator<<(ostream &out, const PlayerInfo &info)
     {
-        out << info.stack << " " << info.bet << " " << info.reward << " "
-            << info.isStillInGame << " " << info.lastAction << " "
-            << Hand(info.GetCardBitmask()).ToString();
+        out << "S:" << info.stack << " B:" << info.bet << " R:" << info.reward
+            << " IG:" << info.isStillInGame << " A:" << info.lastAction
+            << " H:" << Hand(info.GetCardBitmask()).ToString();
         return out;
     }
 }

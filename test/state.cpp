@@ -30,9 +30,9 @@ protected:
         {
             player.bet = 5;
             player.stack = 195;
-            player.lastAction = poker::Action::CALL;
+            player.lastAction = poker::Action::Call;
             player.cards = {1UL, 1UL};
-            flopChanceState.history.push_back(poker::Action::CALL);
+            flopChanceState.history.push_back(poker::Action::Call);
         }
         /////////1/////////2/////////3/////////4/////////5/////////6
         turnChanceState = ChanceState();
@@ -42,10 +42,10 @@ protected:
         {
             player.bet = 5;
             player.stack = 195;
-            player.lastAction = poker::Action::CALL;
+            player.lastAction = poker::Action::Call;
             player.cards = {1UL, 1UL};
-            turnChanceState.history.push_back(poker::Action::CALL);
-            turnChanceState.history.push_back(poker::Action::CALL);
+            turnChanceState.history.push_back(poker::Action::Call);
+            turnChanceState.history.push_back(poker::Action::Call);
         }
         /////////1/////////2/////////3/////////4/////////5/////////6
         riverChanceState = ChanceState();
@@ -55,11 +55,11 @@ protected:
         {
             player.bet = 5;
             player.stack = 195;
-            player.lastAction = poker::Action::CALL;
+            player.lastAction = poker::Action::Call;
             player.cards = {1UL, 1UL};
-            riverChanceState.history.push_back(poker::Action::CALL);
-            riverChanceState.history.push_back(poker::Action::CALL);
-            riverChanceState.history.push_back(poker::Action::CALL);
+            riverChanceState.history.push_back(poker::Action::Call);
+            riverChanceState.history.push_back(poker::Action::Call);
+            riverChanceState.history.push_back(poker::Action::Call);
         }
 
         chanceStates.push_back(&preflopChanceState);
@@ -101,7 +101,7 @@ protected:
             player.stack = 198;
         }
 
-        history = vector<poker::Action>(8, poker::Action::CALL);
+        history = vector<poker::Action>(8, poker::Action::Call);
 
         state = TerminalState(community, players, history);
     }
@@ -235,7 +235,7 @@ TEST_F(ChanceStateTest, SkipPlayeStateIfNoPlayersCanAct)
 {
     for (auto state : chanceStates)
         for (auto &player : state->players)
-            player.lastAction = poker::Action::ALLIN;
+            player.lastAction = poker::Action::Allin;
 
     CreateChildren();
 

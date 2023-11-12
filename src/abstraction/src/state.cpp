@@ -2,6 +2,8 @@
 
 namespace poker
 {
+    const string State::type = "Base";
+
     State::State() : community(),
                      players(Global::nofPlayers, PlayerInfo()),
                      history()
@@ -31,7 +33,7 @@ namespace poker
              i != (player + 1) % Global::nofPlayers;
              i = (i + 1) % Global::nofPlayers)
         {
-            if (players[i].isStillInGame && players[i].lastAction != Action::ALLIN)
+            if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
             {
                 return i;
             }
@@ -47,7 +49,7 @@ namespace poker
              i != playerWhoRaised % Global::nofPlayers;
              i = (i + 1) % Global::nofPlayers)
         {
-            if (players[i].isStillInGame && players[i].lastAction != Action::ALLIN)
+            if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
             {
                 last = i;
             }
@@ -61,7 +63,7 @@ namespace poker
         int count = 0;
         for (auto i = 0; i < Global::nofPlayers; i++)
         {
-            if (players[i].isStillInGame == true && players[i].lastAction != Action::ALLIN)
+            if (players[i].isStillInGame == true && players[i].lastAction != Action::Allin)
                 count++;
         }
         return count;
@@ -76,7 +78,7 @@ namespace poker
     int State::GetNumberOfAllInPlayers()
     {
         return count_if(players.begin(), players.end(), [](PlayerInfo &p)
-                        { return p.lastAction == Action::ALLIN; });
+                        { return p.lastAction == Action::Allin; });
     }
 
     int State::GetPot() const
@@ -107,7 +109,7 @@ namespace poker
     void State::PrettyPrintTree(int depth)
     {
         for (int i = 0; i < depth; i++)
-            std::cout << "  ";
+            std::cout << "│ ";
 
         std::cout << "├──" << *this << std::endl;
 
@@ -119,7 +121,7 @@ namespace poker
 
     ostream &operator<<(ostream &out, const State &state)
     {
-        out << state.community << " ";
+        out << state.community << " | " << state.type << " | ";
         for (auto &player : state.players)
             out << player << " ";
         out << " ";

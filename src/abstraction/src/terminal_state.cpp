@@ -4,6 +4,8 @@ using namespace std;
 
 namespace poker
 {
+    const string TerminalState::type = "Terminal";
+
     TerminalState::TerminalState() : State()
     {
     }

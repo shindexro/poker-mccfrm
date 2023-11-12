@@ -15,6 +15,8 @@ namespace poker
     {
         // this is the root state
     public:
+        static const string type;
+
         ChanceState();
         ChanceState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 

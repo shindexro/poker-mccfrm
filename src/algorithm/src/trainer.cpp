@@ -377,30 +377,30 @@ void Trainer::PrintStartingHandsChart()
 
     for (auto i = 0UL; i < gs[0]->GetValidActions().size(); ++i)
     {
-        if (gs[0]->GetValidActions()[i] == Action::FOLD)
+        if (gs[0]->GetValidActions()[i] == Action::Fold)
         {
             std::cout << "FOLD Table" << endl;
         }
-        if (gs[0]->GetValidActions()[i] == Action::CALL)
+        if (gs[0]->GetValidActions()[i] == Action::Call)
         {
             std::cout << "CALL Table" << endl;
         }
-        if (gs[0]->GetValidActions()[i] == Action::RAISE1)
+        if (gs[0]->GetValidActions()[i] == Action::Raise1)
         {
             std::cout << Global::raiseRatios[0] << "*POT RAISE "
                       << "Table" << endl;
         }
-        if (gs[0]->GetValidActions()[i] == Action::RAISE2)
+        if (gs[0]->GetValidActions()[i] == Action::Raise2)
         {
             std::cout << Global::raiseRatios[1] << "*POT RAISE "
                       << "Table" << endl;
         }
-        if (gs[0]->GetValidActions()[i] == Action::RAISE3)
+        if (gs[0]->GetValidActions()[i] == Action::Raise3)
         {
             std::cout << Global::raiseRatios[2] << "*POT RAISE "
                       << "Table" << endl;
         }
-        if (gs[0]->GetValidActions()[i] == Action::ALLIN)
+        if (gs[0]->GetValidActions()[i] == Action::Allin)
         {
             std::cout << "ALLIN Table" << endl;
         }
@@ -474,27 +474,27 @@ void Trainer::PrintStatistics(long iterations)
 
         for (auto j = 0UL; j < actions.size(); ++j)
         {
-            if (actions[j] == Action::FOLD)
+            if (actions[j] == Action::Fold)
             {
                 std::cout << "FOLD: ";
             }
-            if (actions[j] == Action::CALL)
+            if (actions[j] == Action::Call)
             {
                 std::cout << "CALL: ";
             }
-            if (actions[j] == Action::RAISE1)
+            if (actions[j] == Action::Raise1)
             {
                 std::cout << Global::raiseRatios[0] << "*POT ";
             }
-            if (actions[j] == Action::RAISE2)
+            if (actions[j] == Action::Raise2)
             {
                 std::cout << Global::raiseRatios[1] << "*POT ";
             }
-            if (actions[j] == Action::RAISE3)
+            if (actions[j] == Action::Raise3)
             {
                 std::cout << Global::raiseRatios[2] << "*POT ";
             }
-            if (actions[j] == Action::ALLIN)
+            if (actions[j] == Action::Allin)
             {
                 std::cout << "ALLIN: ";
             }

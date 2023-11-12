@@ -10,6 +10,8 @@ namespace poker
     class TerminalState : public State
     {
     public:
+        static const string type;
+
         TerminalState();
         TerminalState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 

@@ -1,6 +1,7 @@
 project (enums)
 
 add_library(${PROJECT_NAME}
+    src/action.cpp
     src/betting_round.cpp
     src/hand_ranking.cpp
 )

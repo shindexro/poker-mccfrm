@@ -14,6 +14,8 @@ namespace poker
     class PlayState : public State
     {
     public:
+        static const string type;
+
         PlayState();
         PlayState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
