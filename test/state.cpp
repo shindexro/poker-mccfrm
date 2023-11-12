@@ -132,8 +132,36 @@ protected:
         history = vector<poker::Action>();
 
         preflopSBPlayState = PlayState(community, players, history);
+        playStates.push_back(&preflopSBPlayState);
+        /////////1/////////2/////////3/////////4/////////5/////////6
+        community = CommunityInfo();
+        community.isBettingOpen = true;
+
+        players = vector<PlayerInfo>(2);
+        players[0].cards = {32, 64};
+        players[1].cards = {128, 256};
+
+        players[0].bet = 1;
+        players[1].bet = 2;
+        players[0].stack = 199;
+        players[1].stack = 198;
+
+        history = vector<poker::Action>();
+
+        preflopSBPlayState = PlayState(community, players, history);
+        playStates.push_back(&preflopSBPlayState);
     }
 
+    void CreateChildren()
+    {
+        for (auto state : playStates)
+        {
+            state->CreateChildren();
+        }
+    }
+
+    vector<PlayState *> playStates;
+    PlayState preflopSBPlayState;
     PlayState preflopSBPlayState;
     CommunityInfo community;
     vector<PlayerInfo> players;
@@ -255,7 +283,9 @@ TEST_F(ShowDownTerminalStateTest, MultipleWinnersRewards)
 
 TEST_F(PlayStateTest, HasChildren)
 {
-    preflopSBPlayState.CreateChildren();
-
-    EXPECT_GT(preflopSBPlayState.children.size(), 0);
+    CreateChildren();
+    for (auto state : playStates)
+    {
+        EXPECT_GT(state->children.size(), 0);
+    }
 }
