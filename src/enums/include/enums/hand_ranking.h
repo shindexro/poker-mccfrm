@@ -31,5 +31,5 @@ std::ostream &operator<<(std::ostream &out, const HandRanking &value)
             PROCESS_VAL(StraightFlush);
         }
 #undef PROCESS_VAL
-    }();
+    };
 }

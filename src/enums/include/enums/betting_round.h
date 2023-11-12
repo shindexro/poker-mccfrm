@@ -26,7 +26,7 @@ std::ostream &operator<<(std::ostream &out, const BettingRound &value)
             PROCESS_VAL(River);
         }
 #undef PROCESS_VAL
-    }();
+    };
 }
 
 #endif
