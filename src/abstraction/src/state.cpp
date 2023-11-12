@@ -109,7 +109,7 @@ namespace poker
         for (int i = 0; i < depth; i++)
             std::cout << "│ ";
 
-        std::cout << "├─┬" << *this << std::endl;
+        std::cout << "├─┬─" << *this << std::endl;
 
         for (auto child : children)
         {
