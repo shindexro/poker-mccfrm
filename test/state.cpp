@@ -415,7 +415,12 @@ TEST_F(PlayStateTest, TotalChipsEqualBuyIns)
     {
         for (auto child : state->children)
         {
-            EXPECT_EQ(child->GetPot(), 400);
+            int chips = child->GetPot();
+            for (auto &player : child->players)
+            {
+                chips += player.stack;
+            }
+            EXPECT_EQ(chips, 400);
         }
     }
 }
