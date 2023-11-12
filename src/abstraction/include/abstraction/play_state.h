@@ -9,6 +9,8 @@ using namespace std;
 
 namespace poker
 {
+    class ChanceState;
+
     class PlayState : public State
     {
     public:

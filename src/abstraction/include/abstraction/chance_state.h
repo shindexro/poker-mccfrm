@@ -9,6 +9,8 @@ using namespace std;
 
 namespace poker
 {
+    class PlayState;
+
     class ChanceState : public State
     {
         // this is the root state
