@@ -13,7 +13,7 @@ enum HandRanking
 
 std::ostream &operator<<(std::ostream &out, const HandRanking &value)
 {
-    string s = [value]
+    std::string s = [value]
     {
 #define PROCESS_VAL(p) \
     case (p):          \

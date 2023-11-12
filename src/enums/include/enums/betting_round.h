@@ -13,7 +13,7 @@ enum BettingRound
 
 std::ostream &operator<<(std::ostream &out, const BettingRound &value)
 {
-    string s = [value]
+    std::string s = [value]
     {
 #define PROCESS_VAL(p) \
     case (p):          \
