@@ -119,12 +119,12 @@ namespace poker
 
     ostream &operator<<(ostream &out, const State &state)
     {
-        cout << state.community << " ";
+        out << state.community << " ";
         for (auto &player : state.players)
-            cout << player << " ";
-        cout << " ";
+            out << player << " ";
+        out << " ";
         for (auto action : state.history)
-            cout << action << " ";
+            out << action << " ";
     }
 
 }
