@@ -278,7 +278,7 @@ namespace poker
         // raises
         for (auto i = 0UL; i < Global::raiseRatios.size(); ++i)
         {
-            auto nextState = make_shared<PlayState>(community, players, history);
+            auto nextState = make_shared<PlayState>(*this);
 
             // we add <raise> chips to our current bet
             int raise = (int)(Global::raiseRatios[i] * GetPot());
@@ -334,7 +334,7 @@ namespace poker
         int raise = players[community.playerToMove].stack;
         int additionalRaise = (raise + players[community.playerToMove].bet) - MinimumCall();
 
-        auto nextState = make_shared<PlayState>(community, players, history);
+        auto nextState = make_shared<PlayState>(*this);
         auto &playerWhoAllIn = nextState->players[community.playerToMove];
         nextState->history.push_back(Action::ALLIN);
         playerWhoAllIn.lastAction = Action::ALLIN;
@@ -375,7 +375,7 @@ namespace poker
         if (MinimumCall() <= players[community.playerToMove].bet)
             return;
 
-        auto nextState = make_shared<PlayState>(community, players, history);
+        auto nextState = make_shared<PlayState>(*this);
 
         nextState->history.push_back(Action::FOLD);
         nextState->players[community.playerToMove].lastAction = Action::FOLD;
