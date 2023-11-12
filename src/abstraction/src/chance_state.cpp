@@ -34,7 +34,6 @@ namespace poker
         auto newCommunity = CommunityInfo(community);
 
         DealCards(newCommunity, newPlayers);
-        ++newCommunity.bettingRound;
         newCommunity.minRaise = Global::BB;
 
         if (GetNumberOfPlayersThatNeedToAct() >= 2)
