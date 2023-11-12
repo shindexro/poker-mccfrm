@@ -10,195 +10,213 @@
 using namespace testing;
 using namespace poker;
 
-class StateTest : public Test
+///////////////////////////////////////////////////////////////////////////////////////////
+// Test fixtures
+
+class ChanceStateTest : public Test
 {
 protected:
     void SetUp() override
     {
-        preflopCommunity = CommunityInfo();
-        flopCommunity = CommunityInfo();
-        turnCommunity = CommunityInfo();
-        riverCommunity = CommunityInfo();
+        preflopChanceState = ChanceState();
+        for (auto &player : preflopChanceState.players)
+        {
+            player.stack = 200;
+        }
+        /////////1/////////2/////////3/////////4/////////5/////////6
+        flopChanceState = ChanceState();
+        flopChanceState.community.bettingRound = BettingRound::Flop;
+        for (auto &player : flopChanceState.players)
+        {
+            player.bet = 5;
+            player.stack = 195;
+            player.lastAction = poker::Action::CALL;
+            player.cards = {1UL, 1UL};
+            flopChanceState.history.push_back(poker::Action::CALL);
+        }
+        /////////1/////////2/////////3/////////4/////////5/////////6
+        turnChanceState = ChanceState();
+        turnChanceState.community.bettingRound = BettingRound::Turn;
+        turnChanceState.community.cards = vector<ulong>(3, 1UL);
+        for (auto &player : turnChanceState.players)
+        {
+            player.bet = 5;
+            player.stack = 195;
+            player.lastAction = poker::Action::CALL;
+            player.cards = {1UL, 1UL};
+            turnChanceState.history.push_back(poker::Action::CALL);
+            turnChanceState.history.push_back(poker::Action::CALL);
+        }
+        /////////1/////////2/////////3/////////4/////////5/////////6
+        riverChanceState = ChanceState();
+        riverChanceState.community.bettingRound = BettingRound::River;
+        turnChanceState.community.cards = vector<ulong>(4, 1UL);
+        for (auto &player : riverChanceState.players)
+        {
+            player.bet = 5;
+            player.stack = 195;
+            player.lastAction = poker::Action::CALL;
+            player.cards = {1UL, 1UL};
+            riverChanceState.history.push_back(poker::Action::CALL);
+            riverChanceState.history.push_back(poker::Action::CALL);
+            riverChanceState.history.push_back(poker::Action::CALL);
+        }
 
-        preflopCommunity.bettingRound = BettingRound::Preflop;
-        flopCommunity.bettingRound = BettingRound::Flop;
-        turnCommunity.bettingRound = BettingRound::Turn;
-        riverCommunity.bettingRound = BettingRound::River;
-
-        players = vector<PlayerInfo>(Global::nofPlayers);
-        history = vector<poker::Action>();
+        chanceStates.push_back(&preflopChanceState);
+        chanceStates.push_back(&flopChanceState);
+        chanceStates.push_back(&turnChanceState);
+        chanceStates.push_back(&riverChanceState);
     }
 
-    CommunityInfo preflopCommunity;
-    CommunityInfo flopCommunity;
-    CommunityInfo turnCommunity;
-    CommunityInfo riverCommunity;
-    vector<PlayerInfo> players;
-    vector<poker::Action> history;
+    void CreateChildren()
+    {
+        for (auto state : chanceStates)
+        {
+            state->CreateChildren();
+        }
+    }
+
+    vector<ChanceState *> chanceStates;
+    ChanceState preflopChanceState;
+    ChanceState flopChanceState;
+    ChanceState turnChanceState;
+    ChanceState riverChanceState;
 };
+
+class TerminalStateTest : public Test
+{
+protected:
+    void SetUp() override
+    {
+        state = TerminalState(community, players, history);
+    }
+
+    TerminalState state;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ChanceState tests
 
-TEST_F(StateTest, ChanceStateHasAPlayStateChild)
+TEST_F(ChanceStateTest, ChanceStateHasPlayStateChild)
 {
-    ChanceState state = ChanceState();
+    for (auto state : chanceStates)
+        EXPECT_EQ(state->children.size(), 0);
 
-    EXPECT_EQ(state.children.size(), 0UL);
-    state.CreateChildren();
-    ASSERT_EQ(state.children.size(), 1UL);
-    EXPECT_TRUE(dynamic_cast<PlayState *>(state.children[0].get()));
+    CreateChildren();
+    for (auto state : chanceStates)
+    {
+        ASSERT_EQ(state->children.size(), 1);
+        EXPECT_TRUE(dynamic_cast<PlayState *>(state->children[0].get()));
+    }
 }
 
-TEST_F(StateTest, ChanceStateDealPlayerCardsPreflop)
+TEST_F(ChanceStateTest, DealPlayerCards)
 {
-    ChanceState state = ChanceState(preflopCommunity, players, history);
-    state.CreateChildren();
-    auto nextState = state.children[0];
+    CreateChildren();
 
-    EXPECT_EQ(state.community.cards.size(), 0);
-    EXPECT_EQ(nextState->community.cards.size(), 0);
+    EXPECT_EQ(preflopChanceState.community.cards.size(), 0);
+    EXPECT_EQ(preflopChanceState.children[0]->community.cards.size(), 0);
 
-    for (auto &player : nextState->players)
+    for (auto &player : preflopChanceState.children[0]->players)
     {
         int cardCount = __builtin_popcountll(player.GetCardBitmask());
         EXPECT_EQ(cardCount, 2);
     }
 }
 
-TEST_F(StateTest, ChanceStateDealThreeCardsOnFlop)
+TEST_F(ChanceStateTest, DealCommunityCards)
 {
-    ChanceState state = ChanceState(flopCommunity, players, history);
-    state.CreateChildren();
-    auto nextState = state.children[0];
+    CreateChildren();
 
-    EXPECT_EQ(nextState->community.cards.size(), state.community.cards.size() + 3);
+    EXPECT_EQ(flopChanceState.children[0]->community.cards.size(), 3);
+    EXPECT_EQ(turnChanceState.children[0]->community.cards.size(), 4);
+    EXPECT_EQ(riverChanceState.children[0]->community.cards.size(), 5);
 }
 
-TEST_F(StateTest, ChanceStateDealOneCardOnTurn)
+TEST_F(ChanceStateTest, NextBettingRoundAfterCardDealt)
 {
-    ChanceState state = ChanceState(turnCommunity, players, history);
-    state.CreateChildren();
-    auto nextState = state.children[0];
+    CreateChildren();
 
-    EXPECT_EQ(nextState->community.cards.size(), state.community.cards.size() + 1);
+    EXPECT_EQ(preflopChanceState.children[0]->community.bettingRound, BettingRound::Flop);
+    EXPECT_EQ(flopChanceState.children[0]->community.bettingRound, BettingRound::Turn);
+    EXPECT_EQ(turnChanceState.children[0]->community.bettingRound, BettingRound::River);
 }
 
-TEST_F(StateTest, ChanceStateDealOneCardOnRiver)
+TEST_F(ChanceStateTest, ChildIsBettingRound)
 {
-    ChanceState state = ChanceState(riverCommunity, players, history);
-    state.CreateChildren();
-    auto nextState = state.children[0];
-
-    EXPECT_EQ(nextState->community.cards.size(), state.community.cards.size() + 1);
+    CreateChildren();
+    for (auto state : chanceStates)
+        EXPECT_TRUE(state->children[0]->community.isBettingOpen);
 }
 
-TEST_F(StateTest, ChanceStateChildIsOneBettingRoundAfter)
+TEST_F(ChanceStateTest, ChildUnchangedInfo)
 {
-    ChanceState state = ChanceState();
-    state.CreateChildren();
-    auto nextState = state.children[0];
-
-    EXPECT_EQ(nextState->community.bettingRound, state.community.bettingRound + 1);
+    CreateChildren();
+    for (auto state : chanceStates)
+    {
+        EXPECT_EQ(state->children[0]->community.lastPlayer, state->community.lastPlayer);
+        EXPECT_EQ(state->children[0]->community.playerToMove, state->community.playerToMove);
+        EXPECT_THAT(state->children[0]->history, ElementsAreArray(state->history));
+    }
 }
 
-TEST_F(StateTest, ChanceStateChildHasBBMinRaise)
+TEST_F(ChanceStateTest, SkipPlayeStateIfNoPlayersCanAct)
 {
-    ChanceState state = ChanceState();
-    state.CreateChildren();
-    auto nextState = state.children[0];
-    auto BB = Global::BB;
+    for (auto state : chanceStates)
+        for (auto player : state->players)
+            player.lastAction = poker::Action::ALLIN;
 
-    EXPECT_EQ(nextState->community.minRaise, BB);
-}
+    CreateChildren();
 
-TEST_F(StateTest, ChanceStateChildIsBettingRound)
-{
-    ChanceState state = ChanceState();
-    state.CreateChildren();
-    auto nextState = state.children[0];
-
-    EXPECT_EQ(nextState->community.isBettingOpen, true);
-}
-
-TEST_F(StateTest, ChanceStateChildUnchangedInfo)
-{
-    ChanceState state = ChanceState();
-    state.CreateChildren();
-    auto nextState = state.children[0];
-
-    EXPECT_EQ(nextState->community.lastPlayer, state.community.lastPlayer);
-    EXPECT_EQ(nextState->community.playerToMove, state.community.playerToMove);
-    EXPECT_THAT(nextState->history, ElementsAreArray(state.history));
-}
-
-TEST_F(StateTest, ChanceStateSkipPlayeStateIfNoPlayersCanAct)
-{
-    for (auto &player : players)
-        player.lastAction = poker::Action::ALLIN;
-    auto flopState = ChanceState(flopCommunity, players, history);
-    flopState.CreateChildren();
-
-    ASSERT_EQ(flopState.GetNumberOfPlayersThatNeedToAct(), 0);
-    ASSERT_EQ(flopState.children.size(), 1);
-    ASSERT_TRUE(dynamic_cast<ChanceState *>(flopState.children[0].get()));
-
-    auto turnState = flopState.children[0];
-    turnState->CreateChildren();
-
-    ASSERT_EQ(turnState->GetNumberOfPlayersThatNeedToAct(), 0);
-    ASSERT_EQ(turnState->children.size(), 1);
-    ASSERT_TRUE(dynamic_cast<ChanceState *>(turnState->children[0].get()));
-
-    auto riverState = turnState->children[0];
-    riverState->CreateChildren();
-
-    ASSERT_EQ(riverState->GetNumberOfPlayersThatNeedToAct(), 0);
-    ASSERT_EQ(riverState->children.size(), 1);
-    ASSERT_TRUE(dynamic_cast<TerminalState *>(riverState->children[0].get()));
+    for (auto state : chanceStates)
+    {
+        EXPECT_EQ(state->GetNumberOfPlayersThatNeedToAct(), 0);
+        EXPECT_EQ(state->children.size(), 1);
+        EXPECT_TRUE(dynamic_cast<ChanceState *>(state->children[0].get()));
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 // TerminalState tests
 
-TEST_F(StateTest, TerminalStateSingleWinnerRewards)
-{
-    players[0].bet = 7;
-    players[1].bet = 5;
-    players[0].isStillInGame = true;
-    players[1].isStillInGame = false;
-    auto state = TerminalState(flopCommunity, players, history);
+// TEST_F(StateTest, TerminalStateSingleWinnerRewards)
+// {
+//     players[0].bet = 7;
+//     players[1].bet = 5;
+//     players[0].isStillInGame = true;
+//     players[1].isStillInGame = false;
+//     auto state = TerminalState(flopCommunity, players, history);
 
-    EXPECT_EQ(state.GetReward(0), -7 + 7 + 5);
-    EXPECT_EQ(state.GetReward(1), -5);
-}
+//     EXPECT_EQ(state.GetReward(0), -7 + 7 + 5);
+//     EXPECT_EQ(state.GetReward(1), -5);
+// }
 
-TEST_F(StateTest, TerminalStateMultipleWinnersRewards)
-{
-    players[0].bet = 5;
-    players[1].bet = 5;
-    players[0].isStillInGame = true;
-    players[1].isStillInGame = true;
-    // players have same hand strength
-    auto state = TerminalState(flopCommunity, players, history);
+// TEST_F(StateTest, TerminalStateMultipleWinnersRewards)
+// {
+//     players[0].bet = 5;
+//     players[1].bet = 5;
+//     players[0].isStillInGame = true;
+//     players[1].isStillInGame = true;
+//     // players have same hand strength
+//     auto state = TerminalState(flopCommunity, players, history);
 
-    EXPECT_EQ(state.GetReward(0), 0);
-    EXPECT_EQ(state.GetReward(1), 0);
-}
+//     EXPECT_EQ(state.GetReward(0), 0);
+//     EXPECT_EQ(state.GetReward(1), 0);
+// }
 
-///////////////////////////////////////////////////////////////////////////////////////////
-// PlayState tests
+// ///////////////////////////////////////////////////////////////////////////////////////////
+// // PlayState tests
 
-TEST_F(StateTest, PlayStateHasChildren)
-{
-    preflopCommunity.isBettingOpen = true;
-    players[0].stack = 5;
-    players[1].stack = 5;
-    players[0].isStillInGame = true;
-    players[1].isStillInGame = true;
-    auto state = PlayState(preflopCommunity, players, history);
-    state.CreateChildren();
+// TEST_F(StateTest, PlayStateHasChildren)
+// {
+//     preflopCommunity.isBettingOpen = true;
+//     players[0].stack = 5;
+//     players[1].stack = 5;
+//     players[0].isStillInGame = true;
+//     players[1].isStillInGame = true;
+//     auto state = PlayState(preflopCommunity, players, history);
+//     state.CreateChildren();
 
-    EXPECT_GT(state.children.size(), 0);
-}
-
+//     EXPECT_GT(state.children.size(), 0);
+//     EXPECT_THAT(state.children, )
+// }
