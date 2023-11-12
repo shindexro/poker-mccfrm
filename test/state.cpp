@@ -387,6 +387,7 @@ TEST_F(PlayStateTest, PlayStateChildrenHasPlayerToMove)
                 continue;
 
             EXPECT_NE(child->community.playerToMove, -1);
+            EXPECT_NE(child->community.playerToMove, state->community.playerToMove);
         }
     }
 }
