@@ -338,7 +338,7 @@ TEST_F(PlayStateTest, PlayStateChildrenInSameRound)
             if (!dynamic_cast<PlayState *>(child.get()))
                 continue;
 
-            EXPECT_EQ(child->community.bettingRound, community.bettingRound);
+            EXPECT_EQ(child->community.bettingRound, state->community.bettingRound);
         }
     }
 }
@@ -351,7 +351,7 @@ TEST_F(PlayStateTest, AtMostOnePlayStateChildThatCalled)
         int calledChildCount = 0;
         for (auto child : state->children)
         {
-            if (!dynamic_cast<ChanceState *>(child.get()))
+            if (!dynamic_cast<PlayState *>(child.get()))
                 continue;
 
             calledChildCount++;
@@ -359,6 +359,8 @@ TEST_F(PlayStateTest, AtMostOnePlayStateChildThatCalled)
         EXPECT_LE(calledChildCount, 1);
 
         if (state == &preflopSBPlayState)
-            EXPECT_EQ(calledChildCount, 2);
+        {
+            EXPECT_EQ(calledChildCount, 1);
+        }
     }
 }
