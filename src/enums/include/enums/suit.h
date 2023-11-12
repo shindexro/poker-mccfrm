@@ -1,3 +1,5 @@
+#ifndef __ENUM_SUIT_H__
+#define __ENUM_SUIT_H__
 
 enum class Suit
 {
@@ -6,3 +8,5 @@ enum class Suit
     Diamonds,
     Clubs,
 };
+
+#endif

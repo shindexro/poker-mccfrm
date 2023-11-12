@@ -1,3 +1,5 @@
+#ifndef __ENUM_RANK_H__
+#define __ENUM_RANK_H__
 
 enum class Rank
 {
@@ -15,3 +17,5 @@ enum class Rank
     King,
     Ace,
 };
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef __ENUM_HAND_RANKING_H__
+#define __ENUM_HAND_RANKING_H__
+
 enum HandRanking
 {
     HighCard,
@@ -35,3 +38,5 @@ std::ostream &operator<<(std::ostream &out, const HandRanking &value)
     }();
     return out << s;
 }
+
+#endif
