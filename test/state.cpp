@@ -391,3 +391,31 @@ TEST_F(PlayStateTest, PlayStateChildrenHasPlayerToMove)
         }
     }
 }
+
+TEST_F(PlayStateTest, PlayStateChildrenHasPlayerToMove)
+{
+    CreateChildren();
+    for (auto &state : playStates)
+    {
+        for (auto child : state->children)
+        {
+            if (!dynamic_cast<PlayState *>(child.get()))
+                continue;
+
+            EXPECT_NE(child->community.playerToMove, -1);
+            EXPECT_NE(child->community.playerToMove, state->community.playerToMove);
+        }
+    }
+}
+
+TEST_F(PlayStateTest, TotalChipsEqualBuyIns)
+{
+    CreateChildren();
+    for (auto &state : playStates)
+    {
+        for (auto child : state->children)
+        {
+            EXPECT_EQ(child->GetPot(), 400);
+        }
+    }
+}
