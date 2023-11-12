@@ -202,10 +202,10 @@ TEST_F(ChanceStateTest, SkipPlayeStateIfNoPlayersCanAct)
 
 TEST_F(ShowDownTerminalStateTest, SingleWinnerRewards)
 {
-    players[0].bet = 7;
-    players[1].bet = 5;
-    players[0].isStillInGame = true;
-    players[1].isStillInGame = false;
+    state.players[0].bet = 7;
+    state.players[1].bet = 5;
+    state.players[0].isStillInGame = true;
+    state.players[1].isStillInGame = false;
 
     EXPECT_EQ(state.GetReward(0), -7 + 7 + 5);
     EXPECT_EQ(state.GetReward(1), -5);
@@ -213,11 +213,12 @@ TEST_F(ShowDownTerminalStateTest, SingleWinnerRewards)
 
 TEST_F(ShowDownTerminalStateTest, MultipleWinnersRewards)
 {
-    players[0].bet = 5;
-    players[1].bet = 5;
-    players[0].isStillInGame = true;
-    players[1].isStillInGame = true;
+    state.players[0].bet = 5;
+    state.players[1].bet = 5;
+    state.players[0].isStillInGame = true;
+    state.players[1].isStillInGame = true;
     // players have same hand strength
+    state.players[0].cards = state.players[1].cards;
 
     EXPECT_EQ(state.GetReward(0), 0);
     EXPECT_EQ(state.GetReward(1), 0);
