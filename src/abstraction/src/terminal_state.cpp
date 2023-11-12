@@ -22,7 +22,7 @@ namespace poker
             players[i].reward -= players[i].bet; // the bet amounts are considered lost
         }
 
-        if (GetActivePlayers() == 1)
+        if (GetNumberOfActivePlayers() == 1)
         {
             for (auto i = 0; i < Global::nofPlayers; ++i)
             {

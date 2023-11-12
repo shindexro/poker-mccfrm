@@ -31,11 +31,11 @@ namespace poker
         int pot = GetPot();
         int currentCall = MinimumCall();
 
-        if (GetActivePlayers() == 0)
+        if (GetNumberOfActivePlayers() == 0)
         {
             throw invalid_argument("There must always be >= one player in hand");
         }
-        if (GetActivePlayers() == 1)
+        if (GetNumberOfActivePlayers() == 1)
         {
             return validActions; // no valid actions
         }
@@ -264,8 +264,7 @@ namespace poker
 
         if (dynamic_cast<PlayState *>(nextState.get()))
         {
-            nextState->community.lastPlayer = community.playerToMove;
-            nextState->community.playerToMove = GetNextPlayer(nextState->community.lastPlayer);
+            nextState->community.playerToMove = GetNextPlayer(community.playerToMove);
         }
 
         children.push_back(nextState);
@@ -307,8 +306,8 @@ namespace poker
             playerWhoRaised.bet += raise;
             playerWhoRaised.lastAction = Action::RAISE;
 
-            nextState->community.lastPlayer = community.playerToMove;
-            nextState->community.playerToMove = GetNextPlayer(nextState->community.lastPlayer);
+            nextState->community.lastPlayer = GetLastPlayer(community.playerToMove);
+            nextState->community.playerToMove = GetNextPlayer(community.playerToMove);
 
             nextState->community.isBettingOpen = true;
             nextState->community.minRaise = additionalRaise;
@@ -341,8 +340,8 @@ namespace poker
         playerWhoAllIn.bet += raise;
         playerWhoAllIn.stack = 0;
 
-        nextState->community.lastPlayer = community.playerToMove;
-        nextState->community.playerToMove = GetNextPlayer(nextState->community.lastPlayer);
+        nextState->community.lastPlayer = GetLastPlayer(community.playerToMove);
+        nextState->community.playerToMove = GetNextPlayer(community.playerToMove);
 
         if (additionalRaise >= community.minRaise)
         {
@@ -383,7 +382,7 @@ namespace poker
 
         int nextPlayer = GetNextPlayer();
 
-        if (nextState->GetActivePlayers() == 1)
+        if (nextState->GetNumberOfActivePlayers() == 1)
         {
             // terminal state
             children.push_back(make_shared<TerminalState>(nextState->community, nextState->players, nextState->history));

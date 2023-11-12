@@ -24,9 +24,11 @@ namespace poker
         return GetNextPlayer(community.lastPlayer);
     }
 
-    int State::GetNextPlayer(int lastToMoveTemp)
+    // The next player to act in the round
+    int State::GetNextPlayer(int player)
     {
-        for (auto i = (community.playerToMove + 1) % Global::nofPlayers; i != (lastToMoveTemp + 1) % Global::nofPlayers;
+        for (auto i = (community.playerToMove + 1) % Global::nofPlayers;
+             i != (player + 1) % Global::nofPlayers;
              i = (i + 1) % Global::nofPlayers)
         {
             if (players[i].isStillInGame && players[i].lastAction != Action::ALLIN)
@@ -37,10 +39,12 @@ namespace poker
         return -1;
     }
 
-    int State::GetLastPlayer(int playerThatRaised)
+    // The last remaining player to act in the round
+    int State::GetLastPlayer(int playerWhoRaised)
     {
         int last = -1;
-        for (auto i = (playerThatRaised + 1) % Global::nofPlayers; i != playerThatRaised % Global::nofPlayers;
+        for (auto i = (playerWhoRaised + 1) % Global::nofPlayers;
+             i != playerWhoRaised % Global::nofPlayers;
              i = (i + 1) % Global::nofPlayers)
         {
             if (players[i].isStillInGame && players[i].lastAction != Action::ALLIN)
@@ -51,9 +55,9 @@ namespace poker
         return last;
     }
 
+    // Number of players still in the game and didn't all in
     int State::GetNumberOfPlayersThatNeedToAct()
     {
-        // does not include all-in players
         int count = 0;
         for (auto i = 0; i < Global::nofPlayers; i++)
         {
@@ -63,10 +67,10 @@ namespace poker
         return count;
     }
 
-    int State::GetActivePlayers()
+    int State::GetNumberOfActivePlayers()
     {
         return count_if(players.begin(), players.end(), [](PlayerInfo &p)
-                        { return p.isStillInGame == Action::ALLIN; });
+                        { return p.isStillInGame; });
     }
 
     int State::GetNumberOfAllInPlayers()

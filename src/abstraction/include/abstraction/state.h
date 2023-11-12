@@ -46,7 +46,7 @@ namespace poker
         int GetPot() const;
         int MinimumCall() const;
 
-        int GetActivePlayers();
+        int GetNumberOfActivePlayers();
         int GetNumberOfAllInPlayers();
         virtual void CreateChildren() { throw invalid_argument("Not implemented"); };
         virtual bool IsPlayerInHand(int traverser) { throw invalid_argument("Not implemented"); };
