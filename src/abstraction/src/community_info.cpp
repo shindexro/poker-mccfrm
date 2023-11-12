@@ -25,11 +25,11 @@ namespace poker
     ostream &operator<<(ostream &out, const CommunityInfo &info)
     {
         out << info.bettingRound << " "
-            << info.playerToMove << " "
-            << info.lastPlayer << " "
-            << info.minRaise << " "
-            << info.isBettingOpen << " "
-            << info.actionCount << " "
+            << "pMove:" << info.playerToMove << " "
+            << "pLast:" << info.lastPlayer << " "
+            << "minR:" << info.minRaise << " "
+            << "betOK:" << info.isBettingOpen << " "
+            << "acts:" << info.actionCount << " "
             << Hand(info.GetCardBitmask()).ToString();
         return out;
     }
