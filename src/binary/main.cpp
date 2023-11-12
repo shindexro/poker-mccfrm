@@ -2,6 +2,7 @@
 #include "game/deck.h"
 #include "abstraction/global.h"
 #include "abstraction/infoset.h"
+#include "abstraction/chance_state.h"
 #include "tables/hand_indexer.h"
 #include "tables/ochs_table.h"
 #include "tables/emd_table.h"
@@ -9,7 +10,6 @@
 #include "utils/random.h"
 #include "algorithm/trainer.h"
 #include "abstraction/state.h"
-#include "abstraction/chance_state.h"
 
 #include <iostream>
 #include <string>
