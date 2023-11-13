@@ -18,8 +18,8 @@ namespace poker
 {
     void StateDFS(State &state, int depth = 0)
     {
-        if (depth >= 4)
-            return;
+        // if (depth >= 4)
+        //     return;
 
         state.CreateChildren();
         for (auto &child : state.children)
