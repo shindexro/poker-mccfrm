@@ -136,6 +136,24 @@ protected:
         /////////1/////////2/////////3/////////4/////////5/////////6
         community = CommunityInfo();
         community.isBettingOpen = true;
+        community.playerToMove = 1;
+
+        players = vector<PlayerInfo>(2);
+        players[0].cards = {32, 64};
+        players[1].cards = {128, 256};
+
+        players[0].bet = 2;
+        players[1].bet = 2;
+        players[0].stack = 198;
+        players[1].stack = 198;
+
+        history = vector<poker::Action>(1, poker::Action::Call);
+
+        preflopBBPlayState = PlayState(community, players, history);
+        playStates.push_back(&preflopBBPlayState);
+        /////////1/////////2/////////3/////////4/////////5/////////6
+        community = CommunityInfo();
+        community.isBettingOpen = true;
         community.bettingRound = BettingRound::Flop;
         community.cards = vector<ulong>({1, 2, 4});
 
@@ -164,6 +182,7 @@ protected:
 
     vector<PlayState *> playStates;
     PlayState preflopSBPlayState;
+    PlayState preflopBBPlayState;
     PlayState flopPlayState;
     CommunityInfo community;
     vector<PlayerInfo> players;
