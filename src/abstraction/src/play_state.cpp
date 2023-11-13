@@ -250,11 +250,18 @@ namespace poker
 
         shared_ptr<State> nextState;
         if (NextActivePlayer() != -1)
+        {
             nextState = make_shared<PlayState>(community, players, history);
+        }
         else if (community.bettingRound < BettingRound::River)
+        {
             nextState = make_shared<ChanceState>(community, players, history);
+            ++nextState->community.bettingRound;
+        }
         else
+        {
             nextState = make_shared<TerminalState>(community, players, history);
+        }
 
         nextState->history.push_back(Action::Call);
         auto &playerWhoCalled = nextState->players[community.playerToMove];
@@ -362,6 +369,7 @@ namespace poker
         }
         else if (community.bettingRound < BettingRound::River)
         {
+            ++nextState->community.bettingRound;
             children.push_back(make_shared<ChanceState>(nextState->community, nextState->players, nextState->history));
         }
         else
@@ -395,9 +403,9 @@ namespace poker
         else
         {
             // here the betting round is over, there is more than 1 player left
-            if (community.bettingRound != 4)
+            if (community.bettingRound < BettingRound::River)
             {
-                // chance
+                ++nextState->community.bettingRound;
                 children.push_back(make_shared<ChanceState>(nextState->community, nextState->players, nextState->history));
             }
             else
