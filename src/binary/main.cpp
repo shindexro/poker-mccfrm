@@ -23,7 +23,10 @@ namespace poker
         // {
         //     StateDFS(*child, depth + 1);
         // }
-        StateDFS(*state.children[randint(0, state.children.size())], depth + 1);
+        if (state.children.size())
+        {
+            StateDFS(*state.children[randint(0, state.children.size())], depth + 1);
+        }
     }
 
     class Program
