@@ -34,14 +34,14 @@ namespace poker
     public:
         static void Main()
         {
-            auto state = ChanceState();
-            StateDFS(state);
-            state.PrettyPrintTree();
+            // auto state = ChanceState();
+            // StateDFS(state);
+            // state.PrettyPrintTree();
 
-            // CreateIndexers();
-            // Global::handEvaluator.Initialise();
-            // CalculateInformationAbstraction();
-            // Train();
+            CreateIndexers();
+            Global::handEvaluator.Initialise();
+            CalculateInformationAbstraction();
+            Train();
         }
 
     private:
