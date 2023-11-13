@@ -333,10 +333,6 @@ namespace poker
 
     void PlayState::CreateAllInChildren()
     {
-        // all-in
-        if (players[community.playerToMove].stack <= 0)
-            return;
-
         // (currently, multiple all-ins in a row dont accumulate the raises and re-open betting round but probably they should)
         int raise = players[community.playerToMove].stack;
         int additionalRaise = (raise + players[community.playerToMove].bet) - MinimumCall();
@@ -349,7 +345,7 @@ namespace poker
         playerWhoAllIn.stack = 0;
 
         nextState->community.lastPlayer = PrevActivePlayer();
-        nextState->community.playerToMove = NextActivePlayer();
+        nextState->community.playerToMove = nextState->NextActivePlayer();
 
         if (additionalRaise >= community.minRaise)
         {
