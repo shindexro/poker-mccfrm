@@ -246,14 +246,14 @@ TEST_F(ChanceStateTest, ChildConfigurations)
 {
     CreateChildren();
     int BB = Global::BB;
+    int totalPlayers = Global::nofPlayers;
 
     for (auto state : chanceStates)
     {
         EXPECT_TRUE(state->children[0]->community.isBettingOpen);
         EXPECT_EQ(state->children[0]->community.minRaise, BB);
         EXPECT_EQ(state->children[0]->community.playerToMove, 0);
-        EXPECT_EQ(state->children[0]->community.lastPlayer, state->community.lastPlayer);
-        EXPECT_EQ(state->children[0]->community.playerToMove, state->community.playerToMove);
+        EXPECT_EQ(state->children[0]->community.lastPlayer, totalPlayers - 1);
         EXPECT_THAT(state->children[0]->history, ElementsAreArray(state->history));
     }
 }
