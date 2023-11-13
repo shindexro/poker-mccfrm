@@ -6,7 +6,10 @@
 // random integer in range [low, high)
 inline int randint(int low, int high)
 {
-    return low + (rand() % (high - low));
+    static std::random_device dev;
+    static std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> distribution(low, high - 1);
+    return distribution(rng);
 }
 
 inline double randDouble()
