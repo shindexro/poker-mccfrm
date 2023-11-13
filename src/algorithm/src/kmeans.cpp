@@ -276,7 +276,7 @@ vector<vector<float>> Kmeans::CalculateNewCenters(vector<vector<float>> &data, v
 void Kmeans::CalculateClusterDistancesL2(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters)
 {
     utils::parallelise(clusterCenters.size(),
-                       [&](int threadIdx, int itemIdx)
+                       [&](int, int itemIdx)
                        {
                            for (auto m = 0; m < itemIdx; ++m)
                            {
@@ -295,7 +295,7 @@ void Kmeans::CalculateClusterDistancesL2(vector<vector<float>> &distances, vecto
 void Kmeans::CalculateClusterDistancesEMD(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters)
 {
     utils::parallelise(clusterCenters.size(),
-                       [&](int threadIdx, int itemIdx)
+                       [&](int, int itemIdx)
                        {
                            for (auto m = 0; m < itemIdx; ++m)
                            {
@@ -368,7 +368,7 @@ vector<vector<float>> Kmeans::FindStartingCentersL2(vector<vector<float>> &data,
         else
         {
             utils::parallelise(dataTemp.size(),
-                               [&](int threadIdx, int itemIdx)
+                               [&](int, int itemIdx)
                                {
                                     for (auto m = 0; m < c; ++m) // go through centers
                                     {
@@ -424,7 +424,7 @@ vector<vector<float>> Kmeans::FindStartingCentersEMD(vector<vector<float>> &data
         else
         {
             utils::parallelise(dataTemp.size(),
-                               [&](int threadIdx, int itemIdx)
+                               [&](int, int itemIdx)
                                {
                                     for (auto m = 0; m < c; ++m) // go through centers
                                     {
