@@ -330,6 +330,8 @@ TEST_F(PlayStateTest, ChanceStateChildGoToNextRound)
     }
 }
 
+/* Deprecated, incorrect assertion.
+    We can go into multiple ChanceStates with different actions.
 TEST_F(PlayStateTest, AtMostOneChanceStateChild)
 {
     CreateChildren();
@@ -345,7 +347,7 @@ TEST_F(PlayStateTest, AtMostOneChanceStateChild)
         }
         EXPECT_LE(chanceChildCount, 1);
     }
-}
+} */
 
 TEST_F(PlayStateTest, PlayStateChildrenInSameRound)
 {
