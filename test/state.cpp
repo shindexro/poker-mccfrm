@@ -25,15 +25,19 @@ protected:
         }
         /////////1/////////2/////////3/////////4/////////5/////////6
         flopChanceState = ChanceState();
+        flopChanceState.community.playerToMove = 1;
+        flopChanceState.community.lastPlayer = 1;
+        flopChanceState.community.minRaise = 5;
         flopChanceState.community.bettingRound = BettingRound::Flop;
         for (auto &player : flopChanceState.players)
         {
-            player.bet = 5;
-            player.stack = 195;
-            player.lastAction = poker::Action::Call;
+            player.bet = 7;
+            player.stack = 193;
             player.cards = {1UL, 1UL};
-            flopChanceState.history.push_back(poker::Action::Call);
         }
+        flopChanceState.players[0].lastAction = poker::Action::Raise;
+        flopChanceState.players[1].lastAction = poker::Action::Call;
+        flopChanceState.history = vector<poker::Action>({poker::Action::Raise1, poker::Action::Call});
         /////////1/////////2/////////3/////////4/////////5/////////6
         turnChanceState = ChanceState();
         turnChanceState.community.bettingRound = BettingRound::Turn;
