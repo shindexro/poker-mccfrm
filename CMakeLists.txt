@@ -9,7 +9,7 @@ endif()
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_DEBUG "-g --coverage")
 
 set(Boost_INCLUDE_DIR /usr/local/boost_1_83_0)
 set(Boost_NO_WARN_NEW_VERSIONS 1)
