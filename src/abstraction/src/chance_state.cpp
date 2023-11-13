@@ -40,8 +40,11 @@ namespace poker
         {
             // there is someone left that plays
             newCommunity.isBettingOpen = true;
-            newCommunity.playerToMove = 0;
-            newCommunity.lastPlayer = Global::nofPlayers - 1;
+            if (community.bettingRound > BettingRound::Preflop)
+            {
+                newCommunity.playerToMove = 0;
+                newCommunity.lastPlayer = Global::nofPlayers - 1;
+            }
             children.push_back(make_shared<PlayState>(newCommunity, newPlayers, history));
         }
         else
