@@ -27,7 +27,7 @@ public:
     void UpdateStrategy(shared_ptr<State> gs, int traverser);
     void UpdateStrategy(int traverser);
     float TraverseMCCFRPruned(int traverser);
-    float TraverseMCCFR(int traverser, int iteration);
+    float TraverseMCCFR(int traverser);
     void PlayOneGame();
     float PlayOneGame_d(int mainPlayer, bool display);
 
@@ -43,7 +43,7 @@ private:
     int threadIndex = 0;
 
     float TraverseMCCFRPruned(shared_ptr<State> gs, int traverser);
-    float TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration);
+    float TraverseMCCFR(shared_ptr<State> gs, int traverser);
 };
 
 #endif

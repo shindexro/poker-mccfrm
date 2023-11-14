@@ -70,10 +70,10 @@ float Trainer::TraverseMCCFRPruned(int traverser)
     return TraverseMCCFRPruned(rootState, traverser);
 }
 
-float Trainer::TraverseMCCFR(int traverser, int iteration)
+float Trainer::TraverseMCCFR(int traverser)
 {
     ResetGame();
-    return TraverseMCCFR(rootState, traverser, iteration);
+    return TraverseMCCFR(rootState, traverser);
 }
 
 float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
@@ -164,7 +164,7 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
     }
 }
 
-float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
+float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser)
 {
     if (dynamic_cast<TerminalState *>(gs.get()))
     {
@@ -177,7 +177,7 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
     else if (dynamic_cast<ChanceState *>(gs.get()))
     {
         // sample a from chance
-        return TraverseMCCFR(gs->DoRandomAction(), traverser, iteration);
+        return TraverseMCCFR(gs->DoRandomAction(), traverser);
     }
     else if (gs->IsPlayerTurn(traverser))
     {
@@ -190,7 +190,7 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
         auto expectedValsChildren = vector<float>();
         for (auto i = 0UL; i < gs->children.size(); ++i)
         {
-            auto childVal = TraverseMCCFR(gs->children[i], traverser, iteration);
+            auto childVal = TraverseMCCFR(gs->children[i], traverser);
             expectedValsChildren.push_back(childVal);
             expectedVal += sigma[i] * childVal;
             // cout << "state temp expected value is " << expectedVal << " with child node value "
