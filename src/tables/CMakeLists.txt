@@ -9,7 +9,7 @@ add_library(${PROJECT_NAME}
 )
 
 set_source_files_properties(
-    src/ehs_table.cpp
+    # src/ehs_table.cpp # deprecated
     src/hand_indexer.cpp
     src/evaluator.cpp
     src/ochs_table.cpp
