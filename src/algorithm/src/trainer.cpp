@@ -213,7 +213,7 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser)
         int randomIndex = utils::SampleDistribution(sigma);
         gs->CreateChildren();
 
-        return TraverseMCCFR(gs->children[randomIndex], traverser, iteration);
+        return TraverseMCCFR(gs->children[randomIndex], traverser);
     }
 }
 
