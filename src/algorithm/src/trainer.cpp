@@ -88,63 +88,36 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
     else if (gs->IsPlayerTurn(traverser))
     {
         // according to supp. mat. page 3, we do full MCCFR on the last betting round, otherwise skip low regret
-        if (pruned && gs->community.bettingRound != 4)
-        {
-            // Infoset of player i that corresponds to h
-            Infoset infoset = gs->GetInfoset();
-            auto sigma = infoset.CalculateStrategy();
-            float expectedVal = 0.0f;
+        Infoset infoset = gs->GetInfoset();
+        auto sigma = infoset.CalculateStrategy();
+        float expectedVal = 0.0f;
 
-            gs->CreateChildren();
-            auto expectedValsChildren = vector<float>(gs->children.size());
-            auto explored = vector<bool>();
-            for (auto i = 0UL; i < gs->children.size(); ++i)
-            {
-                if (infoset.regret[i] > Global::C)
-                {
-                    expectedValsChildren[i] = TraverseMCCFR(gs->children[i], traverser, pruned);
-                    explored.push_back(true);
-                    expectedVal += sigma[i] * expectedValsChildren[i];
-                }
-                else
-                {
-                    explored.push_back(false);
-                }
-            }
-            for (auto i = 0UL; i < gs->children.size(); ++i)
-            {
-                if (explored[i])
-                {
-                    infoset.regret[i] += expectedValsChildren[i] - expectedVal;
-                    infoset.regret[i] = max({(float)Global::regretFloor, infoset.regret[i]});
-                }
-            }
-            gs->UpdateInfoset(infoset);
-            return expectedVal;
-        }
-        else
-        {
-            // do the same as in normal MCCFR
-            // Infoset of player i that corresponds to h
-            Infoset infoset = gs->GetInfoset();
-            auto sigma = infoset.CalculateStrategy();
-            float expectedVal = 0.0f;
+        gs->CreateChildren();
+        auto expectedValsChildren = vector<float>(gs->children.size());
+        auto explored = vector<bool>(gs->children.size(), true);
 
-            gs->CreateChildren();
-            auto expectedValsChildren = vector<float>(gs->children.size());
-            for (auto i = 0UL; i < gs->children.size(); ++i)
+        for (auto i = 0UL; i < gs->children.size(); ++i)
+        {
+            if (!pruned || (pruned && infoset.regret[i] > Global::C))
             {
                 expectedValsChildren[i] = TraverseMCCFR(gs->children[i], traverser, pruned);
                 expectedVal += sigma[i] * expectedValsChildren[i];
             }
-            for (auto i = 0UL; i < gs->children.size(); ++i)
+            else
+            {
+                explored[i] = false;
+            }
+        }
+        for (auto i = 0UL; i < gs->children.size(); ++i)
+        {
+            if (explored[i])
             {
                 infoset.regret[i] += expectedValsChildren[i] - expectedVal;
                 infoset.regret[i] = max({(float)Global::regretFloor, infoset.regret[i]});
             }
-            gs->UpdateInfoset(infoset);
-            return expectedVal;
         }
+        gs->UpdateInfoset(infoset);
+        return expectedVal;
     }
     else
     {
