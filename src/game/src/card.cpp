@@ -199,7 +199,7 @@ string Card::ToString() const
 void Card::PrintBeautifulString(const string_view &end)
 {
     // TOOD: change color according to suit
-    cout << ToString() << endl;
+    cout << ToString() << end;
 }
 
 ostream &operator<<(ostream &out, const Card &card)
