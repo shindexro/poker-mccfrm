@@ -72,18 +72,19 @@ int Trainer::TraverseMCCFR(int traverser, bool pruned)
 
 int Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
 {
+    int ret = 0;
     if (dynamic_cast<TerminalState *>(gs.get()))
     {
-        return gs->GetReward(traverser);
+        ret = gs->GetReward(traverser);
     }
     else if (!gs->IsPlayerInHand(traverser)) // we cant get the reward because this function is not implemented
     {
-        return -gs->players[traverser].bet; // correct?
+        ret = -gs->players[traverser].bet; // correct?
     }
     else if (dynamic_cast<ChanceState *>(gs.get()))
     {
         // sample a from chance
-        return TraverseMCCFR(gs->DoRandomAction(), traverser, pruned);
+        ret = TraverseMCCFR(gs->DoRandomAction(), traverser, pruned);
     }
     else if (gs->IsPlayerTurn(traverser))
     {
@@ -117,7 +118,7 @@ int Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
             }
         }
         gs->UpdateInfoset(infoset);
-        return expectedVal;
+        ret = expectedVal;
     }
     else
     {
@@ -127,8 +128,10 @@ int Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
         int randomIndex = utils::SampleDistribution(sigma);
         gs->CreateChildren();
 
-        return TraverseMCCFR(gs->children[randomIndex], traverser, pruned);
+        ret = TraverseMCCFR(gs->children[randomIndex], traverser, pruned);
     }
+
+    return ret;
 }
 
 void Trainer::DiscountInfosets(float d)
