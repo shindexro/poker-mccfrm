@@ -312,26 +312,6 @@ void Trainer::EnumerateActionSpace(shared_ptr<State> gs)
 {
     if (dynamic_cast<TerminalState *>(gs.get()))
     {
-        // cout << "Reached a terminal state of depth " << gs->history.size()
-        //      << " actions taken:";
-        // for (auto a : gs->history)
-        // {
-        //     cout << vector<string>({"NONE",
-        //                             "FOLD",
-        //                             // CHECK, combined with CALL, basically calling a 0 raise
-        //                             "CALL",
-        //                             "RAISE",
-        //                             "RAISE1",
-        //                             "RAISE2",
-        //                             "RAISE3",
-        //                             "RAISE4",
-        //                             "RAISE5",
-        //                             "RAISE6",
-        //                             "ALLIN"})[a]
-        //          << " ";
-        // }
-        // cout << endl;
-
         string outstring = "";
         for (auto action : gs->history)
         {
@@ -353,8 +333,6 @@ void Trainer::EnumerateActionSpace(shared_ptr<State> gs)
     else
     {
         gs->CreateChildren();
-        // cout << "Enumerating action space for state: " << gs.get()
-        //      << " with " << gs->children.size() << " children" << endl;
         for (auto i = 0UL; i < gs->children.size(); ++i)
         {
             EnumerateActionSpace(gs->children[i]);
