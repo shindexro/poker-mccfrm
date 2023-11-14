@@ -111,7 +111,6 @@ namespace poker
             atomic<long> sharedLoopCounter = 0;
 
             LoadFromFile();
-            LoadFromFile_d();
 
             Trainer trainer = Trainer(0);
             trainer.EnumerateActionSpace();
