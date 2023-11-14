@@ -21,7 +21,7 @@ public:
 private:
     ulong removedCards;
     int numRemovedCards;
-    int position;
+    size_t position;
     vector<ulong> cards;
 };
 
