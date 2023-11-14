@@ -19,10 +19,10 @@ public:
     ulong Peek(int idx);
 
 private:
-    vector<ulong> cards;
     ulong removedCards;
     int numRemovedCards;
     int position;
+    vector<ulong> cards;
 };
 
 #endif
