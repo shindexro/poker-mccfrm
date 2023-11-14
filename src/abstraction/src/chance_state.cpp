@@ -143,7 +143,7 @@ namespace poker
         for (auto i = 0; i < Global::RANKS * Global::RANKS; ++i)
         {
             auto newPlayers = vector<PlayerInfo>(players);
-            players[0].cards = {startingHands[i].cards[0].Bitmask(), startingHands[i].cards[1].Bitmask()};
+            newPlayers[0].cards = {startingHands[i].cards[0].Bitmask(), startingHands[i].cards[1].Bitmask()};
             newCommunity.cards = vector<ulong>();
             newCommunity.isBettingOpen = true;
             newCommunity.lastPlayer = lastToMoveTemp;
