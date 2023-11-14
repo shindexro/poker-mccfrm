@@ -153,67 +153,6 @@ namespace poker
         return accessor->second;
     }
 
-    Infoset PlayState::GetInfosetSecondary()
-    {
-        // Betting history R, A, CH, C, F
-        // Player whose turn it is // not needed?
-        // Cards of player whose turn it is
-        // community cards
-
-        if (infosetStringGenerated == false)
-        {
-            string historyString = "";
-            for (auto h : history)
-            {
-                historyString += h;
-                historyString += ",";
-            }
-
-            auto cards = vector<int>{
-                Card::GetIndexFromBitmask(get<0>(players[community.playerToMove].cards)),
-                Card::GetIndexFromBitmask(get<1>(players[community.playerToMove].cards))};
-            for (auto i = 0UL; i < community.cards.size(); ++i)
-            {
-                cards.push_back(Card::GetIndexFromBitmask(community.cards[i]));
-            }
-
-            string cardString = "";
-            if (community.cards.size() == 0)
-            {
-                long index = Global::indexer_2.IndexLastRound(cards);
-                cardString += "Preflop" + to_string(index);
-            }
-            else if (community.cards.size() == 3)
-            {
-                long index = EMDTable::flopIndices[Global::indexer_2_3.IndexLastRound(cards)];
-                cardString += "Flop" + to_string(index);
-            }
-            else if (community.cards.size() == 4)
-            {
-                long index = EMDTable::turnIndices[Global::indexer_2_4.IndexLastRound(cards)];
-                cardString += "Turn" + to_string(index);
-            }
-            else
-            {
-                long index = OCHSTable::riverIndices[Global::indexer_2_5.IndexLastRound(cards)];
-                cardString += "River" + to_string(index);
-            }
-            infosetString = historyString + cardString;
-        }
-
-        tbb::concurrent_hash_map<string, Infoset>::accessor accessor;
-        if (Global::nodeMap.find(accessor, infosetString))
-        {
-            return accessor->second;
-        }
-        else
-        {
-            Infoset infoset = Infoset(GetValidActionsCount());
-            Global::nodeMap.insert({infosetString, infoset});
-            return infoset;
-        }
-    }
-
     void PlayState::UpdateInfoset(Infoset &infoset)
     {
         NodeMapAccessor accessor;
@@ -230,14 +169,6 @@ namespace poker
         CreateRaiseChildren();
         CreateAllInChildren();
         CreateFoldChildren();
-
-        //// TODO: add this assetion to test
-        // int totalStack = accumulate(stacks.begin(), stacks.end(), 0);
-        // int totalBet = accumulate(bets.begin(), bets.end(), 0);
-        // if (totalStack + totalBet != Global::buyIn * Global::nofPlayers)
-        // {
-        //     throw invalid_argument("Impossible chip counts");
-        // }
     }
 
     void PlayState::CreateCallChildren()
