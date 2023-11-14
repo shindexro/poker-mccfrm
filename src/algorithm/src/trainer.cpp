@@ -96,15 +96,15 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
             float expectedVal = 0.0f;
 
             gs->CreateChildren();
-            auto expectedValsChildren = vector<float>();
+            auto expectedValsChildren = vector<float>(gs->children.size());
             auto explored = vector<bool>();
             for (auto i = 0UL; i < gs->children.size(); ++i)
             {
                 if (infoset.regret[i] > Global::C)
                 {
-                    expectedValsChildren.push_back(TraverseMCCFR(gs->children[i], traverser, pruned));
+                    expectedValsChildren[i] = TraverseMCCFR(gs->children[i], traverser, pruned);
                     explored.push_back(true);
-                    expectedVal += sigma[i] * expectedValsChildren.back();
+                    expectedVal += sigma[i] * expectedValsChildren[i];
                 }
                 else
                 {
@@ -131,11 +131,11 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
             float expectedVal = 0.0f;
 
             gs->CreateChildren();
-            auto expectedValsChildren = vector<float>();
+            auto expectedValsChildren = vector<float>(gs->children.size());
             for (auto i = 0UL; i < gs->children.size(); ++i)
             {
-                expectedValsChildren.push_back(TraverseMCCFR(gs->children[i], traverser, pruned));
-                expectedVal += sigma[i] * expectedValsChildren.back();
+                expectedValsChildren[i] = TraverseMCCFR(gs->children[i], traverser, pruned);
+                expectedVal += sigma[i] * expectedValsChildren[i];
             }
             for (auto i = 0UL; i < gs->children.size(); ++i)
             {
