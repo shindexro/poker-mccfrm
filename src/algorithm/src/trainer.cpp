@@ -21,11 +21,11 @@ void Trainer::ResetGame()
 /// </summary>
 void Trainer::UpdateStrategy(shared_ptr<State> gs, int traverser)
 {
-    if (gs->BettingRound() > 1 || dynamic_cast<TerminalState *>(gs.get()) || !gs->IsPlayerInHand(traverser))
-    {
+    // average stretegy only tracked on first betting round, but why?
+    if (gs->BettingRound() > 0 || dynamic_cast<TerminalState *>(gs.get()) || !gs->IsPlayerInHand(traverser))
         return;
-    }
-    else if (ChanceState *cs = dynamic_cast<ChanceState *>(gs.get()))
+
+    if (ChanceState *cs = dynamic_cast<ChanceState *>(gs.get()))
     {
         UpdateStrategy(cs->DoRandomAction(), traverser);
     }
