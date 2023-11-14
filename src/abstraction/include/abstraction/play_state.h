@@ -27,7 +27,6 @@ namespace poker
         bool IsPlayerTurn(int player);
         bool IsPlayerInHand(int player);
         Infoset GetInfoset();
-        Infoset GetInfosetSecondary();
         void UpdateInfoset(Infoset &infoset);
 
         ostream& Print(ostream &out) const override;
@@ -37,6 +36,8 @@ namespace poker
         void CreateRaiseChildren();
         void CreateAllInChildren();
         void CreateFoldChildren();
+
+        void GenerateUniqueStringIdentifier();
     };
 }
 

@@ -101,45 +101,9 @@ namespace poker
         // Cards of player whose turn it is
         // community cards
 
-        if (infosetStringGenerated == false)
+        if (!infosetStringGenerated)
         {
-            string historyString = "";
-            for (auto h : history)
-            {
-                historyString += h;
-            }
-
-            auto cards = vector<int>{
-                Card::GetIndexFromBitmask(get<0>(players[community.playerToMove].cards)),
-                Card::GetIndexFromBitmask(get<1>(players[community.playerToMove].cards))};
-            for (auto i = 0UL; i < community.cards.size(); ++i)
-            {
-                cards.push_back(Card::GetIndexFromBitmask(community.cards[i]));
-            }
-
-            string cardString = "";
-            if (community.cards.size() == 0)
-            {
-                long index = Global::indexer_2.IndexLastRound(cards);
-                cardString += "P" + to_string(index);
-            }
-            else if (community.cards.size() == 3)
-            {
-                long index = EMDTable::flopIndices[Global::indexer_2_3.IndexLastRound(cards)];
-                cardString += "F" + to_string(index);
-            }
-            else if (community.cards.size() == 4)
-            {
-                long index = EMDTable::turnIndices[Global::indexer_2_4.IndexLastRound(cards)];
-                cardString += "T" + to_string(index);
-            }
-            else
-            {
-                long index = OCHSTable::riverIndices[Global::indexer_2_5.IndexLastRound(cards)];
-                cardString += "R" + to_string(index);
-            }
-            infosetString = historyString + cardString;
-            infosetStringGenerated = true;
+            GenerateUniqueStringIdentifier();
         }
 
         NodeMapAccessor accessor;
@@ -151,6 +115,47 @@ namespace poker
         }
         Global::nodeMap.find(accessor, infosetString);
         return accessor->second;
+    }
+
+    void PlayState::GenerateUniqueStringIdentifier()
+    {
+        string historyString = "";
+        for (auto h : history)
+        {
+            historyString += h;
+        }
+
+        auto cards = vector<int>{
+            Card::GetIndexFromBitmask(get<0>(players[community.playerToMove].cards)),
+            Card::GetIndexFromBitmask(get<1>(players[community.playerToMove].cards))};
+        for (auto i = 0UL; i < community.cards.size(); ++i)
+        {
+            cards.push_back(Card::GetIndexFromBitmask(community.cards[i]));
+        }
+
+        string cardString = "";
+        if (community.cards.size() == 0)
+        {
+            long index = Global::indexer_2.IndexLastRound(cards);
+            cardString += "P" + to_string(index);
+        }
+        else if (community.cards.size() == 3)
+        {
+            long index = EMDTable::flopIndices[Global::indexer_2_3.IndexLastRound(cards)];
+            cardString += "F" + to_string(index);
+        }
+        else if (community.cards.size() == 4)
+        {
+            long index = EMDTable::turnIndices[Global::indexer_2_4.IndexLastRound(cards)];
+            cardString += "T" + to_string(index);
+        }
+        else
+        {
+            long index = OCHSTable::riverIndices[Global::indexer_2_5.IndexLastRound(cards)];
+            cardString += "R" + to_string(index);
+        }
+        infosetString = historyString + cardString;
+        infosetStringGenerated = true;
     }
 
     void PlayState::UpdateInfoset(Infoset &infoset)
