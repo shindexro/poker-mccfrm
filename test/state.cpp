@@ -267,14 +267,32 @@ TEST_F(ChanceStateTest, DealCommunityCards)
     EXPECT_EQ(riverChanceState.children[0]->community.cards.size(), 5);
 }
 
-TEST_F(ChanceStateTest, SameBettingRoundAfterCardDealt)
+TEST_F(ChanceStateTest, PlayStateChildInSameBettingRound)
 {
     CreateChildren();
 
-    EXPECT_EQ(preflopChanceState.children[0]->community.bettingRound, BettingRound::Preflop);
-    EXPECT_EQ(flopChanceState.children[0]->community.bettingRound, BettingRound::Flop);
-    EXPECT_EQ(turnChanceState.children[0]->community.bettingRound, BettingRound::Turn);
-    EXPECT_EQ(riverChanceState.children[0]->community.bettingRound, BettingRound::River);
+    for (auto state : chanceStates)
+    {
+        if (!dynamic_cast<PlayState *>(state->children[0].get()))
+            continue;
+
+        EXPECT_EQ(state->children[0]->community.bettingRound, state->community.bettingRound);
+    }
+}
+
+TEST_F(ChanceStateTest, ChanceStateChildInNextBettingRound)
+{
+    CreateChildren();
+
+    for (auto state : chanceStates)
+    {
+        if (!dynamic_cast<ChanceState *>(state->children[0].get()))
+            continue;
+
+        BettingRound expectedBettingRound = state->community.bettingRound;
+        ++expectedBettingRound;
+        EXPECT_EQ(state->children[0]->community.bettingRound, expectedBettingRound);
+    }
 }
 
 TEST_F(ChanceStateTest, ChildConfigurations)
