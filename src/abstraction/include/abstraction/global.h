@@ -34,9 +34,9 @@ public:
 
     // information abstraction parameters, currently this would be a
     // 169 - 200 - 200 - 200 abstraction, where the river is bucketed using OCHS and the turn and flop using EMD
-    static const int nofRiverBuckets = 10;
-    static const int nofTurnBuckets = 10;
-    static const int nofFlopBuckets = 10;
+    static const int nofRiverBuckets = 200;
+    static const int nofTurnBuckets = 200;
+    static const int nofFlopBuckets = 200;
     // 100k or even 1 million shouldn't take too much time compared to the rest of the information abstraction
     static const int nofMCSimsPerPreflopHand = 100000;
     // for the river, determines the river histogram size (in theory could be up to 169 but will be very slow) default 8
