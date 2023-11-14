@@ -475,9 +475,9 @@ bool HandIndexer::Unindex(int round, long index, vector<int> &cards)
         }
     }
     // cout << "unindex canonical card output: ";
-    for (auto card : cards)
-        cout << card << " ";
-    cout << endl;
+    // for (auto card : cards)
+    //     cout << card << " ";
+    // cout << endl;
     return true;
 }
 
