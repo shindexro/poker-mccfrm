@@ -57,7 +57,7 @@ namespace poker
             if (community.bettingRound < BettingRound::River && GetNumberOfAllInPlayers() >= 2)
             {
                 // directly go to next chance node
-                //// TODO: increment betting round, add test
+                ++newCommunity.bettingRound;
                 children.push_back(make_shared<ChanceState>(newCommunity, newPlayers, history));
             }
             else
