@@ -1,7 +1,6 @@
 #include "abstraction/global.h"
 
-// vector<float> Global::raiseRatios({1.0f, 1.5f, 2.0f});
-vector<float> Global::raiseRatios({2.0f});
+vector<float> Global::raiseRatios({0.5f, 1.0f, 2.0f});
 
 HandIndexer Global::indexer_2;
 HandIndexer Global::indexer_2_3;
