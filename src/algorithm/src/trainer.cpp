@@ -21,7 +21,10 @@ void Trainer::ResetGame()
 /// </summary>
 void Trainer::UpdateStrategy(shared_ptr<State> gs, int traverser)
 {
-    // average stretegy only tracked on first betting round, but why?
+    /* average stretegy only tracked on first betting round, other rounds use real-time search
+        Since CFR’s average strategy is not guaranteed to converge to a Nash equilibrium in six player
+        poker, there is no theoretical benefit to using the average strategy as opposed to the
+        current strategy. */
     if (gs->BettingRound() > 0 || dynamic_cast<TerminalState *>(gs.get()) || !gs->IsPlayerInHand(traverser))
         return;
 
