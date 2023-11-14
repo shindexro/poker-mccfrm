@@ -64,19 +64,13 @@ void Trainer::UpdateStrategy(int traverser)
     UpdateStrategy(rootState, traverser);
 }
 
-float Trainer::TraverseMCCFRPruned(int traverser)
+float Trainer::TraverseMCCFR(int traverser, bool pruned)
 {
     ResetGame();
-    return TraverseMCCFRPruned(rootState, traverser);
+    return TraverseMCCFR(rootState, traverser, pruned);
 }
 
-float Trainer::TraverseMCCFR(int traverser)
-{
-    ResetGame();
-    return TraverseMCCFR(rootState, traverser);
-}
-
-float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
+float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
 {
     if (dynamic_cast<TerminalState *>(gs.get()))
     {
@@ -89,12 +83,12 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
     else if (dynamic_cast<ChanceState *>(gs.get()))
     {
         // sample a from chance
-        return TraverseMCCFRPruned(gs->DoRandomAction(), traverser);
+        return TraverseMCCFR(gs->DoRandomAction(), traverser, pruned);
     }
     else if (gs->IsPlayerTurn(traverser))
     {
         // according to supp. mat. page 3, we do full MCCFR on the last betting round, otherwise skip low regret
-        if (gs->community.bettingRound != 4)
+        if (pruned && gs->community.bettingRound != 4)
         {
             // Infoset of player i that corresponds to h
             Infoset infoset = gs->GetInfoset();
@@ -108,9 +102,9 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
             {
                 if (infoset.regret[i] > Global::C)
                 {
-                    expectedValsChildren.push_back(TraverseMCCFRPruned(gs->children[i], traverser));
+                    expectedValsChildren.push_back(TraverseMCCFR(gs->children[i], traverser, pruned));
                     explored.push_back(true);
-                    expectedVal += sigma[i] * expectedValsChildren[expectedValsChildren.size() - 1];
+                    expectedVal += sigma[i] * expectedValsChildren.back();
                 }
                 else
                 {
@@ -140,8 +134,8 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
             auto expectedValsChildren = vector<float>();
             for (auto i = 0UL; i < gs->children.size(); ++i)
             {
-                expectedValsChildren.push_back(TraverseMCCFRPruned(gs->children[i], traverser));
-                expectedVal += sigma[i] * expectedValsChildren[expectedValsChildren.size() - 1];
+                expectedValsChildren.push_back(TraverseMCCFR(gs->children[i], traverser, pruned));
+                expectedVal += sigma[i] * expectedValsChildren.back();
             }
             for (auto i = 0UL; i < gs->children.size(); ++i)
             {
@@ -160,66 +154,8 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
         int randomIndex = utils::SampleDistribution(sigma);
         gs->CreateChildren();
 
-        return TraverseMCCFRPruned(gs->children[randomIndex], traverser);
+        return TraverseMCCFR(gs->children[randomIndex], traverser, pruned);
     }
-}
-
-float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser)
-{
-    if (dynamic_cast<TerminalState *>(gs.get()))
-    {
-        return gs->GetReward(traverser);
-    }
-    else if (!gs->IsPlayerInHand(traverser)) // we cant get the reward because this function is not implemented
-    {
-        return -gs->players[traverser].bet; // correct?
-    }
-    else if (dynamic_cast<ChanceState *>(gs.get()))
-    {
-        // sample a from chance
-        return TraverseMCCFR(gs->DoRandomAction(), traverser);
-    }
-    else if (gs->IsPlayerTurn(traverser))
-    {
-        // Infoset of player i that corresponds to h
-        Infoset infoset = gs->GetInfoset();
-        auto sigma = infoset.CalculateStrategy();
-        float expectedVal = 0.0f;
-
-        gs->CreateChildren();
-        auto expectedValsChildren = vector<float>();
-        for (auto i = 0UL; i < gs->children.size(); ++i)
-        {
-            auto childVal = TraverseMCCFR(gs->children[i], traverser);
-            expectedValsChildren.push_back(childVal);
-            expectedVal += sigma[i] * childVal;
-            // cout << "state temp expected value is " << expectedVal << " with child node value "
-            //      << childVal << endl;
-        }
-        for (auto i = 0UL; i < gs->children.size(); ++i)
-        {
-            infoset.regret[i] += expectedValsChildren[i] - expectedVal;
-            infoset.regret[i] = max({(float)Global::regretFloor, infoset.regret[i]});
-            // cout << "regret is " << infoset.regret[i] << endl;
-        }
-        gs->UpdateInfoset(infoset);
-        return expectedVal;
-    }
-    else
-    {
-        Infoset infoset = gs->GetInfoset();
-        auto sigma = infoset.CalculateStrategy();
-
-        int randomIndex = utils::SampleDistribution(sigma);
-        gs->CreateChildren();
-
-        return TraverseMCCFR(gs->children[randomIndex], traverser);
-    }
-}
-
-void Trainer::TraverseMCCFRPruned()
-{
-    throw invalid_argument("TraverseMCCFRPruned not implemented");
 }
 
 void Trainer::DiscountInfosets(float d)
@@ -487,86 +423,4 @@ void Trainer::PlayOneGame()
     //     std::cout << gs->GetReward(i) << " ";
     // }
     // std::cout << endl;
-}
-
-float Trainer::PlayOneGame_d(int mainPlayer, bool display)
-{
-    ResetGame();
-    shared_ptr<State> gs = rootState;
-    bool first = true;
-    while (!dynamic_cast<TerminalState *>(gs.get()))
-    {
-        if (dynamic_cast<ChanceState *>(gs.get()))
-        {
-            // sample a from chance
-            gs = gs->DoRandomAction();
-
-            if (display)
-                std::cout << endl;
-
-            if (first)
-            {
-                if (display)
-                    std::cout << "Player Cards: ";
-                for (auto i = 0; i < Global::nofPlayers; ++i)
-                {
-                    auto [card1, card2] = gs->players[i].cards;
-                    auto playerCards = vector<Card>({Card(card1), Card(card2)});
-                    if (display)
-                        playerCards[0].PrintBeautifulString();
-                    if (display)
-                        playerCards[1].PrintBeautifulString(" ");
-                }
-                first = false;
-            }
-            else
-            {
-                if (gs->community.cards.size() != 0)
-                    if (display)
-                        std::cout << "Table Cards: ";
-                for (auto i = 0UL; i < gs->community.cards.size(); ++i)
-                {
-                    if (display)
-                        Card(gs->community.cards[i]).PrintBeautifulString();
-                }
-            }
-        }
-        else if (dynamic_cast<PlayState *>(gs.get()))
-        {
-            if (display)
-                std::cout << endl;
-            if (display)
-                std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
-
-            Infoset infoset;
-            if (mainPlayer == gs->community.playerToMove)
-            {
-                infoset = gs->GetInfoset();
-            }
-            else
-            {
-                infoset = gs->GetInfosetSecondary();
-            }
-
-            auto sigma = infoset.CalculateStrategy();
-
-            int randomIndex = utils::SampleDistribution(sigma);
-            gs->CreateChildren();
-            gs = gs->children[randomIndex];
-            if (display)
-                std::cout << gs->history[gs->history.size() - 1];
-        }
-    }
-    if (display)
-        std::cout << endl;
-    if (display)
-        std::cout << "Rewards: ";
-    for (auto i = 0; i < Global::nofPlayers; ++i)
-    {
-        if (display)
-            std::cout << gs->GetReward(i) << " ";
-    }
-    if (display)
-        std::cout << endl;
-    return gs->GetReward(mainPlayer);
 }
