@@ -23,7 +23,7 @@ public:
     static const int buyIn = 200;
     static const int nofPlayers = 2;
     static const int C = -100000;
-    static const int regretFloor = -110000;
+    static const int regretFloor = -310000000;
 
     static const int BB = 2;
     static const int SB = 1;
