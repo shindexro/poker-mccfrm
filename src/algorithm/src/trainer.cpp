@@ -164,146 +164,6 @@ float Trainer::TraverseMCCFRPruned(shared_ptr<State> gs, int traverser)
     }
 }
 
-void Trainer::PlayOneGame()
-{
-    ResetGame();
-    shared_ptr<State> gs = rootState;
-    bool first = true;
-    while (!(dynamic_cast<TerminalState *>(gs.get())))
-    {
-        if (dynamic_cast<ChanceState *>(gs.get()))
-        {
-            // sample a from chance
-            gs = gs->DoRandomAction();
-
-            std::cout << endl;
-
-            // if (first)
-            // {
-            //     std::cout << "Player Cards: ";
-            //     for (auto i = 0; i < Global::nofPlayers; ++i)
-            //     {
-            //         auto [card1, card2] = gs->players[i].cards;
-            //         auto playerCards = vector<Card>({Card(card1), Card(card2)});
-            //         playerCards[0].PrintBeautifulString();
-            //         playerCards[1].PrintBeautifulString(" ");
-            //     }
-            //     first = false;
-            // }
-            // else
-            // {
-            //     if (gs->community.cards.size() != 0)
-            //         std::cout << "Table Cards: " << endl;
-            //     for (auto i = 0UL; i < gs->community.cards.size(); ++i)
-            //     {
-            //         Card(gs->community.cards[i]).PrintBeautifulString();
-            //     }
-            // }
-        }
-        else if (dynamic_cast<PlayState *>(gs.get()))
-        {
-            // std::cout << endl;
-            // std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
-            Infoset infoset = gs->GetInfoset();
-            auto sigma = infoset.CalculateStrategy();
-
-            int randomIndex = utils::SampleDistribution(sigma);
-            gs->CreateChildren();
-            gs = gs->children[randomIndex];
-            // std::cout << gs->history[gs->history.size() - 1];
-        }
-    }
-    // std::cout << endl;
-    // std::cout << "Rewards: ";
-    // for (auto i = 0; i < Global::nofPlayers; ++i)
-    // {
-    //     std::cout << gs->GetReward(i) << " ";
-    // }
-    // std::cout << endl;
-}
-
-float Trainer::PlayOneGame_d(int mainPlayer, bool display)
-{
-    ResetGame();
-    shared_ptr<State> gs = rootState;
-    bool first = true;
-    while (!dynamic_cast<TerminalState *>(gs.get()))
-    {
-        if (dynamic_cast<ChanceState *>(gs.get()))
-        {
-            // sample a from chance
-            gs = gs->DoRandomAction();
-
-            if (display)
-                std::cout << endl;
-
-            if (first)
-            {
-                if (display)
-                    std::cout << "Player Cards: ";
-                for (auto i = 0; i < Global::nofPlayers; ++i)
-                {
-                    auto [card1, card2] = gs->players[i].cards;
-                    auto playerCards = vector<Card>({Card(card1), Card(card2)});
-                    if (display)
-                        playerCards[0].PrintBeautifulString();
-                    if (display)
-                        playerCards[1].PrintBeautifulString(" ");
-                }
-                first = false;
-            }
-            else
-            {
-                if (gs->community.cards.size() != 0)
-                    if (display)
-                        std::cout << "Table Cards: ";
-                for (auto i = 0UL; i < gs->community.cards.size(); ++i)
-                {
-                    if (display)
-                        Card(gs->community.cards[i]).PrintBeautifulString();
-                }
-            }
-        }
-        else if (dynamic_cast<PlayState *>(gs.get()))
-        {
-            if (display)
-                std::cout << endl;
-            if (display)
-                std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
-
-            Infoset infoset;
-            if (mainPlayer == gs->community.playerToMove)
-            {
-                infoset = gs->GetInfoset();
-            }
-            else
-            {
-                infoset = gs->GetInfosetSecondary();
-            }
-
-            auto sigma = infoset.CalculateStrategy();
-
-            int randomIndex = utils::SampleDistribution(sigma);
-            gs->CreateChildren();
-            gs = gs->children[randomIndex];
-            if (display)
-                std::cout << gs->history[gs->history.size() - 1];
-        }
-    }
-    if (display)
-        std::cout << endl;
-    if (display)
-        std::cout << "Rewards: ";
-    for (auto i = 0; i < Global::nofPlayers; ++i)
-    {
-        if (display)
-            std::cout << gs->GetReward(i) << " ";
-    }
-    if (display)
-        std::cout << endl;
-    return gs->GetReward(mainPlayer);
-}
-
 float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
 {
     if (dynamic_cast<TerminalState *>(gs.get()))
@@ -568,4 +428,144 @@ void Trainer::EnumerateActionSpace(shared_ptr<State> gs)
 void Trainer::EnumerateActionSpace()
 {
     EnumerateActionSpace(rootState);
+}
+
+void Trainer::PlayOneGame()
+{
+    ResetGame();
+    shared_ptr<State> gs = rootState;
+    bool first = true;
+    while (!(dynamic_cast<TerminalState *>(gs.get())))
+    {
+        if (dynamic_cast<ChanceState *>(gs.get()))
+        {
+            // sample a from chance
+            gs = gs->DoRandomAction();
+
+            std::cout << endl;
+
+            // if (first)
+            // {
+            //     std::cout << "Player Cards: ";
+            //     for (auto i = 0; i < Global::nofPlayers; ++i)
+            //     {
+            //         auto [card1, card2] = gs->players[i].cards;
+            //         auto playerCards = vector<Card>({Card(card1), Card(card2)});
+            //         playerCards[0].PrintBeautifulString();
+            //         playerCards[1].PrintBeautifulString(" ");
+            //     }
+            //     first = false;
+            // }
+            // else
+            // {
+            //     if (gs->community.cards.size() != 0)
+            //         std::cout << "Table Cards: " << endl;
+            //     for (auto i = 0UL; i < gs->community.cards.size(); ++i)
+            //     {
+            //         Card(gs->community.cards[i]).PrintBeautifulString();
+            //     }
+            // }
+        }
+        else if (dynamic_cast<PlayState *>(gs.get()))
+        {
+            // std::cout << endl;
+            // std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
+            Infoset infoset = gs->GetInfoset();
+            auto sigma = infoset.CalculateStrategy();
+
+            int randomIndex = utils::SampleDistribution(sigma);
+            gs->CreateChildren();
+            gs = gs->children[randomIndex];
+            // std::cout << gs->history[gs->history.size() - 1];
+        }
+    }
+    // std::cout << endl;
+    // std::cout << "Rewards: ";
+    // for (auto i = 0; i < Global::nofPlayers; ++i)
+    // {
+    //     std::cout << gs->GetReward(i) << " ";
+    // }
+    // std::cout << endl;
+}
+
+float Trainer::PlayOneGame_d(int mainPlayer, bool display)
+{
+    ResetGame();
+    shared_ptr<State> gs = rootState;
+    bool first = true;
+    while (!dynamic_cast<TerminalState *>(gs.get()))
+    {
+        if (dynamic_cast<ChanceState *>(gs.get()))
+        {
+            // sample a from chance
+            gs = gs->DoRandomAction();
+
+            if (display)
+                std::cout << endl;
+
+            if (first)
+            {
+                if (display)
+                    std::cout << "Player Cards: ";
+                for (auto i = 0; i < Global::nofPlayers; ++i)
+                {
+                    auto [card1, card2] = gs->players[i].cards;
+                    auto playerCards = vector<Card>({Card(card1), Card(card2)});
+                    if (display)
+                        playerCards[0].PrintBeautifulString();
+                    if (display)
+                        playerCards[1].PrintBeautifulString(" ");
+                }
+                first = false;
+            }
+            else
+            {
+                if (gs->community.cards.size() != 0)
+                    if (display)
+                        std::cout << "Table Cards: ";
+                for (auto i = 0UL; i < gs->community.cards.size(); ++i)
+                {
+                    if (display)
+                        Card(gs->community.cards[i]).PrintBeautifulString();
+                }
+            }
+        }
+        else if (dynamic_cast<PlayState *>(gs.get()))
+        {
+            if (display)
+                std::cout << endl;
+            if (display)
+                std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
+
+            Infoset infoset;
+            if (mainPlayer == gs->community.playerToMove)
+            {
+                infoset = gs->GetInfoset();
+            }
+            else
+            {
+                infoset = gs->GetInfosetSecondary();
+            }
+
+            auto sigma = infoset.CalculateStrategy();
+
+            int randomIndex = utils::SampleDistribution(sigma);
+            gs->CreateChildren();
+            gs = gs->children[randomIndex];
+            if (display)
+                std::cout << gs->history[gs->history.size() - 1];
+        }
+    }
+    if (display)
+        std::cout << endl;
+    if (display)
+        std::cout << "Rewards: ";
+    for (auto i = 0; i < Global::nofPlayers; ++i)
+    {
+        if (display)
+            std::cout << gs->GetReward(i) << " ";
+    }
+    if (display)
+        std::cout << endl;
+    return gs->GetReward(mainPlayer);
 }
