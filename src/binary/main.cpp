@@ -157,16 +157,16 @@ namespace poker
                                                       float q = randDouble();
                                                       if (q < 0.05)
                                                       {
-                                                          trainer.TraverseMCCFR(traverser);
+                                                          trainer.TraverseMCCFR(traverser, false);
                                                       }
                                                       else
                                                       {
-                                                          trainer.TraverseMCCFRPruned(traverser);
+                                                          trainer.TraverseMCCFR(traverser, true);
                                                       }
                                                   }
                                                   else
                                                   {
-                                                      trainer.TraverseMCCFR(traverser);
+                                                      trainer.TraverseMCCFR(traverser, false);
                                                   }
                                               }
                                               if (t % SaveToDiskInterval == 0 && index == 0) // allow only one thread to do saving
