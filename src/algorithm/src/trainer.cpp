@@ -175,27 +175,27 @@ void Trainer::PlayOneGame()
 
             std::cout << endl;
 
-            if (first)
-            {
-                std::cout << "Player Cards: ";
-                for (auto i = 0; i < Global::nofPlayers; ++i)
-                {
-                    auto [card1, card2] = gs->players[i].cards;
-                    auto playerCards = vector<Card>({Card(card1), Card(card2)});
-                    playerCards[0].PrintBeautifulString();
-                    playerCards[1].PrintBeautifulString(" ");
-                }
-                first = false;
-            }
-            else
-            {
-                if (gs->community.cards.size() != 0)
-                    std::cout << "Table Cards: " << endl;
-                for (auto i = 0UL; i < gs->community.cards.size(); ++i)
-                {
-                    Card(gs->community.cards[i]).PrintBeautifulString();
-                }
-            }
+            // if (first)
+            // {
+            //     std::cout << "Player Cards: ";
+            //     for (auto i = 0; i < Global::nofPlayers; ++i)
+            //     {
+            //         auto [card1, card2] = gs->players[i].cards;
+            //         auto playerCards = vector<Card>({Card(card1), Card(card2)});
+            //         playerCards[0].PrintBeautifulString();
+            //         playerCards[1].PrintBeautifulString(" ");
+            //     }
+            //     first = false;
+            // }
+            // else
+            // {
+            //     if (gs->community.cards.size() != 0)
+            //         std::cout << "Table Cards: " << endl;
+            //     for (auto i = 0UL; i < gs->community.cards.size(); ++i)
+            //     {
+            //         Card(gs->community.cards[i]).PrintBeautifulString();
+            //     }
+            // }
         }
         else if (dynamic_cast<PlayState *>(gs.get()))
         {
