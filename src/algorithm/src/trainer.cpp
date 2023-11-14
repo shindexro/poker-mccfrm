@@ -216,6 +216,7 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, int iteration)
         return TraverseMCCFR(gs->children[randomIndex], traverser, iteration);
     }
 }
+
 void Trainer::TraverseMCCFRPruned()
 {
     throw invalid_argument("TraverseMCCFRPruned not implemented");

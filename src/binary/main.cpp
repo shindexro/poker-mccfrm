@@ -143,19 +143,6 @@ namespace poker
                                                       trainer.PlayOneGame();
                                                   }
 
-                                                  // std::cout << "Sample games (against baseline)");
-                                                  // float mainScore = 0.0f;
-                                                  // for (auto x = 0; x < 100; x++) // 100 games not statistically significant
-                                                  //{
-                                                  //     if (x < 20)
-                                                  //     {
-                                                  //         mainScore += trainer.PlayOneGame_d(x % 2, true);
-                                                  //     }
-                                                  //     mainScore += trainer.PlayOneGame_d(x % 2, false);
-                                                  // }
-                                                  // WritePlotStatistics((mainScore / 10000) / Global::BB);
-                                                  // std::cout << "BBs per hand: {0}", (mainScore / 10000) / Global::BB);
-
                                                   chrono::steady_clock::time_point end = chrono::steady_clock::now();
                                                   auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
                                                   std::cout << "Iterations per second: " << sharedLoopCounter / (elapsed + 1) << std::endl;
@@ -199,28 +186,6 @@ namespace poker
                                       });
         }
 
-        // static void WritePlotStatistics(float bbWins)
-        // {
-        //     using(StreamWriter file = new StreamWriter("progress.txt", true))
-        //     {
-        //         file.WriteLine(Math.Round(bbWins, 2));
-        //     }
-        // }
-
-        static void SaveToFile_d()
-        {
-            std::cout << "Saving dictionary to file nodeMap_d.txt" << std::endl;
-            utils::SaveToFile(Global::nodeMapBaseline, "nodeMap_d.txt");
-        }
-
-        static void LoadFromFile_d()
-        {
-            if (!utils::FileExists("nodeMap_d.txt"))
-                return;
-            std::cout << "Loading nodes from file nodeMap_d.txt..." << std::endl;
-            utils::LoadFromFile(Global::nodeMapBaseline, "nodeMap_d.txt");
-        }
-
         static void SaveToFile()
         {
             std::cout << "Saving dictionary to file nodeMap.txt" << std::endl;
@@ -236,30 +201,6 @@ namespace poker
             std::cout << "Loading nodes from file nodeMap.txt..." << std::endl;
             utils::LoadFromFile(Global::nodeMap, "nodeMap.txt");
         }
-
-        // template <typename T>
-        // static vector<byte> SerializeToBytes<T>(T item)
-        // {
-        //     var formatter = new BinaryFormatter();
-        //     using var stream = new MemoryStream();
-        //     formatter.Serialize(stream, item);
-        //     stream.Seek(0, SeekOrigin.Begin);
-        //     return stream.ToArray();
-        // }
-
-        // static Infoset Deserialize(vector<byte> &byteArray)
-        // {
-        //     if (byteArray == null)
-        //     {
-        //         return null;
-        //     }
-        //     using var memStream = new MemoryStream();
-        //     var binForm = new BinaryFormatter();
-        //     memStream.Write(byteArray, 0, byteArray.Length);
-        //     memStream.Seek(0, SeekOrigin.Begin);
-        //     Infoset obj = (Infoset)binForm.Deserialize(memStream);
-        //     return obj;
-        // }
     };
 } // namespace poker
 
