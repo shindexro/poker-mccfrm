@@ -13,8 +13,8 @@ using namespace std;
 class Infoset
 {
 public:
-    vector<float> regret;
-    vector<float> actionCounter;
+    vector<int> regret;
+    vector<int> actionCounter;
 
     Infoset();
     Infoset(int actions);

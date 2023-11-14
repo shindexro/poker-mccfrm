@@ -26,7 +26,7 @@ public:
     void ResetGame();
     void UpdateStrategy(shared_ptr<State> gs, int traverser);
     void UpdateStrategy(int traverser);
-    float TraverseMCCFR(int traverser, bool pruned);
+    int TraverseMCCFR(int traverser, bool pruned);
     void PlayOneGame();
 
     void DiscountInfosets(float d);
@@ -39,7 +39,7 @@ public:
 private:
     int threadIndex = 0;
 
-    float TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned);
+    int TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned);
 };
 
 #endif

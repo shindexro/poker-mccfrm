@@ -64,13 +64,13 @@ void Trainer::UpdateStrategy(int traverser)
     UpdateStrategy(rootState, traverser);
 }
 
-float Trainer::TraverseMCCFR(int traverser, bool pruned)
+int Trainer::TraverseMCCFR(int traverser, bool pruned)
 {
     ResetGame();
     return TraverseMCCFR(rootState, traverser, pruned);
 }
 
-float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
+int Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
 {
     if (dynamic_cast<TerminalState *>(gs.get()))
     {
@@ -90,10 +90,10 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
         // according to supp. mat. page 3, we do full MCCFR on the last betting round, otherwise skip low regret
         Infoset infoset = gs->GetInfoset();
         auto sigma = infoset.CalculateStrategy();
-        float expectedVal = 0.0f;
+        int expectedVal = 0;
 
         gs->CreateChildren();
-        auto expectedValsChildren = vector<float>(gs->children.size());
+        auto expectedValsChildren = vector<int>(gs->children.size());
         auto explored = vector<bool>(gs->children.size(), true);
 
         for (auto i = 0UL; i < gs->children.size(); ++i)
@@ -113,7 +113,7 @@ float Trainer::TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned)
             if (explored[i])
             {
                 infoset.regret[i] += expectedValsChildren[i] - expectedVal;
-                infoset.regret[i] = max({(float)Global::regretFloor, infoset.regret[i]});
+                infoset.regret[i] = max({Global::regretFloor, infoset.regret[i]});
             }
         }
         gs->UpdateInfoset(infoset);
