@@ -295,7 +295,7 @@ TEST_F(ChanceStateTest, ChanceStateChildInNextBettingRound)
     }
 }
 
-TEST_F(ChanceStateTest, ChildConfigurations)
+TEST_F(ChanceStateTest, PlayStateChildConfigurations)
 {
     CreateChildren();
     int BB = Global::BB;
@@ -303,6 +303,9 @@ TEST_F(ChanceStateTest, ChildConfigurations)
 
     for (auto state : chanceStates)
     {
+        if (!dynamic_cast<PlayState *>(state->children[0].get()))
+            continue;
+
         EXPECT_TRUE(state->children[0]->community.isBettingOpen);
         EXPECT_EQ(state->children[0]->community.minRaise, BB);
         EXPECT_EQ(state->children[0]->community.playerToMove, 0);
