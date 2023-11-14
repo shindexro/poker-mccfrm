@@ -23,6 +23,7 @@ protected:
         {
             player.stack = 200;
         }
+        chanceStates.push_back(&preflopChanceState);
         /////////1/////////2/////////3/////////4/////////5/////////6
         flopChanceState = ChanceState();
         flopChanceState.community.playerToMove = 1;
@@ -38,6 +39,7 @@ protected:
         flopChanceState.players[0].lastAction = poker::Action::Raise;
         flopChanceState.players[1].lastAction = poker::Action::Call;
         flopChanceState.history = vector<poker::Action>({poker::Action::Raise1, poker::Action::Call});
+        chanceStates.push_back(&flopChanceState);
         /////////1/////////2/////////3/////////4/////////5/////////6
         turnChanceState = ChanceState();
         turnChanceState.community.bettingRound = BettingRound::Turn;
@@ -51,6 +53,7 @@ protected:
             turnChanceState.history.push_back(poker::Action::Call);
             turnChanceState.history.push_back(poker::Action::Call);
         }
+        chanceStates.push_back(&turnChanceState);
         /////////1/////////2/////////3/////////4/////////5/////////6
         riverChanceState = ChanceState();
         riverChanceState.community.bettingRound = BettingRound::River;
@@ -65,11 +68,20 @@ protected:
             riverChanceState.history.push_back(poker::Action::Call);
             riverChanceState.history.push_back(poker::Action::Call);
         }
-
-        chanceStates.push_back(&preflopChanceState);
-        chanceStates.push_back(&flopChanceState);
-        chanceStates.push_back(&turnChanceState);
         chanceStates.push_back(&riverChanceState);
+        /////////1/////////2/////////3/////////4/////////5/////////6
+        nobodyCanActChanceState = ChanceState();
+        nobodyCanActChanceState.community.bettingRound = BettingRound::Flop;
+        nobodyCanActChanceState.community.cards = vector<ulong>(0);
+        for (auto &player : nobodyCanActChanceState.players)
+        {
+            player.bet = 200;
+            player.stack = 0;
+            player.lastAction = poker::Action::Allin;
+            player.cards = {1UL, 1UL};
+            nobodyCanActChanceState.history.push_back(poker::Action::Allin);
+        }
+        chanceStates.push_back(&nobodyCanActChanceState);
     }
 
     void CreateChildren()
@@ -85,6 +97,7 @@ protected:
     ChanceState flopChanceState;
     ChanceState turnChanceState;
     ChanceState riverChanceState;
+    ChanceState nobodyCanActChanceState;
 };
 
 class ShowDownTerminalStateTest : public Test
@@ -196,7 +209,7 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////
 // ChanceState tests
 
-TEST_F(ChanceStateTest, ChanceStateHasPlayStateChild)
+TEST_F(ChanceStateTest, HasPlayStateChildWhenSomeoneCanAct)
 {
     for (auto state : chanceStates)
         EXPECT_EQ(state->children.size(), 0);
@@ -204,9 +217,31 @@ TEST_F(ChanceStateTest, ChanceStateHasPlayStateChild)
     CreateChildren();
     for (auto state : chanceStates)
     {
+        if (state->GetNumberOfPlayersThatNeedToAct() == 0)
+            continue;
+
         ASSERT_EQ(state->children.size(), 1);
         EXPECT_TRUE(dynamic_cast<PlayState *>(state->children[0].get()));
     }
+}
+
+TEST_F(ChanceStateTest, DirectlyGoToNextChanceWhenNobodyCanAct)
+{
+    CreateChildren();
+
+    ASSERT_EQ(nobodyCanActChanceState.children.size(), 1);
+    EXPECT_TRUE(dynamic_cast<ChanceState *>(nobodyCanActChanceState.children[0].get()));
+}
+
+TEST_F(ChanceStateTest, PlayersThatNeedToAct)
+{
+    CreateChildren();
+
+    EXPECT_EQ(preflopChanceState.GetNumberOfPlayersThatNeedToAct(), 2);
+    EXPECT_EQ(flopChanceState.GetNumberOfPlayersThatNeedToAct(), 2);
+    EXPECT_EQ(turnChanceState.GetNumberOfPlayersThatNeedToAct(), 2);
+    EXPECT_EQ(riverChanceState.GetNumberOfPlayersThatNeedToAct(), 2);
+    EXPECT_EQ(nobodyCanActChanceState.GetNumberOfPlayersThatNeedToAct(), 0);
 }
 
 TEST_F(ChanceStateTest, DealPlayerCards)
