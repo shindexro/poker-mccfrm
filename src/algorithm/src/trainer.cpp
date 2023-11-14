@@ -199,24 +199,24 @@ void Trainer::PlayOneGame()
         }
         else if (dynamic_cast<PlayState *>(gs.get()))
         {
-            std::cout << endl;
-            std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
+            // std::cout << endl;
+            // std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
             Infoset infoset = gs->GetInfoset();
             auto sigma = infoset.CalculateStrategy();
 
             int randomIndex = utils::SampleDistribution(sigma);
             gs->CreateChildren();
             gs = gs->children[randomIndex];
-            std::cout << gs->history[gs->history.size() - 1];
+            // std::cout << gs->history[gs->history.size() - 1];
         }
     }
-    std::cout << endl;
-    std::cout << "Rewards: ";
-    for (auto i = 0; i < Global::nofPlayers; ++i)
-    {
-        std::cout << gs->GetReward(i) << " ";
-    }
-    std::cout << endl;
+    // std::cout << endl;
+    // std::cout << "Rewards: ";
+    // for (auto i = 0; i < Global::nofPlayers; ++i)
+    // {
+    //     std::cout << gs->GetReward(i) << " ";
+    // }
+    // std::cout << endl;
 }
 
 float Trainer::PlayOneGame_d(int mainPlayer, bool display)
