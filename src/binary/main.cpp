@@ -158,7 +158,7 @@ namespace poker
                                                       float q = randDouble();
                                                       if (q < 0.05)
                                                       {
-                                                          trainer.TraverseMCCFR(traverser, t);
+                                                          trainer.TraverseMCCFR(traverser);
                                                       }
                                                       else
                                                       {
@@ -167,7 +167,7 @@ namespace poker
                                                   }
                                                   else
                                                   {
-                                                      trainer.TraverseMCCFR(traverser, t);
+                                                      trainer.TraverseMCCFR(traverser);
                                                   }
                                               }
                                               if (t % SaveToDiskInterval == 0 && index == 0) // allow only one thread to do saving
