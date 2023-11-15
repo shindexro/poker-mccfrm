@@ -105,8 +105,8 @@ namespace poker
             long PruneThreshold = 20000000 / Global::NOF_THREADS;        // bb rounds after this time we stop checking all actions, 200 minutes
             long LCFRThreshold = 20000000 / Global::NOF_THREADS;         // bb rounds when to stop discounting old regrets, no clue what it should be
             long DiscountInterval = 1000000 / Global::NOF_THREADS;       // bb rounds, discount values periodically but not every round, 10 minutes
-            long SaveToDiskInterval = 100000 / Global::NOF_THREADS;
-            long testGamesInterval = 100000 / Global::NOF_THREADS;
+            long SaveToDiskInterval = 10000000 / Global::NOF_THREADS;
+            long testGamesInterval = 1000000 / Global::NOF_THREADS;
 
             atomic<long> sharedLoopCounter = 0;
 
