@@ -124,9 +124,9 @@ namespace poker
 
                                           for (auto t = 1;; t++) // bb rounds
                                           {
-                                              if (t % 1000 == 0)
+                                              if (t % 20000 == 0)
                                               {
-                                                  sharedLoopCounter += 1000;
+                                                  sharedLoopCounter += 20000;
                                                   std::cout << "Training steps " << sharedLoopCounter << std::endl;
                                               }
 
