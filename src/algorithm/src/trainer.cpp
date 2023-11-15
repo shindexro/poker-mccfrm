@@ -333,7 +333,7 @@ void Trainer::PlayOneGame()
             // sample a from chance
             gs = gs->DoRandomAction();
 
-            std::cout << endl;
+            // std::cout << endl;
 
             // if (first)
             // {
