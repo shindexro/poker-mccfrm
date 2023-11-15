@@ -14,73 +14,17 @@ namespace poker
 
     int PlayState::GetValidActionsCount()
     {
-        if (community.actionCount != -1)
-            return community.actionCount;
-
-        if (children.size() != 0)
-            community.actionCount = children.size();
-        else
-            community.actionCount = GetValidActions().size();
-
-        return community.actionCount;
+        CreateChildren();
+        return children.size();
     }
 
     vector<Action> PlayState::GetValidActions()
     {
         auto validActions = vector<Action>();
-        int pot = GetPot();
-        int currentCall = MinimumCall();
-
-        if (GetNumberOfActivePlayers() == 0)
-        {
-            throw invalid_argument("There must always be >= one player in hand");
+        CreateChildren();
+        for (auto child : children) {
+            validActions.push_back(child->history.back());
         }
-        if (GetNumberOfActivePlayers() == 1)
-        {
-            return validActions; // no valid actions
-        }
-
-        // raises
-        if (community.isBettingOpen)
-        {
-            int raise;
-            for (auto i = 0UL; i < Global::raiseRatios.size(); ++i)
-            {
-                raise = (int)(Global::raiseRatios[i] * pot);
-                int actualRaise = raise - (currentCall - players[community.playerToMove].bet);
-
-                if (actualRaise < community.minRaise || raise >= players[community.playerToMove].stack)
-                    continue;
-
-                // valid raise, if stack is equal it would be an all in
-                if (i == 0)
-                    validActions.push_back(Action::Raise1);
-                if (i == 1)
-                    validActions.push_back(Action::Raise2);
-                if (i == 2)
-                    validActions.push_back(Action::Raise3);
-            }
-
-            raise = players[community.playerToMove].stack;
-            // all-in
-            if (raise > 0)
-            {
-                //(currently, multiple all-ins in a row dont accumulate the raises and reopen betting round but probably they should)
-                // int actualRaise = (raise + players[community.playerToMove].bet) - currentCall;
-                validActions.push_back(Action::Allin);
-            }
-        }
-        if (currentCall > players[community.playerToMove].bet)
-        {
-            // fold
-            validActions.push_back(Action::Fold);
-        }
-        if (currentCall - players[community.playerToMove].bet < players[community.playerToMove].stack)
-        {
-            // call
-            validActions.push_back(Action::Call);
-        }
-
         return validActions;
     }
 

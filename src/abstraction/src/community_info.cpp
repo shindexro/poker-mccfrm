@@ -7,7 +7,6 @@ namespace poker
                                      lastPlayer{1},
                                      minRaise{Global::BB},
                                      isBettingOpen{false},
-                                     actionCount{-1},
                                      cards()
     {
     }
@@ -29,7 +28,6 @@ namespace poker
             << "pLast:" << info.lastPlayer << " "
             << "minR:" << info.minRaise << " "
             << "betOK:" << info.isBettingOpen << " "
-            << "acts:" << info.actionCount << " "
             << Hand(info.GetCardBitmask()).ToString();
         return out;
     }
