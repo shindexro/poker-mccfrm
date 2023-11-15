@@ -22,7 +22,7 @@ public:
     static vector<float> raiseRatios;
     static const int buyIn = 200;
     static const int nofPlayers = 2;
-    static const int C = -100000;
+    static const int C = -300000000;
     static const int regretFloor = -310000000;
 
     static const int BB = 2;
