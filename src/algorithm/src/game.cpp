@@ -2,6 +2,11 @@
 
 namespace poker
 {
+    Game::Game(vector<Player> &players) : players(players),
+                                          state{make_shared<ChanceState>()}
+    {
+    }
+
     void Game::Start()
     {
         while (!(dynamic_cast<TerminalState *>(state.get())))

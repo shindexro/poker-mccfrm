@@ -12,7 +12,7 @@ namespace poker
     class Game
     {
     public:
-        Game();
+        Game(std::vector<Player> &players);
 
         void Start();
         
