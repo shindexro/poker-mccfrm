@@ -10,6 +10,9 @@
 #include "utils/random.h"
 #include "algorithm/trainer.h"
 #include "abstraction/state.h"
+#include "algorithm/game.h"
+#include "algorithm/ai_player.h"
+#include "algorithm/interactive_player.h"
 
 #include <iostream>
 #include <string>
@@ -42,6 +45,18 @@ namespace poker
             Global::handEvaluator.Initialise();
             CalculateInformationAbstraction();
             Train();
+        }
+
+        static void StartGame()
+        {
+            auto humanPlayer = InteractivePlayer(0);
+            auto aiPlayer = AIPlayer(1);
+            auto players = vector<Player>();
+            players.push_back(humanPlayer);
+            players.push_back(aiPlayer);
+            auto game = Game(players);
+
+            game.Start();
         }
 
     private:
@@ -206,7 +221,7 @@ namespace poker
 int main()
 {
     poker::Program program;
-    program.Main();
+    program.StartGame();
 
     return 0;
 }
