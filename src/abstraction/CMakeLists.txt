@@ -21,5 +21,4 @@ target_link_libraries(${PROJECT_NAME}
     sub::tables
     sub::enums
     sub::game
-    sub::abstraction
 )
