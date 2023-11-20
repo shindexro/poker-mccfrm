@@ -5,6 +5,7 @@
 #include "algorithm/kmeans.h"
 #include "utils/random.h"
 #include "utils/utils.h"
+#include "game/cards.h"
 
 #include <oneapi/tbb.h>
 #include <string>
