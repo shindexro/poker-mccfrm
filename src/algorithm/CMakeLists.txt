@@ -6,6 +6,7 @@ add_library(${PROJECT_NAME}
     src/player.cpp
     src/ai_player.cpp
     src/interactive_player.cpp
+    src/game.cpp
 )
 
 add_library(sub::algorithms ALIAS ${PROJECT_NAME})
