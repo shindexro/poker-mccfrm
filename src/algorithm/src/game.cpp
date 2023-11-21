@@ -2,8 +2,8 @@
 
 namespace poker
 {
-    Game::Game(vector<Player> &players) : players(players),
-                                          state{make_shared<ChanceState>()}
+    Game::Game(vector<shared_ptr<Player>> &players) : players(players),
+                                                      state{make_shared<ChanceState>()}
     {
     }
 
@@ -19,7 +19,7 @@ namespace poker
             else if (auto playState = dynamic_cast<PlayState *>(state.get()))
             {
                 state->CreateChildren();
-                auto action = players[state->community.playerToMove].NextAction(*playState);
+                auto action = players[state->community.playerToMove]->NextAction(*playState);
                 for (auto child : state->children)
                 {
                     if (child->history.back() == action)

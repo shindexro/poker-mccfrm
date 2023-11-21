@@ -12,12 +12,12 @@ namespace poker
     class Game
     {
     public:
-        Game(std::vector<Player> &players);
+        Game(std::vector<shared_ptr<Player>> &players);
 
         void Start();
         
     private:
-        std::vector<Player> players; 
+        std::vector<shared_ptr<Player>> players; 
         std::shared_ptr<State> state;
     };
 } // namespace poker

@@ -49,9 +49,9 @@ namespace poker
 
         static void StartGame()
         {
-            auto humanPlayer = InteractivePlayer(0);
-            auto aiPlayer = AIPlayer(1);
-            auto players = vector<Player>();
+            auto humanPlayer = make_shared<InteractivePlayer>(0);
+            auto aiPlayer = make_shared<AIPlayer>(1);
+            auto players = vector<shared_ptr<Player>>();
             players.push_back(humanPlayer);
             players.push_back(aiPlayer);
             auto game = Game(players);
