@@ -204,7 +204,11 @@ namespace poker
 int main()
 {
     poker::Program program;
-    program.StartGame();
+
+    while (true)
+    {
+        program.StartGame();
+    }
 
     program.Main();
 
