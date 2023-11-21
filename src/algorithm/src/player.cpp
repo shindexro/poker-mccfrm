@@ -2,7 +2,8 @@
 
 namespace poker
 {
-    Player::Player(int id) : id{id}
+    Player::Player(int id, int stack) : id{id},
+                                        stack{stack}
     {
     }
 } // namespace poker

@@ -11,8 +11,9 @@ namespace poker
     {
     public:
         const int id;
+        int stack;
 
-        Player(int id);
+        Player(int id, int stack);
 
         // the whole state is passed for simlicity but a player should not access other player's hand
         virtual Action NextAction(PlayState &/*state*/) { throw invalid_argument("Not implemented"); };
