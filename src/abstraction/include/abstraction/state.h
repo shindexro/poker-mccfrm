@@ -17,12 +17,12 @@
 #include <oneapi/tbb/concurrent_hash_map.h>
 #include <boost/algorithm/string.hpp>
 
-typedef tbb::concurrent_hash_map<string, Infoset>::accessor NodeMapAccessor;
-
 using namespace std;
 
 namespace poker
 {
+    typedef tbb::concurrent_hash_map<string, Infoset>::accessor NodeMapAccessor;
+
     class State
     {
     public:
@@ -57,8 +57,8 @@ namespace poker
         virtual shared_ptr<State> DoRandomAction() { throw invalid_argument("Not implemented"); };
         virtual float GetReward(int /*traverser*/) { throw invalid_argument("Not implemented"); };
 
-        virtual ostream& Print(ostream &out) const;
-        ostream& PrettyPrint(ostream &out) const;
+        virtual ostream &Print(ostream &out) const;
+        ostream &PrettyPrint(ostream &out) const;
         void PrettyPrintTree(int depth = 0);
     };
 
