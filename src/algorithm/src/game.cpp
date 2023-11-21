@@ -36,11 +36,17 @@ namespace poker
             std::cout << std::endl;
         }
 
-        for (auto i = 0; i < players.size(); i++)
+        for (auto i = 0UL; i < players.size(); i++)
         {
             players[i]->stack += state->players[i].reward;
         }
         state->PrettyPrint(std::cout);
+        std::cout << std::endl;
+
+        for (int i = 0UL; i < players.size(); i++)
+        {
+            std::cout << "Player " << i << ": $" << players[i]->stack << "\t";
+        }
         std::cout << std::endl;
     }
 } // namespace poker
