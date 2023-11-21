@@ -21,7 +21,7 @@ namespace poker
                 auto playerToMove = state->community.playerToMove;
                 auto action = players[playerToMove]->NextAction(*playState);
 
-                std::cout << "Player " << playerToMove << action << std::endl;
+                std::cout << "Player " << playerToMove << " " << action << std::endl;
 
                 for (auto child : state->children)
                 {
