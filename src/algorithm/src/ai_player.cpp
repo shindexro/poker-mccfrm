@@ -2,7 +2,7 @@
 
 namespace poker
 {
-    AIPlayer::AIPlayer(int id) : Player(id)
+    AIPlayer::AIPlayer(int id, int stack) : Player(id, stack)
     {
     }
 

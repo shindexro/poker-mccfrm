@@ -10,7 +10,7 @@ namespace poker
     class InteractivePlayer : public Player
     {
     public:
-        InteractivePlayer(int id);
+        InteractivePlayer(int id, int stack);
 
         Action NextAction(PlayState &state) override;
     };

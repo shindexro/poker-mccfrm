@@ -2,7 +2,7 @@
 
 namespace poker
 {
-    InteractivePlayer::InteractivePlayer(int id) : Player(id)
+    InteractivePlayer::InteractivePlayer(int id, int stack) : Player(id, stack)
     {
     }
 

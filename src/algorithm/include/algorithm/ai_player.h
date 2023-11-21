@@ -10,7 +10,7 @@ namespace poker
     class AIPlayer : public Player
     {
     public:
-        AIPlayer(int id);
+        AIPlayer(int id, int stack);
 
         Action NextAction(PlayState &state) override;
     };
