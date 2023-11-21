@@ -11,8 +11,6 @@ namespace poker
     {
         while (!(dynamic_cast<TerminalState *>(state.get())))
         {
-            state->PrettyPrint(std::cout);
-            std::cout << std::endl;
             if (dynamic_cast<ChanceState *>(state.get()))
             {
                 state = state->DoRandomAction();
@@ -34,6 +32,8 @@ namespace poker
                     }
                 }
             }
+            state->PrettyPrint(std::cout);
+            std::cout << std::endl;
         }
     }
 } // namespace poker
