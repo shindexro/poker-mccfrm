@@ -14,32 +14,34 @@ const int suitPrimes[] = {43, 47, 53, 59};
 
 using namespace std;
 
-class Card
+namespace poker
 {
-public:
-    Rank rank;
-    Suit suit;
+    class Card
+    {
+    public:
+        Rank rank;
+        Suit suit;
 
-    Card(const char *s);
-    Card(const string &s);
-    Card(int index);
-    Card(ulong bitmap);
+        Card(const char *s);
+        Card(const string &s);
+        Card(int index);
+        Card(ulong bitmap);
 
-    bool Equals(const Card &other) const;
-    int PrimeRank() const;
-    int PrimeSuit() const;
-    int HashCode(Card &c);
-    int Index();
-    ulong Bitmask();
+        bool Equals(const Card &other) const;
+        int PrimeRank() const;
+        int PrimeSuit() const;
+        int HashCode(Card &c);
+        int Index();
+        ulong Bitmask();
 
-    bool operator==(const Card &other) const;
-    bool operator<(const Card &rhs) const;
-    friend ostream& operator<<(ostream& out, const Card& card);
+        bool operator==(const Card &other) const;
+        bool operator<(const Card &rhs) const;
+        friend ostream &operator<<(ostream &out, const Card &card);
 
-    static int GetIndexFromBitmask(ulong bitmask);
+        static int GetIndexFromBitmask(ulong bitmask);
 
-    string ToString() const;
-    string PrettyString(const string_view &end = "") const;
-};
-
+        string ToString() const;
+        string PrettyString(const string_view &end = "") const;
+    };
+} // namespace poker
 #endif

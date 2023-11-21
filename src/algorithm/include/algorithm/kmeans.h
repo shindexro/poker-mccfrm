@@ -16,42 +16,44 @@
 
 using namespace std;
 
-/// <summary>
-/// Cluster the elements in the input array into k distinct buckets and return them
-/// </summary>
-class Kmeans
+namespace poker
 {
-public:
-    Kmeans() {}
-
     /// <summary>
-    /// Returns an array where the element at index i contains the cluster entry associated with the entry
+    /// Cluster the elements in the input array into k distinct buckets and return them
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="k"></param>
-    /// <returns></returns>
-    vector<int> ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
-    vector<int> ClusterL2(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
+    class Kmeans
+    {
+    public:
+        Kmeans() {}
 
-private:
-    vector<vector<float>> CalculateNewCenters(vector<vector<float>> &data, vector<int> &bestCenters, int k);
-    void CalculateClusterDistancesL2(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters);
-    void CalculateClusterDistancesEMD(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters);
+        /// <summary>
+        /// Returns an array where the element at index i contains the cluster entry associated with the entry
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        vector<int> ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
+        vector<int> ClusterL2(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
 
-    /// <summary>
-    /// Returns a sample of the data
-    /// </summary>
-    /// <param name="data"></param>
-    /// <param name="nofSamples"></param>
-    /// <returns></returns>
-    vector<vector<float>> GetUniqueRandomNumbers(vector<vector<float>> &data, int nofSamples);
-    vector<vector<float>> FindStartingCentersL2(vector<vector<float>> &data, int k);
-    vector<vector<float>> FindStartingCentersEMD(vector<vector<float>> &data, int k);
-    static void SquareArray(vector<float> &a);
-    void CopyArray(vector<vector<float>> &dataSource, vector<vector<float>> &dataDestination, int indexSource, int indexDestination);
+    private:
+        vector<vector<float>> CalculateNewCenters(vector<vector<float>> &data, vector<int> &bestCenters, int k);
+        void CalculateClusterDistancesL2(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters);
+        void CalculateClusterDistancesEMD(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters);
 
-    float GetEarthMoverDistance(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2);
-    float GetL2DistanceSquared(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2);
-};
+        /// <summary>
+        /// Returns a sample of the data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="nofSamples"></param>
+        /// <returns></returns>
+        vector<vector<float>> GetUniqueRandomNumbers(vector<vector<float>> &data, int nofSamples);
+        vector<vector<float>> FindStartingCentersL2(vector<vector<float>> &data, int k);
+        vector<vector<float>> FindStartingCentersEMD(vector<vector<float>> &data, int k);
+        static void SquareArray(vector<float> &a);
+        void CopyArray(vector<vector<float>> &dataSource, vector<vector<float>> &dataDestination, int indexSource, int indexDestination);
 
+        float GetEarthMoverDistance(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2);
+        float GetL2DistanceSquared(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2);
+    };
+} // namespace poker
 #endif

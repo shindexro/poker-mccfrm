@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <fstream>
 #include <sys/stat.h>
-#ifdef __linux__ 
+#ifdef __linux__
 #include <unistd.h>
 #endif
 #include <algorithm>
@@ -27,31 +27,32 @@
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/list.hpp>
 
-
 using namespace std;
 
-class Evaluator
+namespace poker
 {
-public:
-    void Initialise();
+    class Evaluator
+    {
+    public:
+        void Initialise();
 
-    int Evaluate(ulong bitmap);
-    void SaveToFile(string &filename);
+        int Evaluate(ulong bitmap);
+        void SaveToFile(string &filename);
 
-private:
-    bool loaded;
-    unordered_map<ulong, ulong> handRankMap;
-    unordered_map<ulong, ulong> monteCarloMap;
+    private:
+        bool loaded;
+        unordered_map<ulong, ulong> handRankMap;
+        unordered_map<ulong, ulong> monteCarloMap;
 
-    void LoadFromFile(string &filename);
-    void GenerateFiveCardTable();
-    void GenerateSixCardTable();
-    void GenerateSevenCardTable();
-    void GenerateHandValueTable(int comboSize);
-    void GenerateMonteCarloMap(int iterations);
-};
+        void LoadFromFile(string &filename);
+        void GenerateFiveCardTable();
+        void GenerateSixCardTable();
+        void GenerateSevenCardTable();
+        void GenerateHandValueTable(int comboSize);
+        void GenerateMonteCarloMap(int iterations);
+    };
 
-template <typename Iterator>
-inline bool next_combination(const Iterator first, Iterator k, const Iterator last);
-
+    template <typename Iterator>
+    inline bool next_combination(const Iterator first, Iterator k, const Iterator last);
+} // namespace poker
 #endif

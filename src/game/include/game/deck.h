@@ -8,21 +8,22 @@
 #include <string>
 
 using namespace std;
-
-class Deck
+namespace poker
 {
-public:
-    int NumRemainingCards();
-    Deck(ulong removedCards = 0);
-    void Shuffle();
-    ulong Draw(int count);
-    ulong Peek(int idx);
+    class Deck
+    {
+    public:
+        int NumRemainingCards();
+        Deck(ulong removedCards = 0);
+        void Shuffle();
+        ulong Draw(int count);
+        ulong Peek(int idx);
 
-private:
-    ulong removedCards;
-    int numRemovedCards;
-    size_t position;
-    vector<ulong> cards;
-};
-
+    private:
+        ulong removedCards;
+        int numRemovedCards;
+        size_t position;
+        vector<ulong> cards;
+    };
+} // namespace poker
 #endif

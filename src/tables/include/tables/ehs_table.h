@@ -10,6 +10,8 @@
 
 using namespace std;
 
+namespace poker
+{
 class EHSTable
 {
 public:
@@ -32,5 +34,6 @@ private:
     static void SaveToFile();
     static void LoadFromFile();
 };
+} // namespace poker
 
 #endif

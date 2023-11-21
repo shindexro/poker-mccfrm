@@ -13,22 +13,24 @@
 
 using namespace std;
 
-class HandStrength;
-
-class Hand
+namespace poker
 {
-public:
-    vector<Card> cards;
+    class HandStrength;
+    class Hand
+    {
+    public:
+        vector<Card> cards;
 
-    Hand();
-    Hand(ulong bitmap);
-    Hand(vector<string> &cards);
+        Hand();
+        Hand(ulong bitmap);
+        Hand(vector<string> &cards);
 
-    HandStrength GetStrength();
-    void PrintColoredCards(const string &end = string(""));
-    string ToString();
+        HandStrength GetStrength();
+        void PrintColoredCards(const string &end = string(""));
+        string ToString();
 
-    bool operator==(const Hand &other) const;
-};
+        bool operator==(const Hand &other) const;
+    };
+} // namespace poker
 
 #endif

@@ -1,55 +1,58 @@
 #include "abstraction/infoset.h"
 
-Infoset::Infoset() : regret(),
-                     actionCounter()
+namespace poker
 {
-}
+    Infoset::Infoset() : regret(),
+                         actionCounter()
+    {
+    }
 
-Infoset::Infoset(int actions) : regret(actions),
-                                actionCounter(actions)
-{
-}
+    Infoset::Infoset(int actions) : regret(actions),
+                                    actionCounter(actions)
+    {
+    }
 
-vector<float> Infoset::CalculateStrategy()
-{
-    int sum = 0;
-    auto moveProbs = vector<float>(regret.size());
-    for (auto a = 0UL; a < regret.size(); ++a)
+    vector<float> Infoset::CalculateStrategy()
     {
-        sum += max(0, regret[a]);
-    }
-    for (auto a = 0UL; a < regret.size(); ++a)
-    {
-        if (sum > 0.00001)
+        int sum = 0;
+        auto moveProbs = vector<float>(regret.size());
+        for (auto a = 0UL; a < regret.size(); ++a)
         {
-            moveProbs[a] = (float)max(0, regret[a]) / sum;
+            sum += max(0, regret[a]);
         }
-        else
+        for (auto a = 0UL; a < regret.size(); ++a)
         {
-            moveProbs[a] = 1.0f / regret.size();
+            if (sum > 0.00001)
+            {
+                moveProbs[a] = (float)max(0, regret[a]) / sum;
+            }
+            else
+            {
+                moveProbs[a] = 1.0f / regret.size();
+            }
         }
+        return moveProbs;
     }
-    return moveProbs;
-}
 
-vector<float> Infoset::GetFinalStrategy()
-{
-    int sum = 0;
-    auto moveProbs = vector<float>(regret.size());
-    for (auto a = 0UL; a < regret.size(); ++a)
+    vector<float> Infoset::GetFinalStrategy()
     {
-        sum += actionCounter[a];
-    }
-    for (auto a = 0UL; a < regret.size(); ++a)
-    {
-        if (sum > 0.00001)
+        int sum = 0;
+        auto moveProbs = vector<float>(regret.size());
+        for (auto a = 0UL; a < regret.size(); ++a)
         {
-            moveProbs[a] = (float)actionCounter[a] / sum;
+            sum += actionCounter[a];
         }
-        else
+        for (auto a = 0UL; a < regret.size(); ++a)
         {
-            moveProbs[a] = 1.0f / regret.size();
+            if (sum > 0.00001)
+            {
+                moveProbs[a] = (float)actionCounter[a] / sum;
+            }
+            else
+            {
+                moveProbs[a] = 1.0f / regret.size();
+            }
         }
+        return moveProbs;
     }
-    return moveProbs;
-}
+} // namespace poker

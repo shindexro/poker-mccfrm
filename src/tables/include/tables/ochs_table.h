@@ -19,29 +19,32 @@
 
 using namespace std;
 
-class OCHSTable
+namespace poker
 {
+    class OCHSTable
+    {
 
-public:
-    static vector<int> preflopIndices;
-    static vector<int> riverIndices;
+    public:
+        static vector<int> preflopIndices;
+        static vector<int> riverIndices;
 
-    static vector<vector<float>> histogramsPreflop;
-    static vector<vector<float>> histogramsRiver;
+        static vector<vector<float>> histogramsPreflop;
+        static vector<vector<float>> histogramsRiver;
 
-    static const string filenameOppClusters;
-    static const string filenameRiverClusters;
-    static const string filenameRiverHistograms;
+        static const string filenameOppClusters;
+        static const string filenameRiverClusters;
+        static const string filenameRiverHistograms;
 
-    static void Init();
+        static void Init();
 
-private:
-    static void CalculateOCHSOpponentClusters();
-    static void ClusterPreflopHands();
-    static void ClusterRiver();
-    static void GenerateRiverHistograms();
-    static void SaveToFile();
-    static void LoadFromFile();
-};
+    private:
+        static void CalculateOCHSOpponentClusters();
+        static void ClusterPreflopHands();
+        static void ClusterRiver();
+        static void GenerateRiverHistograms();
+        static void SaveToFile();
+        static void LoadFromFile();
+    };
+} // namespace poker
 
 #endif

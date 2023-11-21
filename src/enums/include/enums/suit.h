@@ -1,12 +1,14 @@
 #ifndef __ENUM_SUIT_H__
 #define __ENUM_SUIT_H__
 
-enum class Suit
+namespace poker
 {
-    Spades,
-    Hearts,
-    Diamonds,
-    Clubs,
-};
-
+    enum class Suit
+    {
+        Spades,
+        Hearts,
+        Diamonds,
+        Clubs,
+    };
+} // namespace poker
 #endif

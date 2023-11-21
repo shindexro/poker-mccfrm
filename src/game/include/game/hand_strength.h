@@ -8,17 +8,20 @@
 
 using namespace std;
 
-class HandStrength
+namespace poker
 {
-public:
-    HandRanking handRanking;
-    vector<Rank> kickers;
+    class HandStrength
+    {
+    public:
+        HandRanking handRanking;
+        vector<Rank> kickers;
 
-    HandStrength();
+        HandStrength();
 
-    int Compare(const HandStrength &other) const;
-    bool operator<(const HandStrength &rhs) const;
-    bool operator==(const HandStrength &rhs) const;
-};
+        int Compare(const HandStrength &other) const;
+        bool operator<(const HandStrength &rhs) const;
+        bool operator==(const HandStrength &rhs) const;
+    };
+} // namespace poker
 
 #endif

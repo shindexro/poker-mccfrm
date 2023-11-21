@@ -4,19 +4,21 @@
 #include <ostream>
 #include <string>
 
-enum HandRanking
+namespace poker
 {
-    HighCard,
-    Pair,
-    TwoPair,
-    ThreeOfAKind,
-    Straight,
-    Flush,
-    FullHouse,
-    FourOfAKind,
-    StraightFlush,
-};
+    enum HandRanking
+    {
+        HighCard,
+        Pair,
+        TwoPair,
+        ThreeOfAKind,
+        Straight,
+        Flush,
+        FullHouse,
+        FourOfAKind,
+        StraightFlush,
+    };
 
-std::ostream &operator<<(std::ostream &out, const HandRanking &value);
-
+    std::ostream &operator<<(std::ostream &out, const HandRanking &value);
+} // namespace poker
 #endif

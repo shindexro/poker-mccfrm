@@ -10,52 +10,55 @@
 
 using namespace std;
 
-class Infoset
+namespace poker
 {
-public:
-    vector<int> regret;
-    vector<int> actionCounter;
+    class Infoset
+    {
+    public:
+        vector<int> regret;
+        vector<int> actionCounter;
 
-    Infoset();
-    Infoset(int actions);
+        Infoset();
+        Infoset(int actions);
 
-    vector<float> CalculateStrategy();
-    vector<float> GetFinalStrategy();
-};
+        vector<float> CalculateStrategy();
+        vector<float> GetFinalStrategy();
+    };
 
-//////////////////////////////////////////////////////////////////////
-// non-intrusive serialization for Infoset
-template <class Archive>
-inline void save(
-    Archive &ar,
-    const Infoset &t,
-    const unsigned int /*file_version*/
-)
-{
-    ar << t.actionCounter;
-    ar << t.regret;
-}
+    //////////////////////////////////////////////////////////////////////
+    // non-intrusive serialization for Infoset
+    template <class Archive>
+    inline void save(
+        Archive &ar,
+        const Infoset &t,
+        const unsigned int /*file_version*/
+    )
+    {
+        ar << t.actionCounter;
+        ar << t.regret;
+    }
 
-template <class Archive>
-inline void load(
-    Archive &ar,
-    Infoset &t,
-    const unsigned int /*file_version*/
-)
-{
-    ar >> t.actionCounter;
-    ar >> t.regret;
-}
+    template <class Archive>
+    inline void load(
+        Archive &ar,
+        Infoset &t,
+        const unsigned int /*file_version*/
+    )
+    {
+        ar >> t.actionCounter;
+        ar >> t.regret;
+    }
 
-// split non-intrusive serialization function member into separate
-// non intrusive save/load member functions
-template <class Archive>
-inline void serialize(
-    Archive &ar,
-    Infoset &t,
-    const unsigned int file_version)
-{
-    boost::serialization::split_free(ar, t, file_version);
-}
+    // split non-intrusive serialization function member into separate
+    // non intrusive save/load member functions
+    template <class Archive>
+    inline void serialize(
+        Archive &ar,
+        Infoset &t,
+        const unsigned int file_version)
+    {
+        boost::serialization::split_free(ar, t, file_version);
+    }
+} // namespace poker
 
 #endif
