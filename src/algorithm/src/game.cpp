@@ -19,7 +19,11 @@ namespace poker
             else if (auto playState = dynamic_cast<PlayState *>(state.get()))
             {
                 state->CreateChildren();
-                auto action = players[state->community.playerToMove]->NextAction(*playState);
+                auto playerToMove = state->community.playerToMove;
+                auto action = players[playerToMove]->NextAction(*playState);
+
+                std::cout << "Player " << playerToMove << action << std::endl;
+
                 for (auto child : state->children)
                 {
                     if (child->history.back() == action)
