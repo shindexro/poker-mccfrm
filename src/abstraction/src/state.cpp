@@ -128,6 +128,21 @@ namespace poker
         return out;
     }
 
+    ostream &State::PrettyPrint(ostream &out) const
+    {
+        for (auto card : community.cards)
+        {
+            out << Card(card);
+        }
+        out << std::endl;
+
+        out << "Pot: " << GetPot() << std::endl;
+
+        for (auto &player : players)
+            out << player.PrettyPrint() << " ";
+        return out;
+    }
+
     ostream &operator<<(ostream &out, const State &state)
     {
         return state.Print(out);

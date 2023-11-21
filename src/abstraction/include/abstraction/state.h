@@ -58,6 +58,7 @@ namespace poker
         virtual float GetReward(int /*traverser*/) { throw invalid_argument("Not implemented"); };
 
         virtual ostream& Print(ostream &out) const;
+        ostream& PrettyPrint(ostream &out) const;
         void PrettyPrintTree(int depth = 0);
     };
 
