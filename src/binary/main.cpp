@@ -220,6 +220,8 @@ namespace poker
 
 int main()
 {
+    Global global = Global();
+
     poker::Program program;
     program.StartGame();
 
