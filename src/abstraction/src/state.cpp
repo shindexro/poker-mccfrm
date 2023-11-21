@@ -139,7 +139,7 @@ namespace poker
         out << "Pot: " << GetPot() << std::endl;
 
         for (auto &player : players)
-            out << player.PrettyPrint() << " ";
+            player.PrettyPrint(out);
         return out;
     }
 
