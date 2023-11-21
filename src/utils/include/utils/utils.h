@@ -19,83 +19,86 @@
 
 using namespace std;
 
-namespace utils
+namespace poker
 {
-    tuple<int, int> GetWorkItemsIndices(int dataCount, int threadCount, int threadIndex);
-    int SampleDistribution(vector<float> &probabilities);
-    int SampleDistribution(vector<double> &probabilities);
-
-    vector<Hand> GetStartingHandChart();
-
-    template <typename T>
-    void SaveToFile(T &obj, const string &filename)
+    namespace utils
     {
-        cout << "Saving to file " << filename << endl;
-        ofstream file(filename);
-        boost::archive::binary_oarchive archive(file);
-        archive << obj;
-    }
+        tuple<int, int> GetWorkItemsIndices(int dataCount, int threadCount, int threadIndex);
+        int SampleDistribution(vector<float> &probabilities);
+        int SampleDistribution(vector<double> &probabilities);
 
-    template <typename T>
-    void LoadFromFile(T &obj, const string &filename)
-    {
-        cout << "Loading from file " << filename << endl;
-        ifstream file(filename);
-        boost::archive::binary_iarchive archive(file);
-        archive >> obj;
-    }
-    bool FileExists(const string &filename);
+        vector<Hand> GetStartingHandChart();
 
-    template <typename T>
-    void parallelise(long maxCount, T func)
-    {
-        cout << "Processing " << maxCount << " items in " << Global::NOF_THREADS << " threads" << endl;
-        cout << flush;
+        template <typename T>
+        void SaveToFile(T &obj, const string &filename)
+        {
+            cout << "Saving to file " << filename << endl;
+            ofstream file(filename);
+            boost::archive::binary_oarchive archive(file);
+            archive << obj;
+        }
 
-        using namespace indicators;
-        indicators::show_console_cursor(false);
-        BlockProgressBar bar{
-            option::BarWidth{80},
-            option::Start{"["},
-            option::End{"]"},
-            option::ForegroundColor{Color::white},
-            option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},
-            option::ShowElapsedTime{true},
-            option::ShowRemainingTime{true},
-            option::MaxProgress{maxCount}};
+        template <typename T>
+        void LoadFromFile(T &obj, const string &filename)
+        {
+            cout << "Loading from file " << filename << endl;
+            ifstream file(filename);
+            boost::archive::binary_iarchive archive(file);
+            archive >> obj;
+        }
+        bool FileExists(const string &filename);
 
-        atomic<long> iterations = 0;
-        const long barUpdateInterval = max(1L, maxCount / 100);
-        oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
-                                  [&](int threadIdx)
-                                  {
-                                      long threadIterations = 0;
-                                      auto [startItemIdx, endItemIdx] = GetWorkItemsIndices(maxCount, Global::NOF_THREADS, threadIdx);
-                                      for (auto i = startItemIdx; i < endItemIdx; i++)
+        template <typename T>
+        void parallelise(long maxCount, T func)
+        {
+            cout << "Processing " << maxCount << " items in " << Global::NOF_THREADS << " threads" << endl;
+            cout << flush;
+
+            using namespace indicators;
+            indicators::show_console_cursor(false);
+            BlockProgressBar bar{
+                option::BarWidth{80},
+                option::Start{"["},
+                option::End{"]"},
+                option::ForegroundColor{Color::white},
+                option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},
+                option::ShowElapsedTime{true},
+                option::ShowRemainingTime{true},
+                option::MaxProgress{maxCount}};
+
+            atomic<long> iterations = 0;
+            const long barUpdateInterval = max(1L, maxCount / 100);
+            oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
+                                      [&](int threadIdx)
                                       {
-                                          if (threadIterations == barUpdateInterval)
+                                          long threadIterations = 0;
+                                          auto [startItemIdx, endItemIdx] = GetWorkItemsIndices(maxCount, Global::NOF_THREADS, threadIdx);
+                                          for (auto i = startItemIdx; i < endItemIdx; i++)
                                           {
-                                              iterations += threadIterations;
-                                              threadIterations = 0;
-                                              bar.set_progress(iterations);
+                                              if (threadIterations == barUpdateInterval)
+                                              {
+                                                  iterations += threadIterations;
+                                                  threadIterations = 0;
+                                                  bar.set_progress(iterations);
+                                              }
+                                              func(threadIdx, i);
+                                              threadIterations++;
                                           }
-                                          func(threadIdx, i);
-                                          threadIterations++;
-                                      }
-                                      iterations += threadIterations;
-                                      bar.set_progress(iterations);
-                                  });
+                                          iterations += threadIterations;
+                                          bar.set_progress(iterations);
+                                      });
 
-        indicators::show_console_cursor(true);
-        cout << endl;
-    }
+            indicators::show_console_cursor(true);
+            cout << endl;
+        }
 
-    template <typename Base, typename T>
-    inline bool instanceof (const T *ptr)
-    {
-        return dynamic_cast<const Base *>(ptr) != nullptr;
-    }
-}
+        template <typename Base, typename T>
+        inline bool instanceof (const T *ptr)
+        {
+            return dynamic_cast<const Base *>(ptr) != nullptr;
+        }
+    } // namespace utils
+} // namespace poker
 
 //////////////////////////////////////////////////////////////////////
 // non-intrusive serialization for oneapi::tbb::concurrent_hash_map
