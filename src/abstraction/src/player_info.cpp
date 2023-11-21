@@ -20,8 +20,8 @@ namespace poker
 
     ostream &PlayerInfo::PrettyPrint(ostream &out) const
     {
-        out << (isStillInGame ? "\033[1;32m" : "\033[1;31m");
         out << Card(get<0>(cards)) << Card(get<1>(cards)) << " ";
+        out << (isStillInGame ? "\033[1;32m" : "\033[1;31m");
         out << "stack: " << stack << "\t\t";
         out << "\033[0m";
         return out;
