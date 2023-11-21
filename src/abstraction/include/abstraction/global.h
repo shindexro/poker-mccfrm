@@ -62,7 +62,7 @@ public:
     static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMap;
     static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMapBaseline;
 
-    thread_local static Deck deck;
+    inline thread_local static Deck deck;
 };
 
 #endif
