@@ -196,15 +196,20 @@ string Card::ToString() const
     return s;
 }
 
-void Card::PrintBeautifulString(const string_view &end)
+string Card::PrettyString(const string_view &end) const
 {
-    // TOOD: change color according to suit
-    cout << ToString() << end;
+    static const string colors[] = {"\033[1;31m", "\033[1;32m", "\033[1;33m", "\033[1;34m"};
+    string s;
+    s.append(colors[(int)suit]);
+    s.append(ToString());
+    s.append(end);
+    s.append("\033[0m");
+    return s;
 }
 
 ostream &operator<<(ostream &out, const Card &card)
 {
-    out << card.ToString();
+    out << card.PrettyString();
     return out;
 }
 
