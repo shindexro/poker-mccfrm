@@ -18,6 +18,15 @@ namespace poker
         return get<0>(cards) | get<1>(cards);
     }
 
+    ostream &PlayerInfo::PrettyPrint(ostream &out) const
+    {
+        out << isStillInGame ? "\033[1;32m" : "\033[1;31m";
+        out << Card(get<0>(cards)) << Card(get<1>(cards)) << " ";
+        out << "stack: " << stack << "\t\t";
+        out << "\033[0m";
+        return out;
+    }
+
     ostream &operator<<(ostream &out, const PlayerInfo &info)
     {
         out << "S:" << info.stack << " B:" << info.bet << " R:" << info.reward

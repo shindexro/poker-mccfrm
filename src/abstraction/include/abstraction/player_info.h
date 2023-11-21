@@ -26,9 +26,10 @@ namespace poker
         PlayerInfo();
 
         ulong GetCardBitmask() const;
-    };
 
-     ostream &operator<<(ostream &out, const PlayerInfo &info);
+        ostream &PrettyPrint(ostream &out) const;
+        friend ostream &operator<<(ostream &out, const PlayerInfo &info);
+    };
 }
 
 #endif
