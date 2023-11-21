@@ -35,5 +35,7 @@ namespace poker
             state->PrettyPrint(std::cout);
             std::cout << std::endl;
         }
+        state->PrettyPrint(std::cout);
+        std::cout << std::endl;
     }
 } // namespace poker
