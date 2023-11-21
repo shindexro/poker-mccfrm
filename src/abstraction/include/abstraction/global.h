@@ -18,35 +18,35 @@ class Deck;
 class Global
 {
 public:
-    static const int NOF_THREADS = 4;
+    inline static const int NOF_THREADS = 4;
     static vector<float> raiseRatios;
-    static const int buyIn = 200;
-    static const int nofPlayers = 2;
-    static const int C = -300000000;
-    static const int regretFloor = -310000000;
+    inline static const int buyIn = 200;
+    inline static const int nofPlayers = 2;
+    inline static const int C = -300000000;
+    inline static const int regretFloor = -310000000;
 
-    static const int BB = 2;
-    static const int SB = 1;
+    inline static const int BB = 2;
+    inline static const int SB = 1;
 
-    static const int RANKS = 5;
-    static const int SUITS = 4;
-    static const int CARDS = RANKS * SUITS;
+    inline static const int RANKS = 5;
+    inline static const int SUITS = 4;
+    inline static const int CARDS = RANKS * SUITS;
 
     // information abstraction parameters, currently this would be a
     // 169 - 200 - 200 - 200 abstraction, where the river is bucketed using OCHS and the turn and flop using EMD
-    static const int nofRiverBuckets = 200;
-    static const int nofTurnBuckets = 200;
-    static const int nofFlopBuckets = 200;
+    inline static const int nofRiverBuckets = 200;
+    inline static const int nofTurnBuckets = 200;
+    inline static const int nofFlopBuckets = 200;
     // 100k or even 1 million shouldn't take too much time compared to the rest of the information abstraction
-    static const int nofMCSimsPerPreflopHand = 100000;
+    inline static const int nofMCSimsPerPreflopHand = 100000;
     // for the river, determines the river histogram size (in theory could be up to 169 but will be very slow) default 8
-    static const int nofOpponentClusters = 16;
-    static const int flopHistogramSize = 50;
-    static const int turnHistogramSize = 50;
+    inline static const int nofOpponentClusters = 16;
+    inline static const int flopHistogramSize = 50;
+    inline static const int turnHistogramSize = 50;
 
     // this is used to create the nofOpponentClusters, it can be increased (default 50)
     // with little time penalty because the clustering for 169 hands is very fast
-    static const int preflopHistogramSize = 100;
+    inline static const int preflopHistogramSize = 100;
 
     // dont change
     static HandIndexer indexer_2;
