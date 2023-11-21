@@ -15,9 +15,9 @@ namespace poker
         Game(std::vector<shared_ptr<Player>> &players);
 
         void Start();
-        
+
     private:
-        std::vector<shared_ptr<Player>> players; 
+        std::vector<shared_ptr<Player>> players;
         std::shared_ptr<State> state;
     };
 } // namespace poker
