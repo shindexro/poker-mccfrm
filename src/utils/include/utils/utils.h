@@ -105,12 +105,10 @@ namespace poker
 template <
     class Archive,
     typename Key,
-    typename T,
-    typename HashCompare,
-    typename Allocator>
+    typename T>
 inline void save(
     Archive &ar,
-    const oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+    const oneapi::tbb::concurrent_hash_map<Key, T> &t,
     const unsigned int /*file_version*/
 )
 {
@@ -129,12 +127,10 @@ inline void save(
 template <
     class Archive,
     typename Key,
-    typename T,
-    typename HashCompare,
-    typename Allocator>
+    typename T>
 inline void load(
     Archive &ar,
-    oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+    oneapi::tbb::concurrent_hash_map<Key, T> &t,
     const unsigned int /*file_version*/
 )
 {
@@ -159,12 +155,10 @@ inline void load(
 template <
     class Archive,
     typename Key,
-    typename T,
-    typename HashCompare,
-    typename Allocator>
+    typename T>
 inline void serialize(
     Archive &ar,
-    oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+    oneapi::tbb::concurrent_hash_map<Key, T> &t,
     const unsigned int file_version)
 {
     boost::serialization::split_free(ar, t, file_version);
