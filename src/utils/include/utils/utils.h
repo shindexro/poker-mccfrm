@@ -1,5 +1,5 @@
-#ifndef __RANDON_H__
-#define __RANDON_H__
+#ifndef __UTILS_H__
+#define __UTILS_H__
 
 #include "utils/random.h"
 #include "game/hand.h"
