@@ -99,74 +99,80 @@ namespace utils
     }
 } // namespace utils
 
-//////////////////////////////////////////////////////////////////////
-// non-intrusive serialization for oneapi::tbb::concurrent_hash_map
-template <
-    class Archive,
-    typename Key,
-    typename T,
-    typename HashCompare,
-    typename Allocator>
-inline void save(
-    Archive &ar,
-    const oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
-    const unsigned int /*file_version*/
-)
+namespace boost
 {
-    size_t count(t.size());
-    size_t bucket_count(t.bucket_count());
-
-    ar << count;
-    ar << bucket_count;
-
-    for (auto item : t)
+    namespace serialization
     {
-        ar << item;
-    }
-}
+        //////////////////////////////////////////////////////////////////////
+        // non-intrusive serialization for oneapi::tbb::concurrent_hash_map
+        template <
+            class Archive,
+            typename Key,
+            typename T,
+            typename HashCompare,
+            typename Allocator>
+        inline void save(
+            Archive &ar,
+            const oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+            const unsigned int /*file_version*/
+        )
+        {
+            size_t count(t.size());
+            size_t bucket_count(t.bucket_count());
 
-template <
-    class Archive,
-    typename Key,
-    typename T,
-    typename HashCompare,
-    typename Allocator>
-inline void load(
-    Archive &ar,
-    oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
-    const unsigned int /*file_version*/
-)
-{
-    size_t count;
-    size_t bucket_count;
+            ar << count;
+            ar << bucket_count;
 
-    ar >> count;
-    ar >> bucket_count;
+            for (auto item : t)
+            {
+                ar << item;
+            }
+        }
 
-    t.clear();
-    t.rehash(bucket_count);
-    while (count-- > 0)
-    {
-        pair<Key, T> item;
-        ar >> item;
-        t.insert(item);
-    }
-}
+        template <
+            class Archive,
+            typename Key,
+            typename T,
+            typename HashCompare,
+            typename Allocator>
+        inline void load(
+            Archive &ar,
+            oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+            const unsigned int /*file_version*/
+        )
+        {
+            size_t count;
+            size_t bucket_count;
 
-// split non-intrusive serialization function member into separate
-// non intrusive save/load member functions
-template <
-    class Archive,
-    typename Key,
-    typename T,
-    typename HashCompare,
-    typename Allocator>
-inline void serialize(
-    Archive &ar,
-    oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
-    const unsigned int file_version)
-{
-    boost::serialization::split_free(ar, t, file_version);
-}
+            ar >> count;
+            ar >> bucket_count;
+
+            t.clear();
+            t.rehash(bucket_count);
+            while (count-- > 0)
+            {
+                pair<Key, T> item;
+                ar >> item;
+                t.insert(item);
+            }
+        }
+
+        // split non-intrusive serialization function member into separate
+        // non intrusive save/load member functions
+        template <
+            class Archive,
+            typename Key,
+            typename T,
+            typename HashCompare,
+            typename Allocator>
+        inline void serialize(
+            Archive &ar,
+            oneapi::tbb::concurrent_hash_map<Key, T, HashCompare, Allocator> &t,
+            const unsigned int file_version)
+        {
+            boost::serialization::split_free(ar, t, file_version);
+        }
+    } // namespace serialization
+} // namespace boost
 
 #endif
