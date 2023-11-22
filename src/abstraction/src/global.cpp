@@ -17,9 +17,5 @@ namespace poker
     oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMap = oneapi::tbb::concurrent_hash_map<string, Infoset>();
     oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMapBaseline = oneapi::tbb::concurrent_hash_map<string, Infoset>();
 
-    Deck &Global::deck()
-    {
-        thread_local Deck deck = Deck();
-        return deck;
-    }
+    thread_local Deck Global::deck = Deck();
 } // namespace poker
