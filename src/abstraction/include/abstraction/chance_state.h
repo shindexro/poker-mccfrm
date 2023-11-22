@@ -4,6 +4,7 @@
 #include "abstraction/state.h"
 #include "abstraction/play_state.h"
 #include "abstraction/terminal_state.h"
+#include "game/deck.h"
 
 using namespace std;
 
