@@ -72,22 +72,22 @@ namespace poker
         switch (community.bettingRound)
         {
         case BettingRound::Preflop:
-            Global::deck.Shuffle();
+            Global::deck().Shuffle();
             for (auto i = 0; i < Global::nofPlayers; ++i)
             {
-                newPlayers[i].cards = {Global::deck.Peek(i * 2), Global::deck.Peek(i * 2 + 1)};
+                newPlayers[i].cards = {Global::deck().Peek(i * 2), Global::deck().Peek(i * 2 + 1)};
             }
             break;
         case BettingRound::Flop:
-            newCommunity.cards.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 0));
-            newCommunity.cards.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 1));
-            newCommunity.cards.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 2));
+            newCommunity.cards.push_back(Global::deck().Peek(Global::nofPlayers * 2 + 0));
+            newCommunity.cards.push_back(Global::deck().Peek(Global::nofPlayers * 2 + 1));
+            newCommunity.cards.push_back(Global::deck().Peek(Global::nofPlayers * 2 + 2));
             break;
         case BettingRound::Turn:
-            newCommunity.cards.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 3));
+            newCommunity.cards.push_back(Global::deck().Peek(Global::nofPlayers * 2 + 3));
             break;
         case BettingRound::River:
-            newCommunity.cards.push_back(Global::deck.Peek(Global::nofPlayers * 2 + 4));
+            newCommunity.cards.push_back(Global::deck().Peek(Global::nofPlayers * 2 + 4));
             break;
         default:
             throw invalid_argument("Unknown betting round");
