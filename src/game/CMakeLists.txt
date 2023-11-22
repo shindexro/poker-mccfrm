@@ -8,8 +8,6 @@ add_library(${PROJECT_NAME}
 )
 add_library(sub::game ALIAS ${PROJECT_NAME})
 
-set_source_files_properties(src/hand.cpp PROPERTIES COMPILE_OPTIONS "-g")
-
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
 )
