@@ -11,6 +11,8 @@
 #include <map>
 #include <stdexcept>
 
+typedef unsigned long ulong;
+
 using namespace std;
 
 namespace poker
