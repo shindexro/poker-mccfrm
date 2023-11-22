@@ -64,7 +64,7 @@ namespace poker
         static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMap;
         static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMapBaseline;
 
-        static Deck &deck();
+        static thread_local Deck deck;
     };
 } // namespace poker
 #endif
