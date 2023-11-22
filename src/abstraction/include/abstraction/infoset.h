@@ -24,41 +24,41 @@ namespace poker
         vector<float> CalculateStrategy();
         vector<float> GetFinalStrategy();
     };
-
-    //////////////////////////////////////////////////////////////////////
-    // non-intrusive serialization for Infoset
-    template <class Archive>
-    inline void save(
-        Archive &ar,
-        const Infoset &t,
-        const unsigned int /*file_version*/
-    )
-    {
-        ar << t.actionCounter;
-        ar << t.regret;
-    }
-
-    template <class Archive>
-    inline void load(
-        Archive &ar,
-        Infoset &t,
-        const unsigned int /*file_version*/
-    )
-    {
-        ar >> t.actionCounter;
-        ar >> t.regret;
-    }
-
-    // split non-intrusive serialization function member into separate
-    // non intrusive save/load member functions
-    template <class Archive>
-    inline void serialize(
-        Archive &ar,
-        Infoset &t,
-        const unsigned int file_version)
-    {
-        boost::serialization::split_free(ar, t, file_version);
-    }
 } // namespace poker
+
+//////////////////////////////////////////////////////////////////////
+// non-intrusive serialization for Infoset
+template <class Archive>
+inline void save(
+    Archive &ar,
+    const poker::Infoset &t,
+    const unsigned int /*file_version*/
+)
+{
+    ar << t.actionCounter;
+    ar << t.regret;
+}
+
+template <class Archive>
+inline void load(
+    Archive &ar,
+    poker::Infoset &t,
+    const unsigned int /*file_version*/
+)
+{
+    ar >> t.actionCounter;
+    ar >> t.regret;
+}
+
+// split non-intrusive serialization function member into separate
+// non intrusive save/load member functions
+template <class Archive>
+inline void serialize(
+    Archive &ar,
+    poker::Infoset &t,
+    const unsigned int file_version)
+{
+    boost::serialization::split_free(ar, t, file_version);
+}
 
 #endif
