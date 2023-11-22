@@ -35,7 +35,7 @@ namespace poker
 
             if (position >= cards.size())
             {
-                throw invalid_argument("Insufficient cards in deck.");
+                throw std::invalid_argument("Insufficient cards in deck.");
             }
 
             hand |= cards[position];
