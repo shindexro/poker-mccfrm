@@ -5,7 +5,7 @@ using namespace poker;
 Trainer::Trainer(int threadIndex) : rootState{make_shared<ChanceState>()},
                                     threadIndex{threadIndex}
 {
-    Global::deck = Deck();
+    Global::deck() = Deck();
 }
 
 /// <summary>
