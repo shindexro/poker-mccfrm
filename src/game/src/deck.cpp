@@ -4,7 +4,7 @@ namespace poker
 {
     Deck::Deck(int size, ulong removedCards) : removedCards{removedCards},
                                                position{0},
-                                               cards(cards)
+                                               cards(size)
     {
         for (auto i = 0UL; i < cards.size(); i++)
         {
