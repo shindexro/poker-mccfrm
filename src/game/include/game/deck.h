@@ -2,7 +2,6 @@
 #define __CLASS_DECK_H__
 
 #include "utils/random.h"
-#include "abstraction/global.h"
 #include "enums/betting_round.h"
 
 #include <string>
@@ -14,7 +13,7 @@ namespace poker
     {
     public:
         int NumRemainingCards();
-        Deck(ulong removedCards = 0);
+        Deck(int size, ulong removedCards = 0);
         void Shuffle();
         ulong Draw(int count);
         ulong Peek(int idx);

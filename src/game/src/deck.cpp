@@ -2,9 +2,9 @@
 
 namespace poker
 {
-    Deck::Deck(ulong removedCards) : removedCards{removedCards},
-                                     position{0},
-                                     cards(Global::CARDS)
+    Deck::Deck(int size, ulong removedCards) : removedCards{removedCards},
+                                               position{0},
+                                               cards(cards)
     {
         for (auto i = 0UL; i < cards.size(); i++)
         {

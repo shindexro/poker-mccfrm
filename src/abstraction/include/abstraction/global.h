@@ -13,7 +13,6 @@ using namespace std;
 
 class HandIndexer;
 class Evaluator;
-class Deck;
 
 namespace poker
 {
