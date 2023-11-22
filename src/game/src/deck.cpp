@@ -20,7 +20,7 @@ namespace poker
 
     void Deck::Shuffle()
     {
-        random_shuffle(cards.begin() + position, cards.end());
+        std::random_shuffle(cards.begin() + position, cards.end());
     }
 
     ulong Deck::Draw(int count)

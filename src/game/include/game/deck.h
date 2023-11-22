@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <string>
 
+typedef unsigned long ulong;
+
 using namespace std;
 namespace poker
 {
