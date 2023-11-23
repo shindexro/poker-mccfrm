@@ -54,3 +54,14 @@ TEST(HandStrengthTest, HandStrengthComparison)
 
     EXPECT_THAT(handsCopy, ElementsAreArray(hands));
 }
+
+TEST(HandStrengthTest, SameRankStraightsHaveEqualStrength)
+{
+    vector<string> cards1{"9s", "Ks", "Qs", "Jc", "Ts"};
+    vector<string> cards2{"9s", "Kh", "Qs", "Jh", "Ts"};
+
+    auto straight1 = Hand(cards1);
+    auto straight2 = Hand(cards2);
+
+    EXPECT_EQ(straight1.GetStrength(), straight2.GetStrength());
+}
