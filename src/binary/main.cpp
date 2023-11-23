@@ -26,6 +26,12 @@ namespace poker
 
             CreateIndexers();
             Global::handEvaluator.Initialise();
+
+            while (true)
+            {
+                StartGame();
+            }
+
             CalculateInformationAbstraction();
             Train();
         }
@@ -204,11 +210,6 @@ namespace poker
 int main()
 {
     poker::Program program;
-
-    while (true)
-    {
-        program.StartGame();
-    }
 
     program.Main();
 
