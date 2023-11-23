@@ -46,8 +46,6 @@ namespace poker
 
         void LoadFromFile(string &filename);
         void GenerateFiveCardTable();
-        void GenerateSixCardTable();
-        void GenerateSevenCardTable();
         void GenerateHandValueTable(int comboSize);
         void GenerateMonteCarloMap(int iterations);
     };
