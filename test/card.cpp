@@ -2,6 +2,8 @@
 
 #include "game/card.h"
 
+using namespace poker;
+
 TEST(CardTest, CreateCardWithCString)
 {
     Card card("5s");

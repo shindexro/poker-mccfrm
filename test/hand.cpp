@@ -4,6 +4,7 @@
 #include "game/hand.h"
 
 using namespace testing;
+using namespace poker;
 
 TEST(HandTest, CreateEmptyHand)
 {

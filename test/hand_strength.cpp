@@ -5,6 +5,7 @@
 #include "game/hand_strength.h"
 
 using namespace testing;
+using namespace poker;
 
 TEST(HandStrengthTest, HandStrengthComparison)
 {

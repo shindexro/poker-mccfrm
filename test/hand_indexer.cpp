@@ -5,6 +5,7 @@
 #include "tables/hand_indexer.h"
 
 using namespace testing;
+using namespace poker;
 
 class HandIndexerTest : public Test
 {
