@@ -23,7 +23,7 @@ protected:
     }
 
     static bool handIndexerInitialised;
-    HandIndexer handIndexer;
+    poker::HandIndexer handIndexer;
 };
 
 bool HandIndexerTest::handIndexerInitialised = false;
