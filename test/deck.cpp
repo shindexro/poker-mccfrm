@@ -25,7 +25,7 @@ TEST(DeckTest, RemovedCardsNotInDeck)
     ulong allCardsBitmap = (1ul << totalCards) - 1;
     ulong removedCards = 0b01001;
     ulong remainingCards = allCardsBitmap & ~removedCards;
-    Deck deck = Deck(removedCards);
+    Deck deck = Deck(totalCards, removedCards);
 
     EXPECT_EQ(deck.Draw(totalCards - 2), remainingCards);
 }
