@@ -32,7 +32,7 @@ TEST(DeckTest, RemovedCardsNotInDeck)
 
 TEST(DeckTest, FewerCardsInDeckAfterEachDraw)
 {
-    int totalCards = Global::CARDS;
+    int totalCards = 20;
     Deck deck = Deck(totalCards);
 
     deck.Draw(1);
