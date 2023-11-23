@@ -7,7 +7,8 @@
 inline int randint(int low, int high)
 {
     static std::random_device dev;
-    static std::mt19937 rng(dev());
+    static std::seed_seq seed{dev(), dev(), dev(), dev()};
+    static std::mt19937 rng(seed);
     std::uniform_int_distribution<std::mt19937::result_type> distribution(low, high - 1);
     return distribution(rng);
 }
