@@ -10,6 +10,7 @@ add_executable(
   deck.cpp
   hand_indexer.cpp
   state.cpp
+  evaluator.cpp
 )
 
 target_link_libraries(
