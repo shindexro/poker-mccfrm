@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <random>
 
 #include "game/card.h"
 
@@ -38,4 +40,32 @@ TEST(CardTest, CardInequality)
     Card card1("Ad");
     Card card2("Ah");
     EXPECT_NE(card1, card2);
+}
+
+TEST(CardTest, CardOrderByRank)
+{
+    auto cards = std::vector<Card>({
+        Card("2s"),
+        Card("3s"),
+        Card("4s"),
+        Card("5s"),
+        Card("6s"),
+        Card("7s"),
+        Card("8s"),
+        Card("9s"),
+        Card("Ts"),
+        Card("Js"),
+        Card("Qs"),
+        Card("Ks"),
+        Card("As"),
+    });
+    vector<Card> cardsCopy(cards);
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+    shuffle(cardsCopy.begin(), cardsCopy.end(), g);
+
+    sort(cardsCopy.begin(), cardsCopy.end());
+
+    EXPECT_THAT(cardsCopy, ElementsAreArray(cards));
 }
