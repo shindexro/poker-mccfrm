@@ -27,10 +27,10 @@ namespace poker
             CreateIndexers();
             Global::handEvaluator.Initialise();
 
-            while (true)
-            {
-                StartGame();
-            }
+            // while (true)
+            // {
+            //     StartGame();
+            // }
 
             CalculateInformationAbstraction();
             Train();
