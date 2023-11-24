@@ -11,7 +11,6 @@ class EvaluatorTest : public Test
 protected:
     static void SetUpTestSuite()
     {
-        evaluator = poker::Evaluator();
         evaluator.Initialise();
     }
 
