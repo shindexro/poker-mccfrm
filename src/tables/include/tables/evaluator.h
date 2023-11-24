@@ -27,6 +27,8 @@
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/list.hpp>
 
+typedef unsigned int uint;
+
 using namespace std;
 
 namespace poker
