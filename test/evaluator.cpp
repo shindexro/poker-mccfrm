@@ -23,6 +23,8 @@ protected:
     static poker::Evaluator evaluator;
 };
 
+bool EvaluatorTest::initialised = false;
+
 TEST_F(EvaluatorTest, SameHandsHaveSameEvaluation)
 {
     auto eval1 = evaluator.Evaluate(0b1111100);
