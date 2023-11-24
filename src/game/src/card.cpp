@@ -217,10 +217,10 @@ namespace poker
 
     bool Card::operator<(const Card &rhs) const
     {
-        if (rank < rhs.rank)
-            return true;
-        if (suit < rhs.suit)
-            return true;
+        if (rank != rhs.rank)
+            return rank < rhs.rank;
+        if (suit != rhs.suit)
+            return suit < rhs.suit;
         return false;
     }
 } // namespace poker
