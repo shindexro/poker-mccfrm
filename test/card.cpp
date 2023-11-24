@@ -73,6 +73,6 @@ TEST(CardTest, CardOrderByRank)
 
 TEST(CardTest, CardOrder)
 {
-    EXPECT_LT(Card("2c"), Card("3d"));
-    EXPECT_GT(Card("3d"), Card("2c"));
+    EXPECT_TRUE(Card("2c") < Card("3d"));
+    EXPECT_FALSE(Card("3d") < Card("2c"));
 }
