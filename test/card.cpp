@@ -70,3 +70,8 @@ TEST(CardTest, CardOrderByRank)
 
     EXPECT_THAT(cardsCopy, ElementsAreArray(cards));
 }
+
+TEST(CardTest, CardOrderByRankSimple)
+{
+    EXPECT_LT(Card("2c"), Card("3d"));
+}
