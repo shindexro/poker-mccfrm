@@ -5,6 +5,8 @@
 #include "enums/action.h"
 #include "algorithm/player.h"
 
+#include <stdexcept>
+
 namespace poker
 {
     class AIPlayer : public Player
