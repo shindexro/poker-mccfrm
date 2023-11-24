@@ -4,6 +4,7 @@
 
 #include "game/card.h"
 
+using namespace testing;
 using namespace poker;
 
 TEST(CardTest, CreateCardWithCString)
