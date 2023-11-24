@@ -14,7 +14,6 @@ protected:
         if (initialised)
             return;
 
-        evaluator = poker::Evaluator();
         evaluator.Initialise();
         initialised = true;
     }
@@ -24,6 +23,7 @@ protected:
 };
 
 bool EvaluatorTest::initialised = false;
+poker::Evaluator evaluator = poker::Evaluator();
 
 TEST_F(EvaluatorTest, SameHandsHaveSameEvaluation)
 {
