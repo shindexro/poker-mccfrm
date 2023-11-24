@@ -17,7 +17,7 @@ protected:
     static poker::Evaluator evaluator;
 };
 
-poker::Evaluator evaluator = poker::Evaluator();
+poker::Evaluator EvaluatorTest::evaluator = poker::Evaluator();
 
 TEST_F(EvaluatorTest, SameHandsHaveSameEvaluation)
 {
