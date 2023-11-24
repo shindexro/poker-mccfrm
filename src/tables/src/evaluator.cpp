@@ -115,7 +115,7 @@ namespace poker
         for (auto [bitmap, strength] : handStrengths)
         {
             auto insert_it = lower_bound(uniqueHandStrengths.begin(), uniqueHandStrengths.end(), strength);
-            if (insert_it == uniqueHandStrengths.end() || insert_it->Compare(strength) != 0)
+            if (insert_it == uniqueHandStrengths.end() || *insert_it != strength)
             {
                 uniqueHandStrengths.insert(insert_it, strength);
             }
