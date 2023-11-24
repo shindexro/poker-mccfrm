@@ -41,12 +41,12 @@ namespace poker
         }
 
         // sort cards by (rank, suit) from high to low
-        sort(cards.begin(), cards.end());
-        reverse(cards.begin(), cards.end());
+        std::sort(cards.begin(), cards.end());
+        std::reverse(cards.begin(), cards.end());
 
-        int rankProduct = accumulate(cards.begin(), cards.end(), 1, [](int acc, Card &c)
+        int rankProduct = std::accumulate(cards.begin(), cards.end(), 1, [](int acc, Card &c)
                                      { return acc * c.PrimeRank(); });
-        int suitProduct = accumulate(cards.begin(), cards.end(), 1, [](int acc, Card &c)
+        int suitProduct = std::accumulate(cards.begin(), cards.end(), 1, [](int acc, Card &c)
                                      { return acc * c.PrimeSuit(); });
 
         bool straight =
