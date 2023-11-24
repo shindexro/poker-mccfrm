@@ -9,21 +9,16 @@ using namespace poker;
 class EvaluatorTest : public Test
 {
 protected:
-    void SetUp() override
+    static void SetUpTestSuite()
     {
-        if (initialised)
-            return;
-
         evaluator = poker::Evaluator();
         evaluator.Initialise();
-        initialised = true;
     }
 
-    static bool initialised;
-    poker::Evaluator evaluator;
+    static poker::Evaluator evaluator;
 };
 
-bool EvaluatorTest::initialised = false;
+poker::Evaluator evaluator = poker::Evaluator();
 
 TEST_F(EvaluatorTest, SameHandsHaveSameEvaluation)
 {
