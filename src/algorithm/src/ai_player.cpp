@@ -26,7 +26,10 @@ namespace poker
         {
             // use real-time search
             auto trainer = Trainer(0);
-            trainer.TraverseMCCFR(state, id, false);
+            for (int i = 0; i < 10000; i++)
+            {
+                trainer.TraverseMCCFR(state, id, false);
+            }
 
             auto sigma = infoset.CalculateStrategy();
             auto actionIdx = utils::SampleDistribution(sigma);
