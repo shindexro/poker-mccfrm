@@ -49,7 +49,6 @@ namespace poker
         virtual bool IsPlayerInHand(int /*traverser*/) { throw invalid_argument("Not implemented"); };
 
         virtual Infoset GetInfoset() { throw invalid_argument("Not implemented"); };
-        virtual Infoset GetInfosetSecondary() { throw invalid_argument("Not implemented"); };
         virtual void UpdateInfoset(Infoset & /*infoset*/) { throw invalid_argument("Not implemented"); };
 
         virtual bool IsPlayerTurn(int /*traverser*/) { throw invalid_argument("Not implemented"); };
