@@ -4,6 +4,7 @@
 #include "abstraction/state.h"
 #include "enums/action.h"
 #include "algorithm/player.h"
+#include "utils/random.h"
 
 #include <stdexcept>
 
