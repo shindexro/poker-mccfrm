@@ -219,6 +219,8 @@ namespace poker
     {
         if (rank != rhs.rank)
             return rank < rhs.rank;
+        if (suit != rhs.suit)
+            return suit < rhs.suit;
         return false;
     }
 } // namespace poker
