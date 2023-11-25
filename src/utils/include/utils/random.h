@@ -16,10 +16,10 @@ inline int randint(int low, int high)
 
 inline double randDouble()
 {
-    double lower_bound = 0;
-    double upper_bound = 1;
+    static const double lower_bound = 0;
+    static const double upper_bound = 1;
+    static std::default_random_engine re;
     std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
-    std::default_random_engine re;
     double ret = unif(re);
     std::cout << ret << std::endl;
     return ret;
