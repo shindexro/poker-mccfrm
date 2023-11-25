@@ -19,7 +19,9 @@ inline double randDouble()
     double upper_bound = 1;
     std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
     std::default_random_engine re;
-    return unif(re);
+    double ret = unif(re);
+    std::cout << ret << std::endl;
+    return ret
 }
 
 #endif
