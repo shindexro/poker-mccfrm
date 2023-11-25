@@ -21,7 +21,7 @@ inline double randDouble()
     std::default_random_engine re;
     double ret = unif(re);
     std::cout << ret << std::endl;
-    return ret
+    return ret;
 }
 
 #endif
