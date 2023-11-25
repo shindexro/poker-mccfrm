@@ -21,13 +21,13 @@ namespace poker
     public:
         inline static const int NOF_THREADS = 4;
         static vector<float> raiseRatios;
-        inline static const int buyIn = 200;
+        inline static const int buyIn = 10000;
         inline static const int nofPlayers = 2;
         inline static const int C = -300000000;
         inline static const int regretFloor = -310000000;
 
-        inline static const int BB = 2;
-        inline static const int SB = 1;
+        inline static const int BB = 100;
+        inline static const int SB = 50;
 
         inline static const int RANKS = 5;
         inline static const int SUITS = 4;
