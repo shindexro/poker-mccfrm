@@ -27,6 +27,8 @@ namespace poker
             CreateIndexers();
             Global::handEvaluator.Initialise();
 
+            LoadFromFile();
+
             // while (true)
             // {
             //     StartGame();
@@ -113,8 +115,6 @@ namespace poker
             long testGamesInterval = 1000000 / Global::NOF_THREADS;
 
             atomic<long> sharedLoopCounter = 0;
-
-            LoadFromFile();
 
             Trainer trainer = Trainer(0);
             trainer.EnumerateActionSpace();
