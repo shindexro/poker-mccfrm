@@ -2,6 +2,7 @@
 #define __RANDOM_H__
 
 #include <random>
+#include <iostream>
 
 // random integer in range [low, high)
 inline int randint(int low, int high)
