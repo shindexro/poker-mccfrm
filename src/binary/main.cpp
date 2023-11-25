@@ -26,7 +26,7 @@ namespace poker
 
             CreateIndexers();
             Global::handEvaluator.Initialise();
-
+            CalculateInformationAbstraction();
             LoadFromFile();
 
             while (true)
@@ -34,7 +34,6 @@ namespace poker
                 StartGame();
             }
 
-            CalculateInformationAbstraction();
             Train();
         }
 
