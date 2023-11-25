@@ -186,8 +186,8 @@ void Trainer::PrintStartingHandsChart()
         {
             auto ps = gs[j];
             Infoset infoset = ps->GetInfoset();
-            // auto sigma = infoset.CalculateStrategy();
-            auto phi = infoset.GetFinalStrategy();
+            auto sigma = infoset.CalculateStrategy();
+            // auto phi = infoset.GetFinalStrategy();  // ain't got time to wait for convergence during tests
 
             if (j % Global::RANKS == 0 && j + 1 < gs.size())
             {
@@ -205,16 +205,16 @@ void Trainer::PrintStartingHandsChart()
                     std::cout << "A ";
             }
 
-            if (phi[i] <= 0.25)
+            if (sigma[i] <= 0.25)
                 std::cout << "\033[1;31m";
-            else if (phi[i] <= 0.5)
+            else if (sigma[i] <= 0.5)
                 std::cout << "\033[1;32m";
-            else if (phi[i] <= 0.75)
+            else if (sigma[i] <= 0.75)
                 std::cout << "\033[1;33m";
-            else if (phi[i] <= 1.0)
+            else if (sigma[i] <= 1.0)
                 std::cout << "\033[1;34m";
 
-            std::cout << fixed << setprecision(2) << phi[i] << " ";
+            std::cout << fixed << setprecision(2) << sigma[i] << " ";
             std::cout << "\033[0m";
 
             if ((j + 1) % Global::RANKS == 0)
