@@ -6,16 +6,16 @@ namespace poker
     {
     }
 
-    Action AIPlayer::NextAction(PlayState &state)
+    Action AIPlayer::NextAction(shared_ptr<PlayState> state)
     {
-        auto validActions = state.GetValidActions();
+        auto validActions = state->GetValidActions();
         if (!validActions.size())
         {
             throw invalid_argument("There are no valid actions.");
         }
 
-        auto infoset = state.GetInfoset();
-        if (state.BettingRound() == BettingRound::Preflop)
+        auto infoset = state->GetInfoset();
+        if (state->BettingRound() == BettingRound::Preflop)
         {
             // use average strategy
             auto phi = infoset.GetFinalStrategy();
@@ -24,7 +24,10 @@ namespace poker
         }
         else
         {
-            /// TODO: use real-time search
+            // use real-time search
+            auto trainer = Trainer(0);
+            trainer.TraverseMCCFR(state, id, false);
+
             auto sigma = infoset.CalculateStrategy();
             auto actionIdx = utils::SampleDistribution(sigma);
             return validActions[actionIdx];

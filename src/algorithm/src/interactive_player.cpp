@@ -6,9 +6,9 @@ namespace poker
     {
     }
 
-    Action InteractivePlayer::NextAction(PlayState &state)
+    Action InteractivePlayer::NextAction(shared_ptr<PlayState> state)
     {
-        auto validActions = state.GetValidActions();
+        auto validActions = state->GetValidActions();
 
         std::cout << "Choose an action: " << std::endl;
         for (auto i = 0UL; i < validActions.size(); i++)

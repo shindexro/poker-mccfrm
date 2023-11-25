@@ -16,7 +16,7 @@ namespace poker
         Player(int id, int stack);
 
         // the whole state is passed for simlicity but a player should not access other player's hand
-        virtual Action NextAction(PlayState &/*state*/) { throw invalid_argument("Not implemented"); };
+        virtual Action NextAction(shared_ptr<PlayState> /*state*/) { throw invalid_argument("Not implemented"); };
     };
 } // namespace poker
 

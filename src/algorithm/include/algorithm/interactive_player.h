@@ -12,7 +12,7 @@ namespace poker
     public:
         InteractivePlayer(int id, int stack);
 
-        Action NextAction(PlayState &state) override;
+        Action NextAction(shared_ptr<PlayState> state) override;
     };
 } // namespace poker
 

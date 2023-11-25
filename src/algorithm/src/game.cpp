@@ -15,11 +15,11 @@ namespace poker
             {
                 state = state->DoRandomAction();
             }
-            else if (auto playState = dynamic_cast<PlayState *>(state.get()))
+            else if (dynamic_cast<PlayState *>(state.get()))
             {
                 state->CreateChildren();
                 auto playerToMove = state->community.playerToMove;
-                auto action = players[playerToMove]->NextAction(*playState);
+                auto action = players[playerToMove]->NextAction(std::dynamic_pointer_cast<PlayState>(state));
 
                 std::cout << "Player " << playerToMove << " " << action << std::endl;
 

@@ -4,6 +4,7 @@
 #include "abstraction/state.h"
 #include "enums/action.h"
 #include "algorithm/player.h"
+#include "algorithm/trainer.h"
 #include "utils/random.h"
 
 #include <stdexcept>
@@ -15,7 +16,7 @@ namespace poker
     public:
         AIPlayer(int id, int stack);
 
-        Action NextAction(PlayState &state) override;
+        Action NextAction(shared_ptr<PlayState> state) override;
     };
 } // namespace poker
 
