@@ -29,14 +29,18 @@ namespace poker
         auto abstractActions = state->GetValidActions();
         auto abstractBets = state->GetBetSizes();
 
-        auto endIt = (abstractActions.back() == Action::Fold) ? --abstractBets.end() : abstractBets.end();
+        if (abstractActions.back() == Action::Fold)
+        {
+            abstractActions.pop_back();
+            abstractBets.pop_back();
+        }
 
-        if (!(abstractBets[0] <= actualBet && actualBet <= *endIt))
+        if (!(abstractBets[0] <= actualBet && actualBet <= abstractBets.back()))
         {
             throw invalid_argument("Bet size not in allowed range.");
         }
 
-        auto it = lower_bound(abstractBets.begin(), endIt, actualBet);
+        auto it = lower_bound(abstractBets.begin(), abstractBets.end(), actualBet);
         auto idx = it - abstractBets.begin();
         if (*it == actualBet)
         {
