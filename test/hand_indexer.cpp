@@ -10,23 +10,17 @@ using namespace poker;
 class HandIndexerTest : public Test
 {
 protected:
-    void SetUp() override
+    static void SetUpTestSuite()
     {
-        if (!handIndexerInitialised)
-        {
-            handIndexer.Initialise();
-            handIndexerInitialised = true;
-        }
-
+        handIndexer.Initialise();
         vector<int> cardsPerRound{1, 2};
         handIndexer.Construct(cardsPerRound);
     }
 
-    static bool handIndexerInitialised;
-    poker::HandIndexer handIndexer;
+    static poker::HandIndexer handIndexer;
 };
 
-bool HandIndexerTest::handIndexerInitialised = false;
+poker::HandIndexer HandIndexerTest::handIndexer = poker::HandIndexer();
 
 // TODO: try fuzz test for isomorphic hands
 TEST_F(HandIndexerTest, IsomorphicHandsHaveSameIndex)

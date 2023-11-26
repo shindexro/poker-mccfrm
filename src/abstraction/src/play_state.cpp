@@ -248,7 +248,7 @@ namespace poker
         }
         else
         {
-            /// TODO: this doesn't consider players >=2, which varying initial stacks in particular
+            /// TODO: this doesn't consider players >=2, with varying initial stacks in particular
             nextState->community.isBettingOpen = false;
         }
 
