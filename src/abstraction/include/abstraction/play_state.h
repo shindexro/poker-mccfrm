@@ -22,6 +22,7 @@ namespace poker
         void CreateChildren();
         int GetValidActionsCount();
 
+        // Require actions to be in increasing order of bet size, and fold at the end (if legal)
         vector<Action> GetValidActions();
         vector<int> GetBetSizes();
 
@@ -30,7 +31,7 @@ namespace poker
         Infoset GetInfoset();
         void UpdateInfoset(Infoset &infoset);
 
-        ostream& Print(ostream &out) const override;
+        ostream &Print(ostream &out) const override;
 
     private:
         void CreateCallChildren();
