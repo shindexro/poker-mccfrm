@@ -40,6 +40,6 @@ namespace poker
         {
             out << kicker;
         }
-        return out
+        return out;
     }
 } // namespace poker
