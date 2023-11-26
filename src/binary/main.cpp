@@ -29,10 +29,10 @@ namespace poker
             CalculateInformationAbstraction();
             LoadFromFile();
 
-            while (true)
-            {
-                StartGame();
-            }
+            // while (true)
+            // {
+            //     StartGame();
+            // }
 
             Train();
         }
