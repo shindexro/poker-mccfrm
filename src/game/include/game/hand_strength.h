@@ -3,6 +3,7 @@
 
 #include "game/hand.h"
 #include "enums/hand_ranking.h"
+#include "enums/rank.h"
 #include <vector>
 #include <string>
 
