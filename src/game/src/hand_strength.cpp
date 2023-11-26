@@ -32,4 +32,14 @@ namespace poker
     {
         return this->Compare(rhs) == 0;
     }
+
+    ostream &operator<<(ostream &out, const HandStrength &strength)
+    {
+        out << strength.handRanking << " ";
+        for (auto kicker : strength.kickers)
+        {
+            out << kicker;
+        }
+        return out
+    }
 } // namespace poker

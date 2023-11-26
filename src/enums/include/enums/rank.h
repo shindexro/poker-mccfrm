@@ -1,9 +1,12 @@
 #ifndef __ENUM_RANK_H__
 #define __ENUM_RANK_H__
 
+#include <ostream>
+#include <string>
+
 namespace poker
 {
-    enum class Rank
+    enum Rank
     {
         Two,
         Three,
@@ -19,6 +22,8 @@ namespace poker
         King,
         Ace,
     };
+
+    std::ostream &operator<<(std::ostream &out, const Rank &value);
 } // namespace poker
 
 #endif

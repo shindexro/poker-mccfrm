@@ -21,6 +21,8 @@ namespace poker
         int Compare(const HandStrength &other) const;
         bool operator<(const HandStrength &rhs) const;
         bool operator==(const HandStrength &rhs) const;
+
+        friend ostream &operator<<(ostream &out, const HandStrength &strength);
     };
 } // namespace poker
 
