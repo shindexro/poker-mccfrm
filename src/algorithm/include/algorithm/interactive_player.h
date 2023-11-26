@@ -4,6 +4,9 @@
 #include "abstraction/state.h"
 #include "enums/action.h"
 #include "algorithm/player.h"
+#include "utils/random.h"
+
+#include <stdexcept>
 
 namespace poker
 {
@@ -13,6 +16,9 @@ namespace poker
         InteractivePlayer(int id, int stack);
 
         Action NextAction(shared_ptr<PlayState> state) override;
+
+    private:
+        Action TranslateAction(shared_ptr<PlayState> state, int actualBet);
     };
 } // namespace poker
 

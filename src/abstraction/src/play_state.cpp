@@ -22,10 +22,24 @@ namespace poker
     {
         auto validActions = vector<Action>();
         CreateChildren();
-        for (auto child : children) {
+        for (auto child : children)
+        {
             validActions.push_back(child->history.back());
         }
         return validActions;
+    }
+
+    vector<int> PlayState::GetBetSizes()
+    {
+        auto validBets = vector<int>();
+        CreateChildren();
+        for (auto child : children)
+        {
+            auto newStack = child->players[community.playerToMove].stack;
+            auto curStack = players[community.playerToMove].stack;
+            validBets.push_back(curStack - newStack);
+        }
+        return validBets;
     }
 
     bool PlayState::IsPlayerTurn(int player)

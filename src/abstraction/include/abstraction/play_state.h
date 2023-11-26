@@ -23,6 +23,7 @@ namespace poker
         int GetValidActionsCount();
 
         vector<Action> GetValidActions();
+        vector<int> GetBetSizes();
 
         bool IsPlayerTurn(int player);
         bool IsPlayerInHand(int player);
