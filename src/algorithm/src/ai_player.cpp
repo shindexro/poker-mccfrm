@@ -28,6 +28,7 @@ namespace poker
             auto trainer = Trainer(0);
             for (int i = 0; i < 10000; i++)
             {
+                /// TODO: change search root to beginning of round
                 trainer.TraverseMCCFR(state, id, false);
             }
 
