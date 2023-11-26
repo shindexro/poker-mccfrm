@@ -248,7 +248,7 @@ namespace poker
         }
         else
         {
-            //// TODO: this doesn't consider players >=2
+            /// TODO: this doesn't consider players >=2, which varying initial stacks in particular
             nextState->community.isBettingOpen = false;
         }
 
@@ -280,6 +280,7 @@ namespace poker
         nextState->players[community.playerToMove].isStillInGame = false;
 
         int nextPlayer = NextActivePlayer();
+        nextState->community.playerToMove = nextPlayer;
 
         if (nextState->GetNumberOfActivePlayers() == 1)
         {
