@@ -173,6 +173,15 @@ namespace poker
         return strength;
     }
 
+    ulong Hand::Bitmap()
+    {
+        ulong bitmap = 0;
+        for (auto card : cards) {
+            bitmap |= card.Bitmask();
+        }
+        return bitmap;
+    }
+
     void Hand::PrintColoredCards(const string &end)
     {
         for (auto i = 0UL; i < cards.size(); i++)

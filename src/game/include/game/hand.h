@@ -28,6 +28,7 @@ namespace poker
         Hand(vector<string> &cards);
 
         HandStrength GetStrength();
+        ulong Bitmap();
         void PrintColoredCards(const string &end = string(""));
         string ToString();
 
