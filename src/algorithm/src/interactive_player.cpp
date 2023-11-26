@@ -14,6 +14,11 @@ namespace poker
         int bet;
         std::cin >> bet;
 
+        if (bet == -1)
+        {
+            return Action::Fold;
+        }
+
         auto action = TranslateAction(state, bet);
         std::cout << "Mapped to abstraction as " << action << std::endl;
         return action;
