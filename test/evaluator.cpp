@@ -41,8 +41,11 @@ TEST_F(EvaluatorTest, SevenCardsFullHouse)
     // auto cards2 = vector<string>({"2d", "4h", "5h", "3c", "4s", "2c", "4c"}); // full house 4,2
     auto cards2 = vector<string>({"2d", "4h", "5h", "3c", "4s", "5c", "4s"});
 
-    auto eval1 = evaluator.Evaluate(Hand(cards1).Bitmap());
-    auto eval2 = evaluator.Evaluate(Hand(cards2).Bitmap());
+    auto hand1 = Hand(cards1);
+    auto hand2 = Hand(cards2);
+
+    auto eval1 = evaluator.Evaluate(hand1.Bitmap());
+    auto eval2 = evaluator.Evaluate(hand2.Bitmap());
 
     EXPECT_GT(eval1, eval2);
 }
