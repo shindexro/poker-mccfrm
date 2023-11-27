@@ -23,6 +23,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
+add_subdirectory(include/fuzztest)
 add_subdirectory(src)
 add_subdirectory(test)
-add_subdirectory(include/fuzztest)
