@@ -2,6 +2,8 @@ project(test)
 
 enable_testing()
 
+include(GoogleTest)
+
 add_executable(
   test
   card.cpp
@@ -22,5 +24,5 @@ target_link_libraries(
   sub::tables
 )
 
-include(GoogleTest)
+link_fuzztest(test)
 gtest_discover_tests(test PROPERTIES DISCOVERY_TIMEOUT 60)
