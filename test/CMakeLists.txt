@@ -17,6 +17,7 @@ add_executable(
 
 target_link_libraries(
   test
+  PRIVATE
   GTest::gtest_main
   GTest::gmock_main
   sub::game
