@@ -32,3 +32,17 @@ TEST_F(HandIndexerTest, IsomorphicHandsHaveSameIndex)
 
     EXPECT_EQ(handIndex1, handIndex2);
 }
+
+auto AnyHand()
+{
+    return UniqueElementsVectorOf(InRange(0, 20)).WithMinSize(2).WithMaxSize(2);
+}
+
+auto AnyIsomorphicHands()
+{
+    auto valid_index_paired_with_string = [](const vector<int> &hand)
+    {
+        return PairOf(Just(hand), Just(hand));
+    };
+    return FlatMap(valid_index_paired_with_string, AnyHand());
+}
