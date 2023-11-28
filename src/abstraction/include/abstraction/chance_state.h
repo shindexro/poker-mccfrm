@@ -21,7 +21,7 @@ namespace poker
         ChanceState();
         ChanceState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
-        void CreateChildren();
+        void CreateChildren() override;
 
         shared_ptr<State> DoRandomAction() override;
 
