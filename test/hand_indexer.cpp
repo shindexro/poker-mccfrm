@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <fuzztest/fuzztest.h>
 #include <random>
 
 #include "tables/hand_indexer.h"
