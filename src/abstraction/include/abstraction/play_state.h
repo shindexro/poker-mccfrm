@@ -19,17 +19,17 @@ namespace poker
         PlayState();
         PlayState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
-        void CreateChildren();
+        void CreateChildren() override;
         int GetValidActionsCount();
 
         // Require actions to be in increasing order of bet size, and fold at the end (if legal)
         vector<Action> GetValidActions();
         vector<int> GetBetSizes();
 
-        bool IsPlayerTurn(int player);
-        bool IsPlayerInHand(int player);
-        Infoset GetInfoset();
-        void UpdateInfoset(Infoset &infoset);
+        bool IsPlayerTurn(int player) override;
+        bool IsPlayerInHand(int player) override;
+        Infoset GetInfoset() override;
+        void UpdateInfoset(Infoset &infoset) override;
 
         ostream &Print(ostream &out) const override;
 

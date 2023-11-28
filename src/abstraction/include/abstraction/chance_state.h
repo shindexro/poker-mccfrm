@@ -23,11 +23,11 @@ namespace poker
 
         void CreateChildren();
 
-        shared_ptr<State> DoRandomAction();
+        shared_ptr<State> DoRandomAction() override;
 
         vector<shared_ptr<PlayState>> GetFirstActionStates();
 
-        bool IsPlayerInHand(int player);
+        bool IsPlayerInHand(int player) override;
 
         ostream &Print(ostream &out) const override;
 

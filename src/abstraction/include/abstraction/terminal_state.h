@@ -15,7 +15,7 @@ namespace poker
         TerminalState();
         TerminalState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
 
-        float GetReward(int player);
+        float GetReward(int player) override;
         void CreateChildren() override;
 
         ostream& Print(ostream &out) const override;
