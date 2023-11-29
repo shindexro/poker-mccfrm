@@ -48,3 +48,8 @@ auto AnyIsomorphicHands()
     };
     return FlatMap(valid_index_paired_with_string, AnyHand());
 }
+
+void FoobarFunction(int n) {
+  return n;
+}
+FUZZ_TEST(FoobarTest, FoobarFunction);
