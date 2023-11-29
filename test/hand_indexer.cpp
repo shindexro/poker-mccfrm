@@ -50,6 +50,6 @@ auto AnyIsomorphicHands()
 }
 
 void FoobarFunction(int n) {
-  return n;
+  int a = n + n;
 }
 FUZZ_TEST(FoobarTest, FoobarFunction);
