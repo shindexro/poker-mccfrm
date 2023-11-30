@@ -51,5 +51,6 @@ auto AnyIsomorphicHands()
 
 void FoobarFunction(int n) {
   int a = n + n;
+  EXPECT_EQ(a, 2 * n);
 }
 FUZZ_TEST(FoobarTest, FoobarFunction);
