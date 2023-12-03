@@ -4,6 +4,8 @@ enable_testing()
 
 include(GoogleTest)
 
+fuzztest_setup_fuzzing_flags()
+
 add_executable(
   test
   card.cpp

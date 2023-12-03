@@ -11,10 +11,14 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-g --coverage -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -UNDEBUG -fsanitize-coverage=inline-8bit-counters -fsanitize-coverage=trace-cmp")
 
-set(Boost_INCLUDE_DIR /usr/local/boost_1_83_0)
+add_subdirectory(include/fuzztest)
+add_subdirectory(src)
+add_subdirectory(test)
+
+set(Boost_INCLUDE_DIR /usr/include/boost)
 set(Boost_NO_WARN_NEW_VERSIONS 1)
 
-set(TBB_DIR "/usr/local/onetbb/lib/cmake/TBB")
+set(TBB_DIR "/opt/intel/oneapi/tbb/latest/lib/cmake/tbb")
 
 include(FetchContent)
 FetchContent_Declare(
@@ -23,6 +27,3 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-add_subdirectory(include/fuzztest)
-add_subdirectory(src)
-add_subdirectory(test)

@@ -4,6 +4,7 @@
 #include "utils/random.h"
 #include "enums/betting_round.h"
 
+#include <algorithm>
 #include <stdexcept>
 #include <string>
 
