@@ -37,8 +37,7 @@ TEST_F(EvaluatorTest, HandsWithSameStrengthHaveSameEvaluation)
 
 TEST_F(EvaluatorTest, SevenCardsFullHouse)
 {
-    auto cards1 = vector<string>({"2d", "4h", "5h", "3c", "4s", "4s", "5c"}); // full house 4,5
-    // auto cards2 = vector<string>({"2d", "4h", "5h", "3c", "4s", "2c", "4c"}); // full house 4,2
+    auto cards1 = vector<string>({"2d", "4h", "5h", "3c", "4s", "4s", "5c"});
     auto cards2 = vector<string>({"2d", "4h", "5h", "3c", "4s", "5c", "4s"});
 
     auto hand1 = Hand(cards1);
@@ -47,5 +46,5 @@ TEST_F(EvaluatorTest, SevenCardsFullHouse)
     auto eval1 = evaluator.Evaluate(hand1.Bitmap());
     auto eval2 = evaluator.Evaluate(hand2.Bitmap());
 
-    EXPECT_GT(eval1, eval2);
+    EXPECT_EQ(eval1, eval2);
 }
