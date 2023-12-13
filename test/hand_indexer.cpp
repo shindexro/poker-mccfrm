@@ -1,12 +1,10 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <fuzztest/fuzztest.h>
 #include <random>
 
 #include "tables/hand_indexer.h"
 
 using namespace testing;
-using namespace fuzztest;
 using namespace poker;
 
 class HandIndexerTest : public Test
@@ -34,23 +32,3 @@ TEST_F(HandIndexerTest, IsomorphicHandsHaveSameIndex)
 
     EXPECT_EQ(handIndex1, handIndex2);
 }
-
-auto AnyHand()
-{
-    return UniqueElementsVectorOf(InRange(0, 20)).WithMinSize(2).WithMaxSize(2);
-}
-
-auto AnyIsomorphicHands()
-{
-    auto valid_index_paired_with_string = [](const vector<int> &hand)
-    {
-        return PairOf(Just(hand), Just(hand));
-    };
-    return FlatMap(valid_index_paired_with_string, AnyHand());
-}
-
-void FoobarFunction(int n) {
-  int a = n + n;
-  EXPECT_EQ(a, 2 * n);
-}
-FUZZ_TEST(FoobarTest, FoobarFunction);
