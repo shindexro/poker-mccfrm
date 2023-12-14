@@ -2,9 +2,7 @@
 #include <gmock/gmock.h>
 
 #include "abstraction/community_info.h"
-#include "abstraction/state.h"
 #include "abstraction/chance_state.h"
-#include "enums/action.h"
 
 using namespace testing;
 using namespace poker;
