@@ -9,9 +9,8 @@ endif()
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-set(CMAKE_CXX_FLAGS_DEBUG "-g --coverage -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -UNDEBUG -fsanitize-coverage=inline-8bit-counters -fsanitize-coverage=trace-cmp")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize-coverage=inline-8bit-counters -fsanitize-coverage=trace-cmp")
 
-add_subdirectory(include/fuzztest)
 add_subdirectory(src)
 add_subdirectory(test)
 
