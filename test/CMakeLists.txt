@@ -11,7 +11,7 @@ add_executable(
   hand_strength.cpp
   deck.cpp
   hand_indexer.cpp
-  state.cpp
+  chance_state.cpp
   evaluator.cpp
 )
 
