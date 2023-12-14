@@ -4,8 +4,6 @@ enable_testing()
 
 include(GoogleTest)
 
-fuzztest_setup_fuzzing_flags()
-
 add_executable(
   test
   card.cpp
@@ -27,5 +25,4 @@ target_link_libraries(
   sub::tables
 )
 
-link_fuzztest(test)
 gtest_discover_tests(test PROPERTIES DISCOVERY_TIMEOUT 60)
