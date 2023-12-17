@@ -12,6 +12,7 @@ add_executable(
   deck.cpp
   hand_indexer.cpp
   chance_state.cpp
+  play_state.cpp
   terminal_state.cpp
   evaluator.cpp
 )
