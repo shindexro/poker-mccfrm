@@ -6,6 +6,7 @@ namespace poker
 {
     TerminalState::TerminalState() : State()
     {
+        evaluator = Global::handEvaluator;
     }
 
     TerminalState::TerminalState(CommunityInfo &community,
@@ -42,7 +43,7 @@ namespace poker
                     continue;
 
                 ulong cardsBitmask = players[i].GetCardBitmask() | community.GetCardBitmask();
-                handValues[i] = Global::handEvaluator.Evaluate(cardsBitmask);
+                handValues[i] = evaluator->Evaluate(cardsBitmask);
             }
             auto playersWithBestHand = vector<int>();
             auto maxHandValue = *max_element(handValues.begin(), handValues.end());

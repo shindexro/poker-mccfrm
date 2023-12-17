@@ -38,7 +38,7 @@ namespace poker
     public:
         void Initialise();
 
-        int Evaluate(ulong bitmap);
+        virtual int Evaluate(ulong bitmap);
         void SaveToFile(string &filename);
 
     private:

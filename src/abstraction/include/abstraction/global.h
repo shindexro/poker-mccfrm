@@ -58,7 +58,7 @@ namespace poker
         static HandIndexer indexer_2_3_1_1;
         static HandIndexer indexer_2_5_2;
 
-        static Evaluator handEvaluator;
+        static shared_ptr<Evaluator> handEvaluator;
 
         static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMap;
         static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMapBaseline;

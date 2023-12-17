@@ -25,7 +25,8 @@ namespace poker
             // state.PrettyPrintTree();
 
             CreateIndexers();
-            Global::handEvaluator.Initialise();
+            Global::handEvaluator = std::make_shared<Evaluator>();
+            Global::handEvaluator->Initialise();
             CalculateInformationAbstraction();
             LoadFromFile();
 

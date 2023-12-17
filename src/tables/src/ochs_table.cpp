@@ -105,8 +105,8 @@ namespace poker
                         ulong handSevenCards = (1uL << cards[0]) + (1uL << cards[1]) + (1uL << cardFlop1) + (1uL << cardFlop2) + (1uL << cardFlop3) + (1uL << cardTurn) + (1uL << cardRiver);
                         ulong handOpponentSevenCards = (1uL << cardFlop1) + (1uL << cardFlop2) + (1uL << cardFlop3) + (1uL << cardTurn) + (1uL << cardRiver) + (1uL << card1Opponent) + (1uL << card2Opponent);
 
-                        int valueSevenCards = Global::handEvaluator.Evaluate(handSevenCards);
-                        int valueOpponentSevenCards = Global::handEvaluator.Evaluate(handOpponentSevenCards);
+                        int valueSevenCards = Global::handEvaluator->Evaluate(handSevenCards);
+                        int valueOpponentSevenCards = Global::handEvaluator->Evaluate(handOpponentSevenCards);
 
                         // strength = histogram with column win, draw, and loss
                         int index = (valueSevenCards > valueOpponentSevenCards ? 0 : valueSevenCards == valueOpponentSevenCards ? 1
@@ -265,8 +265,8 @@ namespace poker
                                                                          +(1uL << cards[5]) + (1uL << cards[6]);
                                                   ulong handOpponentSevenCards = (1uL << card1Opponent) + (1uL << card2Opponent) + (1uL << cards[2]) + (1uL << cards[3]) + (1uL << cards[4]) + (1uL << cards[5]) + (1uL << cards[6]);
 
-                                                  int valueSevenCards = Global::handEvaluator.Evaluate(handSevenCards);
-                                                  int valueOpponentSevenCards = Global::handEvaluator.Evaluate(handOpponentSevenCards);
+                                                  int valueSevenCards = Global::handEvaluator->Evaluate(handSevenCards);
+                                                  int valueOpponentSevenCards = Global::handEvaluator->Evaluate(handOpponentSevenCards);
 
                                                   auto preflop = std::vector<int>({card1Opponent, card2Opponent});
                                                   long indexPreflop = Global::indexer_2.IndexLastRound(preflop);

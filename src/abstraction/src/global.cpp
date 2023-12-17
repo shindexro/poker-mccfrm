@@ -12,7 +12,7 @@ namespace poker
     HandIndexer Global::indexer_2_3_1_1;
     HandIndexer Global::indexer_2_5_2;
 
-    Evaluator Global::handEvaluator;
+    shared_ptr<Evaluator> Global::handEvaluator = make_shared<Evaluator>();
 
     oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMap = oneapi::tbb::concurrent_hash_map<string, Infoset>();
     oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMapBaseline = oneapi::tbb::concurrent_hash_map<string, Infoset>();

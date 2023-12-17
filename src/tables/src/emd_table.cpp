@@ -123,7 +123,7 @@ namespace poker
 
                                           ulong shared = (1uL << cardsTurn[2]) + (1uL << cardsTurn[3]) + (1uL << cardsTurn[4]) + (1uL << cardsTurn[5]);
                                           ulong handTurn = (1uL << cardsTurn[0]) + (1uL << cardsTurn[1]) + shared;
-                                          int valueTurn = Global::handEvaluator.Evaluate(handTurn);
+                                          int valueTurn = Global::handEvaluator->Evaluate(handTurn);
 
                                           for (auto cardRiver = 0; cardRiver < Global::CARDS; cardRiver++)
                                           {
@@ -135,7 +135,7 @@ namespace poker
                                               deadCardMask |= (1L << cardRiver);
 
                                               ulong handRiver = (1uL << cardsTurn[0]) + (1uL << cardsTurn[1]) + shared + (1uL << cardRiver);
-                                              int valueRiver = Global::handEvaluator.Evaluate(handRiver);
+                                              int valueRiver = Global::handEvaluator->Evaluate(handRiver);
 
                                               for (auto card1Opponent = 0; card1Opponent < Global::CARDS - 1; card1Opponent++)
                                               {
@@ -153,8 +153,8 @@ namespace poker
                                                       ulong handOppRiver = (1uL << card1Opponent) + (1uL << card2Opponent) + shared + (1uL << cardRiver);
                                                       ulong handOppTurn = (1uL << card1Opponent) + (1uL << card2Opponent) + shared;
 
-                                                      int valueOppTurn = Global::handEvaluator.Evaluate(handOppTurn);
-                                                      int valueOppRiver = Global::handEvaluator.Evaluate(handOppRiver);
+                                                      int valueOppTurn = Global::handEvaluator->Evaluate(handOppTurn);
+                                                      int valueOppRiver = Global::handEvaluator->Evaluate(handOppRiver);
 
                                                       // index 0 = win, 1 = draw, 2 = loss
                                                       int indexTurn = valueTurn > valueOppTurn ? 0 : valueTurn == valueOppTurn ? 1
@@ -230,7 +230,7 @@ namespace poker
 
                                           ulong handFlop = (1uL << cardsFlop[0]) + (1uL << cardsFlop[1]) + (1uL << cardsFlop[2]) +
                                                            (1uL << cardsFlop[3]) + (1uL << cardsFlop[4]);
-                                          int valueFlop = Global::handEvaluator.Evaluate(handFlop);
+                                          int valueFlop = Global::handEvaluator->Evaluate(handFlop);
 
                                           for (auto cardTurn = 0; cardTurn < Global::CARDS - 1; cardTurn++)
                                           {
@@ -251,7 +251,7 @@ namespace poker
 
                                                   ulong handRiver = (1uL << cardsFlop[0]) + (1uL << cardsFlop[1]) + (1uL << cardsFlop[2]) + (1uL << cardsFlop[3]) +
                                                                     (1uL << cardsFlop[4]) + (1uL << cardTurn) + (1uL << cardRiver);
-                                                  int valueRiver = Global::handEvaluator.Evaluate(handRiver);
+                                                  int valueRiver = Global::handEvaluator->Evaluate(handRiver);
 
                                                   for (auto card1Opponent = 0; card1Opponent < Global::CARDS - 1; card1Opponent++)
                                                   {
@@ -271,8 +271,8 @@ namespace poker
                                                           ulong handOppFlop = (1uL << card1Opponent) + (1uL << card2Opponent) + (1uL << cardsFlop[2]) +
                                                                               (1uL << cardsFlop[3]) + (1uL << cardsFlop[4]);
 
-                                                          int valueOppFlop = Global::handEvaluator.Evaluate(handOppFlop);
-                                                          int valueOppRiver = Global::handEvaluator.Evaluate(handOppRiver);
+                                                          int valueOppFlop = Global::handEvaluator->Evaluate(handOppFlop);
+                                                          int valueOppRiver = Global::handEvaluator->Evaluate(handOppRiver);
 
                                                           // index 0 = win, 1 = draw, 2 = loss
                                                           int indexFlop = valueFlop > valueOppFlop ? 0 : valueFlop == valueOppFlop ? 1

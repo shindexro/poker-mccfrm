@@ -2,6 +2,7 @@
 #define __CLASS_TERMINAL_STATE_H__
 
 #include "abstraction/state.h"
+#include "tables/hand_indexer.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ namespace poker
     {
     public:
         static const string type;
+        shared_ptr<Evaluator> evaluator;
 
         TerminalState();
         TerminalState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
