@@ -14,6 +14,7 @@ namespace poker
                                  vector<Action> &history) : State(community, players, history),
                                                             rewardGenerated{false}
     {
+        evaluator = Global::handEvaluator;
     }
 
     void TerminalState::CreateRewards()
