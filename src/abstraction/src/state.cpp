@@ -56,7 +56,7 @@ namespace poker
         int count = 0;
         for (auto i = 0; i < Global::nofPlayers; i++)
         {
-            if (players[i].isStillInGame == true && players[i].lastAction != Action::Allin)
+            if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
                 count++;
         }
         return count;
