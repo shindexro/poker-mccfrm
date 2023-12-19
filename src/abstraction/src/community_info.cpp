@@ -6,7 +6,6 @@ namespace poker
                                      playerToMove{2 % Global::nofPlayers},
                                      lastPlayer{1},
                                      minRaise{Global::BB},
-                                     isBettingOpen{false},
                                      cards()
     {
     }
@@ -27,7 +26,6 @@ namespace poker
             << "pMove:" << info.playerToMove << " "
             << "pLast:" << info.lastPlayer << " "
             << "minR:" << info.minRaise << " "
-            << "betOK:" << info.isBettingOpen << " "
             << Hand(info.GetCardBitmask()).ToString();
         return out;
     }

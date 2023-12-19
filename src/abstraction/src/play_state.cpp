@@ -173,9 +173,6 @@ namespace poker
 
     void PlayState::CreateRaiseChildren()
     {
-        if (!community.isBettingOpen)
-            return;
-
         // raises
         for (auto i = 0UL; i < Global::raiseRatios.size(); ++i)
         {
@@ -210,7 +207,6 @@ namespace poker
             nextState->community.lastPlayer = PrevActivePlayer();
             nextState->community.playerToMove = NextActivePlayer();
 
-            nextState->community.isBettingOpen = true;
             nextState->community.minRaise = additionalRaise;
 
             if (nextState->community.playerToMove != -1)
@@ -245,11 +241,6 @@ namespace poker
         {
             // re-open betting if raise high enough
             nextState->community.minRaise = additionalRaise;
-        }
-        else
-        {
-            /// TODO: this doesn't consider players >=2, with varying initial stacks in particular
-            nextState->community.isBettingOpen = false;
         }
 
         // check if there is any player that has to play..

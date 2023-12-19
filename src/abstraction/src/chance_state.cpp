@@ -38,8 +38,6 @@ namespace poker
 
         if (GetNumberOfPlayersThatNeedToAct() >= 2)
         {
-            // there is someone left that plays
-            newCommunity.isBettingOpen = true;
             if (community.bettingRound > BettingRound::Preflop)
             {
                 newCommunity.playerToMove = 0;
@@ -145,7 +143,6 @@ namespace poker
             auto newPlayers = vector<PlayerInfo>(players);
             newPlayers[0].cards = {startingHands[i].cards[0].Bitmask(), startingHands[i].cards[1].Bitmask()};
             newCommunity.cards = vector<ulong>();
-            newCommunity.isBettingOpen = true;
             newCommunity.lastPlayer = lastToMoveTemp;
             newCommunity.minRaise = minRaiseTemp;
             newCommunity.bettingRound = bettingRound;

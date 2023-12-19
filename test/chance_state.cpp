@@ -21,7 +21,6 @@ TEST(ChanceStateTest, PreflopTransition)
     EXPECT_EQ(child.community.minRaise, 100);
     EXPECT_EQ(child.community.lastPlayer, 1);
     EXPECT_EQ(child.community.playerToMove, 2);
-    EXPECT_TRUE(child.community.isBettingOpen);
 
     for (auto &player : child.players)
     {
@@ -43,7 +42,6 @@ TEST(ChanceStateTest, FlopTransition)
     EXPECT_EQ(child.community.minRaise, 100);
     EXPECT_EQ(child.community.lastPlayer, 5);
     EXPECT_EQ(child.community.playerToMove, 0);
-    EXPECT_TRUE(child.community.isBettingOpen);
 }
 
 TEST(ChanceStateTest, TurnTransition)
@@ -61,7 +59,6 @@ TEST(ChanceStateTest, TurnTransition)
     EXPECT_EQ(child.community.minRaise, 100);
     EXPECT_EQ(child.community.lastPlayer, 5);
     EXPECT_EQ(child.community.playerToMove, 0);
-    EXPECT_TRUE(child.community.isBettingOpen);
 }
 
 TEST(ChanceStateTest, RiverTransition)
@@ -79,5 +76,4 @@ TEST(ChanceStateTest, RiverTransition)
     EXPECT_EQ(child.community.minRaise, 100);
     EXPECT_EQ(child.community.lastPlayer, 5);
     EXPECT_EQ(child.community.playerToMove, 0);
-    EXPECT_TRUE(child.community.isBettingOpen);
 }

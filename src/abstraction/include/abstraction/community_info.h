@@ -19,7 +19,6 @@ namespace poker
         int playerToMove;
         int lastPlayer;
         int minRaise;
-        bool isBettingOpen;
         vector<ulong> cards;
 
         CommunityInfo();
