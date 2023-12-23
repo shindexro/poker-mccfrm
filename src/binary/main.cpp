@@ -159,7 +159,9 @@ namespace poker
                                               if (t % 1000 == 0)
                                               {
                                                   sharedLoopCounter += 1000;
-                                                  std::cout << "Training steps " << sharedLoopCounter << std::endl;
+                                                  std::cout << "Training steps " << sharedLoopCounter << " "
+                                                      << "thread " << index
+                                                      << std::endl;
                                               }
 
                                               if (index != 0)
