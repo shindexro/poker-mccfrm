@@ -275,7 +275,6 @@ namespace poker
 
         if (nextState->GetNumberOfActivePlayers() == 1)
         {
-            // terminal state
             children.push_back(make_shared<TerminalState>(nextState->community, nextState->players, nextState->history));
         }
         else if (nextPlayer != -1)
