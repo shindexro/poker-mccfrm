@@ -120,7 +120,7 @@ namespace poker
             atomic<long> sharedLoopCounter = 0;
 
             Trainer trainer = Trainer(0);
-            trainer.EnumerateActionSpace();
+            // trainer.EnumerateActionSpace(); // just for debugging purpose, I don't think it's necessary to enumeration the entire action space
 
             chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
