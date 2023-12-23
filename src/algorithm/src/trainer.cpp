@@ -149,47 +149,47 @@ namespace poker
     void Trainer::PrintStartingHandsChart()
     {
         ResetGame();
-        auto gs = (dynamic_cast<ChanceState *>(rootState.get()))->GetFirstActionStates();
+        auto states = (dynamic_cast<ChanceState *>(rootState.get()))->GetFirstActionStates();
 
-        for (auto i = 0UL; i < gs[0]->GetValidActions().size(); ++i)
+        for (auto i = 0UL; i < states[0]->GetValidActions().size(); ++i)
         {
-            if (gs[0]->GetValidActions()[i] == Action::Fold)
+            if (states[0]->GetValidActions()[i] == Action::Fold)
             {
                 std::cout << "FOLD Table" << endl;
             }
-            if (gs[0]->GetValidActions()[i] == Action::Call)
+            if (states[0]->GetValidActions()[i] == Action::Call)
             {
                 std::cout << "CALL Table" << endl;
             }
-            if (gs[0]->GetValidActions()[i] == Action::Raise1)
+            if (states[0]->GetValidActions()[i] == Action::Raise1)
             {
                 std::cout << Global::raiseRatios[0] << "*POT RAISE "
                           << "Table" << endl;
             }
-            if (gs[0]->GetValidActions()[i] == Action::Raise2)
+            if (states[0]->GetValidActions()[i] == Action::Raise2)
             {
                 std::cout << Global::raiseRatios[1] << "*POT RAISE "
                           << "Table" << endl;
             }
-            if (gs[0]->GetValidActions()[i] == Action::Raise3)
+            if (states[0]->GetValidActions()[i] == Action::Raise3)
             {
                 std::cout << Global::raiseRatios[2] << "*POT RAISE "
                           << "Table" << endl;
             }
-            if (gs[0]->GetValidActions()[i] == Action::Allin)
+            if (states[0]->GetValidActions()[i] == Action::Allin)
             {
                 std::cout << "ALLIN Table" << endl;
             }
 
             std::cout << "    2    3    4    5    6    7    8    9    T    J    Q    K    A (suited)" << endl;
-            for (auto j = 0UL; j < gs.size(); ++j)
+            for (auto j = 0UL; j < states.size(); ++j)
             {
-                auto ps = gs[j];
-                Infoset infoset = ps->GetInfoset();
+                auto state = states[j];
+                Infoset infoset = state->GetInfoset();
                 // auto sigma = infoset.CalculateStrategy();
                 auto phi = infoset.GetFinalStrategy(); // ain't got time to wait for convergence during tests
 
-                if (j % Global::RANKS == 0 && j + 1 < gs.size())
+                if (j % Global::RANKS == 0 && j + 1 < states.size())
                 {
                     if (j / Global::RANKS < 8)
                         std::cout << (j / Global::RANKS + 2) << " ";
