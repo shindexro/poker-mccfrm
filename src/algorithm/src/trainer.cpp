@@ -288,11 +288,13 @@ namespace poker
     {
         if (dynamic_cast<TerminalState *>(gs.get()))
         {
-            string outstring = "";
+            std::stringstream outstringStream;
             for (auto action : gs->history)
             {
-                outstring += action;
+                outstringStream << action;
             }
+
+            std::string outstring = outstringStream.str();
             regex_replace(outstring, regex("RAISE1"), "R0");
             regex_replace(outstring, regex("RAISE2"), "R1");
             regex_replace(outstring, regex("RAISE3"), "R2");
