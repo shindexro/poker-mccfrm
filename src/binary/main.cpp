@@ -130,34 +130,14 @@ namespace poker
 
                                           for (auto t = 1;; t++) // bb rounds
                                           {
-                                              if (t % 20000 == 0)
-                                              {
-                                                  sharedLoopCounter += 20000;
-                                                  std::cout << "Training steps " << sharedLoopCounter << std::endl;
-                                              }
 
-                                              if (t % testGamesInterval == 0 && index == 0) // implement progress bar later
-                                              {
-                                                  trainer.PrintStartingHandsChart();
-                                                  trainer.PrintStatistics(sharedLoopCounter);
-
-                                                  std::cout << "Sample games (against self)" << std::endl;
-                                                  ;
-                                                  for (auto z = 0; z < 20; z++)
-                                                  {
-                                                      trainer.PlayOneGame();
-                                                  }
-
-                                                  chrono::steady_clock::time_point end = chrono::steady_clock::now();
-                                                  auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
-                                                  std::cout << "Iterations per second: " << sharedLoopCounter / (elapsed + 1) << std::endl;
-                                              }
                                               for (auto traverser = 0; traverser < Global::nofPlayers; traverser++) // traverser
                                               {
                                                   if (t % StrategyInterval == 0 && index == 0)
                                                   {
                                                       trainer.UpdateStrategy(traverser);
                                                   }
+
                                                   if (t > PruneThreshold)
                                                   {
                                                       float q = randDouble();
@@ -175,14 +155,42 @@ namespace poker
                                                       trainer.TraverseMCCFR(traverser, false);
                                                   }
                                               }
-                                              if (t % SaveToDiskInterval == 0 && index == 0) // allow only one thread to do saving
+
+                                              if (t % 1000 == 0)
+                                              {
+                                                  sharedLoopCounter += 1000;
+                                                  std::cout << "Training steps " << sharedLoopCounter << std::endl;
+                                              }
+
+                                              if (index != 0)
+                                                  continue;
+
+                                              if (t % 1000 == 0) {
+                                                  chrono::steady_clock::time_point end = chrono::steady_clock::now();
+                                                  auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
+                                                  std::cout << "Iterations per second: " << sharedLoopCounter / (elapsed + 1) << std::endl;
+                                              }
+
+                                              if (t % testGamesInterval == 0) // implement progress bar later
+                                              {
+                                                  trainer.PrintStartingHandsChart();
+                                                  trainer.PrintStatistics(sharedLoopCounter);
+
+                                                  std::cout << "Sample games (against self)" << std::endl;
+                                                  ;
+                                                  for (auto z = 0; z < 20; z++)
+                                                  {
+                                                      trainer.PlayOneGame();
+                                                  }
+                                              }
+                                              if (t % SaveToDiskInterval == 0) // allow only one thread to do saving
                                               {
                                                   //   std::cout << "Saving nodeMap to disk disabled!" << std::endl;
                                                   SaveToFile();
                                               }
 
                                               // discount all infosets (for all players)
-                                              if (t < LCFRThreshold && t % DiscountInterval == 0 && index == 0) // allow only one thread to do discounting
+                                              if (t < LCFRThreshold && t % DiscountInterval == 0) // allow only one thread to do discounting
                                               {
                                                   float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
                                                   trainer.DiscountInfosets(d);
