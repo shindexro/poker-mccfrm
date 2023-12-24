@@ -77,11 +77,12 @@ namespace poker
 
     void PlayState::GenerateUniqueStringIdentifier()
     {
-        string historyString = "";
+        std::stringstream historyStringStream;
         for (auto h : history)
         {
-            historyString += h;
+            historyStringStream << h;
         }
+        string historyString = historyStringStream.str();
 
         auto cards = vector<int>{
             Card::GetIndexFromBitmask(get<0>(players[community.playerToMove].cards)),
