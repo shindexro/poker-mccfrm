@@ -27,7 +27,7 @@ namespace poker
     Action InteractivePlayer::TranslateAction(shared_ptr<PlayState> state, int actualBet)
     {
         auto abstractActions = state->GetValidActions();
-        auto abstractBets = state->GetBetSizes();
+        auto abstractBets = state->GetValidBetSizes();
 
         if (abstractActions.back() == Action::Fold)
         {

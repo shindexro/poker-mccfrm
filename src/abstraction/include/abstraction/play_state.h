@@ -24,7 +24,7 @@ namespace poker
 
         // Require actions to be in increasing order of bet size, and fold at the end (if legal)
         vector<Action> GetValidActions();
-        vector<int> GetBetSizes();
+        vector<int> GetValidBetSizes();
 
         bool IsPlayerTurn(int player) override;
         bool IsPlayerInHand(int player) override;

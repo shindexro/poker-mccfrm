@@ -29,7 +29,7 @@ namespace poker
         return validActions;
     }
 
-    vector<int> PlayState::GetBetSizes()
+    vector<int> PlayState::GetValidBetSizes()
     {
         auto validBets = vector<int>();
         CreateChildren();
