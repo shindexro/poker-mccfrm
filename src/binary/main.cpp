@@ -179,7 +179,6 @@ namespace poker
                                                   trainer.PrintStatistics(sharedLoopCounter);
 
                                                   std::cout << "Sample games (against self)" << std::endl;
-                                                  ;
                                                   for (auto z = 0; z < 20; z++)
                                                   {
                                                       trainer.PlayOneGame();
@@ -187,7 +186,6 @@ namespace poker
                                               }
                                               if (t % SaveToDiskInterval == 0) // allow only one thread to do saving
                                               {
-                                                  //   std::cout << "Saving nodeMap to disk disabled!" << std::endl;
                                                   SaveToFile();
                                               }
 
@@ -205,8 +203,6 @@ namespace poker
         {
             std::cout << "Saving dictionary to file nodeMap.txt" << std::endl;
             utils::SaveToFile(Global::nodeMap, "nodeMap.txt");
-
-            std::cout << "Saving dictionary to file nodeMap.txt" << std::endl;
         }
 
         static void LoadFromFile()
