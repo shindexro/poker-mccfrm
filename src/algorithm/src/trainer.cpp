@@ -57,10 +57,6 @@ namespace poker
     void Trainer::UpdateStrategy(int traverser)
     {
         ResetGame();
-        if (rootState->community.bettingRound > 0)
-        {
-            throw invalid_argument("DAFUQ");
-        }
         UpdateStrategy(rootState, traverser);
     }
 
