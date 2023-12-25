@@ -34,7 +34,7 @@ namespace utils
     {
         cout << "Saving to file " << filename << endl;
         ofstream file(filename);
-        boost::archive::binary_oarchive archive(file);
+        boost::archive::binary_oarchive archive(file, std::ios::binary);
         archive << obj;
     }
 
@@ -43,7 +43,7 @@ namespace utils
     {
         cout << "Loading from file " << filename << endl;
         ifstream file(filename);
-        boost::archive::binary_iarchive archive(file);
+        boost::archive::binary_iarchive archive(file, std::ios::binary);
         archive >> obj;
     }
     bool FileExists(const string &filename);
