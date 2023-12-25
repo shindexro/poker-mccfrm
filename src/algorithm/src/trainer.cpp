@@ -182,8 +182,8 @@ namespace poker
             {
                 auto state = states[j];
                 Infoset infoset = state->GetInfoset();
-                // auto sigma = infoset.CalculateStrategy();
-                auto phi = infoset.GetFinalStrategy(); // ain't got time to wait for convergence during tests
+                auto sigma = infoset.CalculateStrategy();
+                // auto phi = infoset.GetFinalStrategy(); // ain't got time to wait for convergence during tests
 
                 if (j % Global::RANKS == 0 && j + 1 < states.size())
                 {
@@ -201,16 +201,16 @@ namespace poker
                         std::cout << "A ";
                 }
 
-                if (phi[i] <= 0.25)
+                if (sigma[i] <= 0.25)
                     std::cout << "\033[1;31m";
-                else if (phi[i] <= 0.5)
+                else if (sigma[i] <= 0.5)
                     std::cout << "\033[1;32m";
-                else if (phi[i] <= 0.75)
+                else if (sigma[i] <= 0.75)
                     std::cout << "\033[1;33m";
-                else if (phi[i] <= 1.0)
+                else if (sigma[i] <= 1.0)
                     std::cout << "\033[1;34m";
 
-                std::cout << fixed << setprecision(2) << phi[i] << " ";
+                std::cout << fixed << setprecision(2) << sigma[i] << " ";
                 std::cout << "\033[0m";
 
                 if ((j + 1) % Global::RANKS == 0)
