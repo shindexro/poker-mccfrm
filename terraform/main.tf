@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-west-1"
+  region = "ap-south-1"
 }
 
 resource "aws_vpc" "poker" {
@@ -27,7 +27,7 @@ resource "aws_route_table" "poker" {
 resource "aws_subnet" "poker" {
   vpc_id            = aws_vpc.poker.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = "eu-west-1a"
+  availability_zone = "ap-south-1a"
 }
 
 resource "aws_route_table_association" "poker" {
@@ -57,10 +57,10 @@ resource "aws_security_group" "poker_trainer" {
 }
 
 resource "aws_instance" "poker_trainer" {
-  ami                         = "ami-0694d931cee176e7d"
+  ami                         = "ami-03f4878755434977f"
   instance_type               = "r6a.xlarge"
-  availability_zone           = "eu-west-1a"
-  key_name                    = "main-key"
+  availability_zone           = "ap-south-1a"
+  key_name                    = "arch-vm"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.poker.id
   vpc_security_group_ids      = [aws_security_group.poker_trainer.id]
@@ -71,7 +71,7 @@ resource "aws_instance" "poker_trainer" {
 }
 
 resource "aws_ebs_volume" "poker_trainer_data" {
-  availability_zone = "eu-west-1a"
+  availability_zone = "ap-south-1a"
   type              = "gp3"
   size              = 10
   encrypted         = true
