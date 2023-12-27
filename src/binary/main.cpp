@@ -78,20 +78,20 @@ namespace poker
             Global::indexer_2_5.Construct(cardsPerRound);
             std::cout << Global::indexer_2_5.roundSize[1] << " non-isomorphic hands found" << std::endl;
 
-            std::cout << "Creating 2 & 5 & 2 card index... " << std::endl;
-            cardsPerRound = vector<int>({2, 5, 2});
-            Global::indexer_2_5_2.Construct(cardsPerRound);
-            std::cout << Global::indexer_2_5_2.roundSize[2] << " non-isomorphic hands found" << std::endl;
+            // std::cout << "Creating 2 & 5 & 2 card index... " << std::endl;
+            // cardsPerRound = vector<int>({2, 5, 2});
+            // Global::indexer_2_5_2.Construct(cardsPerRound);
+            // std::cout << Global::indexer_2_5_2.roundSize[2] << " non-isomorphic hands found" << std::endl;
 
-            std::cout << "Creating 2 & 3 & 1 card index... " << std::endl;
-            cardsPerRound = vector<int>({2, 3, 1});
-            Global::indexer_2_3_1.Construct(cardsPerRound);
-            std::cout << Global::indexer_2_3_1.roundSize[2] << " non-isomorphic hands found" << std::endl;
+            // std::cout << "Creating 2 & 3 & 1 card index... " << std::endl;
+            // cardsPerRound = vector<int>({2, 3, 1});
+            // Global::indexer_2_3_1.Construct(cardsPerRound);
+            // std::cout << Global::indexer_2_3_1.roundSize[2] << " non-isomorphic hands found" << std::endl;
 
-            std::cout << "Creating 2 & 3 & 1 & 1 card index... " << std::endl;
-            cardsPerRound = vector<int>({2, 3, 1, 1});
-            Global::indexer_2_3_1_1.Construct(cardsPerRound);
-            std::cout << Global::indexer_2_3_1_1.roundSize[3] << " non-isomorphic hands found" << std::endl;
+            // std::cout << "Creating 2 & 3 & 1 & 1 card index... " << std::endl;
+            // cardsPerRound = vector<int>({2, 3, 1, 1});
+            // Global::indexer_2_3_1_1.Construct(cardsPerRound);
+            // std::cout << Global::indexer_2_3_1_1.roundSize[3] << " non-isomorphic hands found" << std::endl;
         }
 
         static void CalculateInformationAbstraction()
@@ -113,12 +113,12 @@ namespace poker
             long PruneThreshold = 20000000 / Global::NOF_THREADS;        // bb rounds after this time we stop checking all actions, 200 minutes
             long LCFRThreshold = 20000000 / Global::NOF_THREADS;         // bb rounds when to stop discounting old regrets, no clue what it should be
             long DiscountInterval = 1000000 / Global::NOF_THREADS;       // bb rounds, discount values periodically but not every round, 10 minutes
-            long SaveToDiskInterval = 10000 / Global::NOF_THREADS;
-            long testGamesInterval = 10000 / Global::NOF_THREADS;
+            long SaveToDiskInterval = 100000 / Global::NOF_THREADS;
+            long testGamesInterval = 100000 / Global::NOF_THREADS;
 
             atomic<long> sharedLoopCounter = 0;
 
-            Trainer trainer = Trainer(0);
+            // Trainer trainer = Trainer(0);
             // trainer.EnumerateActionSpace(); // just for debugging purpose, I don't think it's necessary to enumeration the entire action space
 
             chrono::steady_clock::time_point start = chrono::steady_clock::now();
