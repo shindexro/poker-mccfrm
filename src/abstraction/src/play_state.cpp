@@ -80,7 +80,31 @@ namespace poker
         std::stringstream historyStringStream;
         for (auto h : history)
         {
-            historyStringStream << h;
+            switch (h)
+            {
+                case poker::Action::Call:
+                    historyStringStream << "C";
+                case poker::Action::Fold:
+                    historyStringStream << "F";
+                case poker::Action::None:
+                    historyStringStream << "N";
+                case poker::Action::Allin:
+                    historyStringStream << "A";
+                case poker::Action::Raise:
+                    historyStringStream << "R";
+                case poker::Action::Raise1:
+                    historyStringStream << "R1";
+                case poker::Action::Raise2:
+                    historyStringStream << "R2";
+                case poker::Action::Raise3:
+                    historyStringStream << "R3";
+                case poker::Action::Raise4:
+                    historyStringStream << "R4";
+                case poker::Action::Raise5:
+                    historyStringStream << "R5";
+                case poker::Action::Raise6:
+                    historyStringStream << "R6";
+            }
         }
         string historyString = historyStringStream.str();
 
