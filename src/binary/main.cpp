@@ -162,16 +162,14 @@ namespace poker
                                                   std::cout << "Training steps " << sharedLoopCounter << " "
                                                       << "thread " << index
                                                       << std::endl;
-                                              }
 
-                                              if (index != 0)
-                                                  continue;
-
-                                              if (t % 1000 == 0) {
                                                   chrono::steady_clock::time_point end = chrono::steady_clock::now();
                                                   auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
                                                   std::cout << "Iterations per second: " << sharedLoopCounter / (elapsed + 1) << std::endl;
                                               }
+
+                                              if (index != 0)
+                                                  continue;
 
                                               if (t % testGamesInterval == 0) // implement progress bar later
                                               {
