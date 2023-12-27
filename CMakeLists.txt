@@ -11,13 +11,13 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -fsanitize-coverage=inline-8bit-counters -fsanitize-coverage=trace-cmp")
 
-add_subdirectory(src)
-add_subdirectory(test)
-
 set(Boost_INCLUDE_DIR /usr/include/boost)
 set(Boost_NO_WARN_NEW_VERSIONS 1)
 
 set(TBB_DIR "/opt/intel/oneapi/tbb/latest/lib/cmake/tbb")
+
+add_subdirectory(src)
+add_subdirectory(test)
 
 include(FetchContent)
 FetchContent_Declare(
