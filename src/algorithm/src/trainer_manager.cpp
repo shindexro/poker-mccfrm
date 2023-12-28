@@ -35,13 +35,17 @@ void TrainerManager::StartTrainer(int index)
 {
     auto trainer = trainers[index];
 
-    const long StrategyInterval = max(1, 10000 / threadCount); // bb rounds before updating player strategy (recursive through tree) 10k
-    const long LCFRThreshold = 20000000 / threadCount;         // bb rounds when to stop discounting old regrets, no clue what it should be
-    const long DiscountInterval = 1000000 / threadCount;       // bb rounds, discount values periodically but not every round, 10 minutes
-    const long SaveToDiskInterval = 100000 / threadCount;
-    const long TestGamesInterval = 100000 / threadCount;
-    const long PruneThreshold = 20000000 / threadCount;  // bb rounds after this time we stop checking all actions, 200 minutes
+    const long StrategyInterval = 10000; // bb rounds before updating player strategy (recursive through tree) 10k
+    const long LCFRThreshold = 20000000;         // bb rounds when to stop discounting old regrets, no clue what it should be
+    const long DiscountInterval = 1000000;       // bb rounds, discount values periodically but not every round, 10 minutes
+    const long SaveToDiskInterval = 100000;
+    const long TestGamesInterval = 100000;
+    const long PruneThreshold = 20000000;  // bb rounds after this time we stop checking all actions, 200 minutes
 
+    atomic<long> StrategyIntervalCountdown = StrategyInterval;
+    atomic<long> DiscountIntervalCountdown = DiscountInterval;
+    atomic<long> SaveToDiskIntervalCountdown = SaveToDiskInterval;
+    atomic<long> TestGamesIntervalCountdown = PruneThreshold;
 
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
@@ -61,6 +65,11 @@ void TrainerManager::StartTrainer(int index)
                 << "thread " << index
                 << std::endl;
 
+            StrategyIntervalCountdown -= 10000;
+            DiscountIntervalCountdown -= 10000;
+            SaveToDiskIntervalCountdown -= 10000;
+            TestGamesIntervalCountdown -= 10000;
+
             chrono::steady_clock::time_point end = chrono::steady_clock::now();
             auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
             std::cout << "Iterations per second: " << iterations / (elapsed + 1) << std::endl;
@@ -71,23 +80,26 @@ void TrainerManager::StartTrainer(int index)
 
         for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
         {
-            if (t % StrategyInterval == 0)
+            if (StrategyIntervalCountdown <= 0)
             {
                 trainer.UpdateStrategy(traverser);
+                StrategyIntervalCountdown = StrategyInterval;
             }
         }
 
         // discount all infosets (for all players)
-        if (t < LCFRThreshold && t % DiscountInterval == 0)
+        if (t < LCFRThreshold && DiscountIntervalCountdown <= 0)
         {
             float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
             trainer.DiscountInfosets(d);
+            DiscountIntervalCountdown = DiscountInterval;
         }
 
-        if (t % TestGamesInterval == 0) // implement progress bar later
+        if (TestGamesIntervalCountdown <= 0) // implement progress bar later
         {
             trainer.PrintStartingHandsChart();
             trainer.PrintStatistics(iterations);
+            TestGamesIntervalCountdown = TestGamesInterval;
 
             // std::cout << "Sample games (against self)" << std::endl;
             // for (auto z = 0; z < 20; z++)
@@ -95,9 +107,10 @@ void TrainerManager::StartTrainer(int index)
             //     trainer.PlayOneGame();
             // }
         }
-        if (t % SaveToDiskInterval == 0)
+        if (SaveToDiskIntervalCountdown <= 0)
         {
             SaveTrainedData();
+            SaveToDiskIntervalCountdown = SaveToDiskInterval;
         }
     }
 }
