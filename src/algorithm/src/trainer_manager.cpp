@@ -89,11 +89,11 @@ void TrainerManager::StartTrainer(int index)
             trainer.PrintStartingHandsChart();
             trainer.PrintStatistics(iterations);
 
-            std::cout << "Sample games (against self)" << std::endl;
-            for (auto z = 0; z < 20; z++)
-            {
-                trainer.PlayOneGame();
-            }
+            // std::cout << "Sample games (against self)" << std::endl;
+            // for (auto z = 0; z < 20; z++)
+            // {
+            //     trainer.PlayOneGame();
+            // }
         }
         if (t % SaveToDiskInterval == 0)
         {
