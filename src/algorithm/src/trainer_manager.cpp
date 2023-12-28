@@ -77,6 +77,13 @@ void TrainerManager::StartTrainer(int index)
             }
         }
 
+        // discount all infosets (for all players)
+        if (t < LCFRThreshold && t % DiscountInterval == 0)
+        {
+            float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
+            trainer.DiscountInfosets(d);
+        }
+
         if (t % TestGamesInterval == 0) // implement progress bar later
         {
             trainer.PrintStartingHandsChart();
@@ -91,13 +98,6 @@ void TrainerManager::StartTrainer(int index)
         if (t % SaveToDiskInterval == 0)
         {
             SaveTrainedData();
-        }
-
-        // discount all infosets (for all players)
-        if (t < LCFRThreshold && t % DiscountInterval == 0)
-        {
-            float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
-            trainer.DiscountInfosets(d);
         }
     }
 }
