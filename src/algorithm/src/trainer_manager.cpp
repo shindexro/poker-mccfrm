@@ -35,12 +35,12 @@ void TrainerManager::StartTrainer(int index)
 {
     auto trainer = trainers[index];
 
-    const long StrategyInterval = max(1, 10000 / Global::NOF_THREADS); // bb rounds before updating player strategy (recursive through tree) 10k
-    const long LCFRThreshold = 20000000 / Global::NOF_THREADS;         // bb rounds when to stop discounting old regrets, no clue what it should be
-    const long DiscountInterval = 1000000 / Global::NOF_THREADS;       // bb rounds, discount values periodically but not every round, 10 minutes
-    const long SaveToDiskInterval = 100000 / Global::NOF_THREADS;
-    const long TestGamesInterval = 100000 / Global::NOF_THREADS;
-    const long PruneThreshold = 20000000 / Global::NOF_THREADS;  // bb rounds after this time we stop checking all actions, 200 minutes
+    const long StrategyInterval = max(1, 10000 / threadCount); // bb rounds before updating player strategy (recursive through tree) 10k
+    const long LCFRThreshold = 20000000 / threadCount;         // bb rounds when to stop discounting old regrets, no clue what it should be
+    const long DiscountInterval = 1000000 / threadCount;       // bb rounds, discount values periodically but not every round, 10 minutes
+    const long SaveToDiskInterval = 100000 / threadCount;
+    const long TestGamesInterval = 100000 / threadCount;
+    const long PruneThreshold = 20000000 / threadCount;  // bb rounds after this time we stop checking all actions, 200 minutes
 
 
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
