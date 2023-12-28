@@ -39,7 +39,7 @@ void TrainerManager::StartTrainer(int index)
     const long LCFRThreshold = 20000000 / Global::NOF_THREADS;         // bb rounds when to stop discounting old regrets, no clue what it should be
     const long DiscountInterval = 1000000 / Global::NOF_THREADS;       // bb rounds, discount values periodically but not every round, 10 minutes
     const long SaveToDiskInterval = 100000 / Global::NOF_THREADS;
-    const long testGamesInterval = 100000 / Global::NOF_THREADS;
+    const long TestGamesInterval = 100000 / Global::NOF_THREADS;
     const long PruneThreshold = 20000000 / Global::NOF_THREADS;  // bb rounds after this time we stop checking all actions, 200 minutes
 
 
@@ -77,7 +77,7 @@ void TrainerManager::StartTrainer(int index)
             }
         }
 
-        if (t % testGamesInterval == 0) // implement progress bar later
+        if (t % TestGamesInterval == 0) // implement progress bar later
         {
             trainer.PrintStartingHandsChart();
             trainer.PrintStatistics(iterations);
