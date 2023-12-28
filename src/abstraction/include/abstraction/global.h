@@ -19,7 +19,7 @@ namespace poker
     class Global
     {
     public:
-        inline static const int NOF_THREADS = 5;
+        inline static const int NOF_THREADS = 4;
         static vector<float> raiseRatios;
         inline static const int buyIn = 10000;
         inline static const int nofPlayers = 6;
