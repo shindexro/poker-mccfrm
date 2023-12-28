@@ -11,7 +11,7 @@
 #include "tables/emd_table.h"
 #include "utils/utils.h"
 #include "utils/random.h"
-#include "algorithm/trainer.h"
+#include "algorithm/trainer_manager.h"
 #include "abstraction/state.h"
 #include "algorithm/game.h"
 #include "algorithm/ai_player.h"

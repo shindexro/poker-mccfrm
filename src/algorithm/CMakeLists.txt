@@ -3,6 +3,7 @@ project (algorithms)
 add_library(${PROJECT_NAME}
     src/kmeans.cpp
     src/trainer.cpp
+    src/trainer_manager.cpp
     src/player.cpp
     src/ai_player.cpp
     src/interactive_player.cpp

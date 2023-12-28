@@ -16,6 +16,26 @@ namespace poker
         rootState = make_shared<ChanceState>();
     }
 
+    void Trainer::TrainOneIteration(int traverser, bool pruneEnabled)
+    {
+        if (pruneEnabled)
+        {
+            float q = randDouble();
+            if (q < 0.05)
+            {
+                TraverseMCCFR(traverser, false);
+            }
+            else
+            {
+                TraverseMCCFR(traverser, true);
+            }
+        }
+        else
+        {
+            TraverseMCCFR(traverser, false);
+        }
+    }
+
     /// <summary>
     /// Recursively update the strategy for the tree of player
     /// </summary>

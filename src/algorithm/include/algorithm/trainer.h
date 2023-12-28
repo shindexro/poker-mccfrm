@@ -25,6 +25,7 @@ namespace poker
         Trainer(int threadIndex);
 
         void ResetGame();
+        void TrainOneIteration(int traverser, bool pruneEnabled);
         void UpdateStrategy(shared_ptr<State> gs, int traverser);
         void UpdateStrategy(int traverser);
         int TraverseMCCFR(int traverser, bool pruned);
