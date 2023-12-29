@@ -7,6 +7,7 @@
 #include "abstraction/terminal_state.h"
 #include "utils/utils.h"
 #include "enums/action.h"
+#include "enums/betting_round.h"
 
 #include <vector>
 #include <string>

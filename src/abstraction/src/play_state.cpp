@@ -198,13 +198,14 @@ namespace poker
 
     void PlayState::CreateRaiseChildren()
     {
-        // raises
-        for (auto i = 0UL; i < Global::raiseRatios.size(); ++i)
+        auto raiseRatios = Global::raiseRatiosByRound[community.bettingRound];
+
+        for (auto i = 0UL; i < raiseRatios.size(); ++i)
         {
             auto nextState = make_shared<PlayState>(community, players, history);
 
             // we add <raise> chips to our current bet
-            int raise = (int)(Global::raiseRatios[i] * GetPot());
+            int raise = (int)(raiseRatios[i] * GetPot());
             int additionalRaise = raise + players[community.playerToMove].bet - MinimumCall();
             /* For example, if an opponent bets $5, a player must raise by at least another $5,
                 and they may not raise by only $2.
@@ -212,17 +213,35 @@ namespace poker
                 the next re-raise would have to be by at least another $7 (the previous raise)
                 more than the $12 (for a total of at least $19).
             */
-            if (additionalRaise < community.minRaise || raise >= players[community.playerToMove].stack)
+            if (additionalRaise < community.minRaise)
                 continue;
 
-            // valid raise, if stack is equal it would be an all in
-            // TODO: dont hardcode this
-            if (i == 0)
-                nextState->history.push_back(Action::Raise1);
-            if (i == 1)
-                nextState->history.push_back(Action::Raise2);
-            if (i == 2)
-                nextState->history.push_back(Action::Raise3);
+            if (raise >= players[community.playerToMove].stack)
+                break;
+
+            switch (i)
+            {
+                case 0:
+                    nextState->history.push_back(Action::Raise1);
+                    break;
+                case 1:
+                    nextState->history.push_back(Action::Raise2);
+                    break;
+                case 2:
+                    nextState->history.push_back(Action::Raise3);
+                    break;
+                case 3:
+                    nextState->history.push_back(Action::Raise4);
+                    break;
+                case 4:
+                    nextState->history.push_back(Action::Raise5);
+                    break;
+                case 5:
+                    nextState->history.push_back(Action::Raise6);
+                    break;
+                default:
+                    throw invalid_argument("Exceed maximum raise size count");
+            }
 
             auto &playerWhoRaised = nextState->players[community.playerToMove];
             playerWhoRaised.stack -= raise;

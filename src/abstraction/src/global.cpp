@@ -2,7 +2,13 @@
 
 namespace poker
 {
-    vector<float> Global::raiseRatios({0.5f, 1.0f, 2.0f});
+    // ratios must be sorted in ascending order
+    map<BettingRound, vector<float>> Global::raiseRatiosByRound{
+            {BettingRound::Preflop, {0.5f, 1.0f, 2.0f}},
+            {BettingRound::Flop, {0.5f, 1.0f, 1.5f, 2.0f}},
+            {BettingRound::Turn, {0.5f, 1.0f, 1.5f, 2.0f}},
+            {BettingRound::River, {0.5f, 1.0f, 1.5f, 2.0f}},
+    };
 
     HandIndexer Global::indexer_2;
     HandIndexer Global::indexer_2_3;

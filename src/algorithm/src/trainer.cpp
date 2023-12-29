@@ -169,6 +169,8 @@ namespace poker
 
         for (auto i = 0UL; i < states[0]->GetValidActions().size(); ++i)
         {
+            auto raiseRatios = Global::raiseRatiosByRound[BettingRound::Preflop];
+
             if (states[0]->GetValidActions()[i] == Action::Fold)
             {
                 std::cout << "FOLD Table" << endl;
@@ -179,17 +181,17 @@ namespace poker
             }
             if (states[0]->GetValidActions()[i] == Action::Raise1)
             {
-                std::cout << Global::raiseRatios[0] << "*POT RAISE "
+                std::cout << raiseRatios[0] << "*POT RAISE "
                           << "Table" << endl;
             }
             if (states[0]->GetValidActions()[i] == Action::Raise2)
             {
-                std::cout << Global::raiseRatios[1] << "*POT RAISE "
+                std::cout << raiseRatios[1] << "*POT RAISE "
                           << "Table" << endl;
             }
             if (states[0]->GetValidActions()[i] == Action::Raise3)
             {
-                std::cout << Global::raiseRatios[2] << "*POT RAISE "
+                std::cout << raiseRatios[2] << "*POT RAISE "
                           << "Table" << endl;
             }
             if (states[0]->GetValidActions()[i] == Action::Allin)
@@ -266,6 +268,8 @@ namespace poker
 
             for (auto j = 0UL; j < actions.size(); ++j)
             {
+                auto raiseRatios = Global::raiseRatiosByRound[BettingRound::Preflop];
+
                 if (actions[j] == Action::Fold)
                 {
                     std::cout << "FOLD: ";
@@ -276,15 +280,15 @@ namespace poker
                 }
                 if (actions[j] == Action::Raise1)
                 {
-                    std::cout << Global::raiseRatios[0] << "*POT ";
+                    std::cout << raiseRatios[0] << "*POT ";
                 }
                 if (actions[j] == Action::Raise2)
                 {
-                    std::cout << Global::raiseRatios[1] << "*POT ";
+                    std::cout << raiseRatios[1] << "*POT ";
                 }
                 if (actions[j] == Action::Raise3)
                 {
-                    std::cout << Global::raiseRatios[2] << "*POT ";
+                    std::cout << raiseRatios[2] << "*POT ";
                 }
                 if (actions[j] == Action::Allin)
                 {

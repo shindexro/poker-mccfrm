@@ -5,6 +5,7 @@
 #include "tables/evaluator.h"
 #include "abstraction/infoset.h"
 #include "game/deck.h"
+#include "enums/betting_round.h"
 
 #include <oneapi/tbb/concurrent_hash_map.h>
 #include <vector>
@@ -20,7 +21,7 @@ namespace poker
     {
     public:
         inline static const int NOF_THREADS = 4;
-        static vector<float> raiseRatios;
+        static map<BettingRound ,vector<float>> raiseRatiosByRound;
         inline static const int buyIn = 10000;
         inline static const int nofPlayers = 6;
         inline static const int C = -300000000;

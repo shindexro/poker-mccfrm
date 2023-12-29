@@ -5,6 +5,8 @@
 #include "abstraction/terminal_state.h"
 #include "abstraction/chance_state.h"
 
+#include <stdexcept>
+
 using namespace std;
 
 namespace poker
