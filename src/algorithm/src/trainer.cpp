@@ -169,7 +169,7 @@ namespace poker
 
         for (auto i = 0UL; i < states[0]->GetValidActions().size(); ++i)
         {
-            auto raiseRatios = Global::raiseRatiosByRound[BettingRound::Preflop];
+            auto raiseRatios = Global::raiseRatiosByRoundByPlayerCount[BettingRound::Preflop][6];
 
             if (states[0]->GetValidActions()[i] == Action::Fold)
             {
@@ -268,7 +268,7 @@ namespace poker
 
             for (auto j = 0UL; j < actions.size(); ++j)
             {
-                auto raiseRatios = Global::raiseRatiosByRound[BettingRound::Preflop];
+                auto raiseRatios = Global::raiseRatiosByRoundByPlayerCount[BettingRound::Preflop][6];
 
                 if (actions[j] == Action::Fold)
                 {

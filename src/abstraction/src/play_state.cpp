@@ -198,7 +198,7 @@ namespace poker
 
     void PlayState::CreateRaiseChildren()
     {
-        auto raiseRatios = Global::raiseRatiosByRound[community.bettingRound];
+        auto raiseRatios = Global::raiseRatiosByRoundByPlayerCount[community.bettingRound][GetNumberOfPlayersThatNeedToAct()];
 
         for (auto i = 0UL; i < raiseRatios.size(); ++i)
         {

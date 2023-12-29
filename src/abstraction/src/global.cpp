@@ -3,11 +3,43 @@
 namespace poker
 {
     // ratios must be sorted in ascending order
-    map<BettingRound, vector<float>> Global::raiseRatiosByRound{
-            {BettingRound::Preflop, {0.5f, 1.0f, 2.0f}},
-            {BettingRound::Flop, {0.5f, 1.0f, 1.5f, 2.0f}},
-            {BettingRound::Turn, {0.5f, 1.0f, 1.5f, 2.0f}},
-            {BettingRound::River, {0.5f, 1.0f, 1.5f, 2.0f}},
+    map<BettingRound, vector<vector<float>>> Global::raiseRatiosByRoundByPlayerCount{
+            {BettingRound::Preflop, {
+                                        {},
+                                        {},
+                                        {0.5f, 1.0f, 2.0f}, // 2 players to act
+                                        {0.5f, 1.0f, 2.0f}, // 3 players to act
+                                        {0.5f}, // 4 players to act
+                                        {0.5f}, // 5 players to act
+                                        {0.5f}, // 6 players to act
+                                    }},
+            {BettingRound::Flop, {
+                                        {},
+                                        {},
+                                        {0.5f, 1.0f, 2.0f}, // 2 players to act
+                                        {0.5f, 1.0f, 2.0f}, // 3 players to act
+                                        {0.5f}, // 4 players to act
+                                        {0.5f}, // 5 players to act
+                                        {0.5f}, // 6 players to act
+                                    }},
+            {BettingRound::Turn, {
+                                        {},
+                                        {},
+                                        {0.5f, 1.0f, 2.0f}, // 2 players to act
+                                        {0.5f, 1.0f, 2.0f}, // 3 players to act
+                                        {0.5f}, // 4 players to act
+                                        {0.5f}, // 5 players to act
+                                        {0.5f}, // 6 players to act
+                                    }},
+            {BettingRound::River, {
+                                        {},
+                                        {},
+                                        {0.5f, 1.0f, 2.0f}, // 2 players to act
+                                        {0.5f, 1.0f, 2.0f}, // 3 players to act
+                                        {0.5f}, // 4 players to act
+                                        {0.5f}, // 5 players to act
+                                        {0.5f}, // 6 players to act
+                                    }},
     };
 
     HandIndexer Global::indexer_2;
