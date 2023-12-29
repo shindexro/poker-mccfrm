@@ -117,14 +117,16 @@ void TrainerManager::StartTrainer(int index)
 
 void TrainerManager::SaveTrainedData()
 {
-    std::cout << "Saving dictionary to file nodeMap.txt" << std::endl;
+    std::cout << "Saving trained data to file nodeMap.txt" << std::endl;
     utils::SaveToFile(Global::nodeMap, "nodeMap.txt");
+    std::cout << "Saved trained data" << std::endl;
 }
 
 void TrainerManager::LoadTrainedData()
 {
     if (!utils::FileExists("nodeMap.txt"))
         return;
-    std::cout << "Loading nodes from file nodeMap.txt..." << std::endl;
+    std::cout << "Loading trained data from file nodeMap.txt..." << std::endl;
     utils::LoadFromFile(Global::nodeMap, "nodeMap.txt");
+    std::cout << "Loaded trained data" << std::endl;
 }
