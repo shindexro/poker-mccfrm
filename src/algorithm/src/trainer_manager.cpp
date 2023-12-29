@@ -45,7 +45,7 @@ void TrainerManager::StartTrainer(int index)
     atomic<long> StrategyIntervalCountdown = StrategyInterval;
     atomic<long> DiscountIntervalCountdown = DiscountInterval;
     atomic<long> SaveToDiskIntervalCountdown = SaveToDiskInterval;
-    atomic<long> TestGamesIntervalCountdown = PruneThreshold;
+    atomic<long> TestGamesIntervalCountdown = TestGamesInterval;
 
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
