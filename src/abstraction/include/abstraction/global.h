@@ -24,7 +24,7 @@ namespace poker
         static map<BettingRound ,vector<float>> raiseRatiosByRound;
         inline static const int buyIn = 10000;
         inline static const int nofPlayers = 6;
-        inline static const int C = -300000000;
+        inline static const int regretPrunedThreshold = -300000000;
         inline static const int regretFloor = -310000000;
 
         inline static const int BB = 100;

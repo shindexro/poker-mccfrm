@@ -115,7 +115,7 @@ namespace poker
 
             for (auto i = 0UL; i < gs->children.size(); ++i)
             {
-                if (!pruned || (pruned && infoset.regret[i] > Global::C))
+                if (!pruned || (pruned && infoset.regret[i] > Global::regretPrunedThreshold))
                 {
                     expectedValsChildren[i] = TraverseMCCFR(gs->children[i], traverser, pruned);
                     expectedVal += sigma[i] * expectedValsChildren[i];
