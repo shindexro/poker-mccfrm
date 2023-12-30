@@ -1,6 +1,7 @@
 #ifndef __CLASS_INFOSET_H__
 #define __CLASS_INFOSET_H__
 
+#include "enums/betting_round.h"
 #include <vector>
 #include <string>
 
@@ -20,6 +21,7 @@ namespace poker
 
         Infoset();
         Infoset(int actions);
+        Infoset(int actions, BettingRound round);
 
         vector<float> CalculateStrategy();
         vector<float> GetFinalStrategy();

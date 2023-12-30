@@ -68,7 +68,7 @@ namespace poker
         bool nodeMapEntryExists = Global::nodeMap.find(accessor, infosetString);
         if (!nodeMapEntryExists)
         {
-            Infoset infoset = Infoset(GetValidActionsCount());
+            Infoset infoset = Infoset(GetValidActionsCount(), community.bettingRound);
             Global::nodeMap.insert({infosetString, infoset});
         }
         Global::nodeMap.find(accessor, infosetString);

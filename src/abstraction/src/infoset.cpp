@@ -12,6 +12,15 @@ namespace poker
     {
     }
 
+    Infoset::Infoset(int actions, BettingRound round) : regret(actions),
+                                                        actionCounter()
+    {
+        if (round == BettingRound::Preflop)
+        {
+            actionCounter.resize(actions);
+        }
+    }
+
     vector<float> Infoset::CalculateStrategy()
     {
         int sum = 0;
