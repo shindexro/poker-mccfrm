@@ -2,7 +2,7 @@
 
 namespace poker
 {
-    ChanceState::ChanceState()
+    ChanceState::ChanceState() : State()
     {
         for (auto i = 0; i < Global::nofPlayers; ++i)
         {
