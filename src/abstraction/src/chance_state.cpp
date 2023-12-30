@@ -111,7 +111,6 @@ namespace poker
         int lastToMoveTemp = -1;
         int minRaiseTemp = Global::BB;
         auto bettingRound = community.bettingRound;
-        ++bettingRound;
 
         if (community.bettingRound == 0)
         {
