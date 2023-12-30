@@ -55,72 +55,75 @@ namespace poker
         chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
         histogramsPreflop = vector<vector<float>>(Global::RANKS * Global::RANKS, vector<float>((Global::preflopHistogramSize)));
-
-        for (auto i = 0; i < Global::RANKS * Global::RANKS; i++)
-        {
-            auto cards = vector<int>(2);
-            Global::indexer_2.Unindex(Global::indexer_2.rounds - 1, i, cards);
-            long deadCardMask = (1L << cards[0]) + (1L << cards[1]);
-            for (auto steps = 0; steps < Global::nofMCSimsPerPreflopHand; steps++)
-            {
-                int cardFlop1 = randint(0, Global::CARDS);
-                while (((1L << cardFlop1) & deadCardMask) != 0)
-                    cardFlop1 = randint(0, Global::CARDS);
-                deadCardMask |= (1L << cardFlop1);
-
-                int cardFlop2 = randint(0, Global::CARDS);
-                while (((1L << cardFlop2) & deadCardMask) != 0)
-                    cardFlop2 = randint(0, Global::CARDS);
-                deadCardMask |= (1L << cardFlop2);
-
-                int cardFlop3 = randint(0, Global::CARDS);
-                while (((1L << cardFlop3) & deadCardMask) != 0)
-                    cardFlop3 = randint(0, Global::CARDS);
-                deadCardMask |= (1L << cardFlop3);
-
-                int cardTurn = randint(0, Global::CARDS);
-                while (((1L << cardTurn) & deadCardMask) != 0)
-                    cardTurn = randint(0, Global::CARDS);
-                deadCardMask |= (1L << cardTurn);
-
-                int cardRiver = randint(0, Global::CARDS);
-                while (((1L << cardRiver) & deadCardMask) != 0)
-                    cardRiver = randint(0, Global::CARDS);
-                deadCardMask |= (1L << cardRiver);
-
-                auto strength = vector<int>(3);
-                for (auto card1Opponent = 0; card1Opponent < 51; card1Opponent++)
+        utils::parallelise(Global::RANKS * Global::RANKS,
+                [&](int /*threadIdx*/, int itemIdx)
                 {
-                    if (((1L << card1Opponent) & deadCardMask) != 0)
+                    auto cards = vector<int>(2);
+                    Global::indexer_2.Unindex(Global::indexer_2.rounds - 1, itemIdx, cards);
+                    long deadCardMask;
+                    for (auto steps = 0; steps < Global::nofMCSimsPerPreflopHand; steps++)
                     {
-                        continue;
-                    }
-                    // deadCardMask |= (1L << card1Opponent); // card2Opponent is anyway > card1Opponent
-                    for (auto card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
-                    {
-                        if (((1L << card2Opponent) & deadCardMask) != 0)
+                        deadCardMask = (1L << cards[0]) + (1L << cards[1]);
+
+                        int cardFlop1 = randint(0, Global::CARDS);
+                        while (((1L << cardFlop1) & deadCardMask) != 0)
+                            cardFlop1 = randint(0, Global::CARDS);
+                        deadCardMask |= (1L << cardFlop1);
+
+                        int cardFlop2 = randint(0, Global::CARDS);
+                        while (((1L << cardFlop2) & deadCardMask) != 0)
+                            cardFlop2 = randint(0, Global::CARDS);
+                        deadCardMask |= (1L << cardFlop2);
+
+                        int cardFlop3 = randint(0, Global::CARDS);
+                        while (((1L << cardFlop3) & deadCardMask) != 0)
+                            cardFlop3 = randint(0, Global::CARDS);
+                        deadCardMask |= (1L << cardFlop3);
+
+                        int cardTurn = randint(0, Global::CARDS);
+                        while (((1L << cardTurn) & deadCardMask) != 0)
+                            cardTurn = randint(0, Global::CARDS);
+                        deadCardMask |= (1L << cardTurn);
+
+                        int cardRiver = randint(0, Global::CARDS);
+                        while (((1L << cardRiver) & deadCardMask) != 0)
+                            cardRiver = randint(0, Global::CARDS);
+                        deadCardMask |= (1L << cardRiver);
+
+                        auto strength = vector<int>(3);
+                        for (auto card1Opponent = 0; card1Opponent < 51; card1Opponent++)
                         {
-                            continue;
+                            if (((1L << card1Opponent) & deadCardMask) != 0)
+                            {
+                                continue;
+                            }
+                            // deadCardMask |= (1L << card1Opponent); // card2Opponent is anyway > card1Opponent
+                            for (auto card2Opponent = card1Opponent + 1; card2Opponent < Global::CARDS; card2Opponent++)
+                            {
+                                if (((1L << card2Opponent) & deadCardMask) != 0)
+                                {
+                                    continue;
+                                }
+                                ulong handSevenCards = (1uL << cards[0]) + (1uL << cards[1]) + (1uL << cardFlop1) + (1uL << cardFlop2) + (1uL << cardFlop3) + (1uL << cardTurn) + (1uL << cardRiver);
+                                ulong handOpponentSevenCards = (1uL << cardFlop1) + (1uL << cardFlop2) + (1uL << cardFlop3) + (1uL << cardTurn) + (1uL << cardRiver) + (1uL << card1Opponent) + (1uL << card2Opponent);
+
+                                int valueSevenCards = Global::handEvaluator->Evaluate(handSevenCards);
+                                int valueOpponentSevenCards = Global::handEvaluator->Evaluate(handOpponentSevenCards);
+
+                                // strength = histogram with column win, draw, and loss
+                                int index = (valueSevenCards > valueOpponentSevenCards ? 0 : valueSevenCards == valueOpponentSevenCards ? 1
+                                                                                                                                        : 2);
+
+                                strength[index] += 1;
+                            }
                         }
-                        ulong handSevenCards = (1uL << cards[0]) + (1uL << cards[1]) + (1uL << cardFlop1) + (1uL << cardFlop2) + (1uL << cardFlop3) + (1uL << cardTurn) + (1uL << cardRiver);
-                        ulong handOpponentSevenCards = (1uL << cardFlop1) + (1uL << cardFlop2) + (1uL << cardFlop3) + (1uL << cardTurn) + (1uL << cardRiver) + (1uL << card1Opponent) + (1uL << card2Opponent);
-
-                        int valueSevenCards = Global::handEvaluator->Evaluate(handSevenCards);
-                        int valueOpponentSevenCards = Global::handEvaluator->Evaluate(handOpponentSevenCards);
-
-                        // strength = histogram with column win, draw, and loss
-                        int index = (valueSevenCards > valueOpponentSevenCards ? 0 : valueSevenCards == valueOpponentSevenCards ? 1
-                                                                                                                                : 2);
-
-                        strength[index] += 1;
+                        float equity = (strength[0] + strength[1] / 2.0f) / (strength[0] + strength[1] + strength[2]);
+                        histogramsPreflop[itemIdx][(min({Global::preflopHistogramSize - 1,
+                                                   (int)(equity * (float)Global::preflopHistogramSize)}))] += 1;
+       
                     }
                 }
-                float equity = (strength[0] + strength[1] / 2.0f) / (strength[0] + strength[1] + strength[2]);
-                histogramsPreflop[i][(min({Global::preflopHistogramSize - 1,
-                                           (int)(equity * (float)Global::preflopHistogramSize)}))] += 1;
-                deadCardMask = (1L << cards[0]) + (1L << cards[1]);
-            }
-        };
+        );
 
         chrono::steady_clock::time_point end = chrono::steady_clock::now();
         auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
