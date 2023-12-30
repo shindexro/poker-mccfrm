@@ -154,11 +154,11 @@ namespace poker
     {
         for (auto [infosetString, infoset] : Global::nodeMap)
         {
-            for (auto i = 0UL; i < infoset.regret.size(); ++i)
-            {
-                infoset.regret[i] *= d;
-                infoset.actionCounter[i] *= d;
-            }
+            for (auto &r : infoset.regret)
+                r *= d;
+
+            for (auto &a : infoset.actionCounter)
+                a *= d;
         }
     }
 
