@@ -64,7 +64,9 @@ void TrainerManager::StartTrainer(int index)
 
             chrono::steady_clock::time_point end = chrono::steady_clock::now();
             auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
-            std::cout << "Iterations per second: " << iterations / (elapsed + 1) << std::endl;
+            std::cout << "Iterations per second: " << iterations / (elapsed + 1) << " "
+                << "elasped time: " << elapsed << "[s]"
+                << std::endl;
         }
 
         if (index != 0)
