@@ -139,7 +139,7 @@ namespace poker
             {
                 handRankMap[bitmap] = (ulong)(equivalence - uniqueHandStrengths.begin());
             }
-            std::cout << handRankMap[bitmap] << " " << hand.ToString() << " " << strength << std::endl;
+            // std::cout << handRankMap[bitmap] << " " << hand.ToString() << " " << strength << std::endl;
         }
         std::cout << "handRankMap size: " << handRankMap.size() << endl;
     }
