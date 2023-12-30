@@ -40,7 +40,7 @@ namespace poker
         inline static const int nofTurnBuckets = 200;
         inline static const int nofFlopBuckets = 200;
         // 100k or even 1 million shouldn't take too much time compared to the rest of the information abstraction
-        inline static const int nofMCSimsPerPreflopHand = 1000000;
+        inline static const int nofMCSimsPerPreflopHand = 100000;
         // for the river, determines the river histogram size (in theory could be up to 169 but will be very slow) default 8
         inline static const int nofOpponentClusters = 16;
         inline static const int flopHistogramSize = 50;
