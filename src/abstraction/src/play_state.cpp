@@ -93,17 +93,17 @@ namespace poker
                 case poker::Action::Raise:
                     historyStringStream << "R";
                 case poker::Action::Raise1:
-                    historyStringStream << "R1";
+                    historyStringStream << "1";
                 case poker::Action::Raise2:
-                    historyStringStream << "R2";
+                    historyStringStream << "2";
                 case poker::Action::Raise3:
-                    historyStringStream << "R3";
+                    historyStringStream << "3";
                 case poker::Action::Raise4:
-                    historyStringStream << "R4";
+                    historyStringStream << "4";
                 case poker::Action::Raise5:
-                    historyStringStream << "R5";
+                    historyStringStream << "5";
                 case poker::Action::Raise6:
-                    historyStringStream << "R6";
+                    historyStringStream << "6";
             }
         }
         string historyString = historyStringStream.str();
