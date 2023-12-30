@@ -5,8 +5,8 @@ namespace poker
     // ratios must be sorted in ascending order
     map<BettingRound, vector<vector<float>>> Global::raiseRatiosByRoundByPlayerCount{
             {BettingRound::Preflop, {
-                                        {},
-                                        {},
+                                        {}, // 0 players to act
+                                        {1.0f, 1.5f, 2.0f}, // 1 players to act
                                         {1.0f, 1.5f, 2.0f}, // 2 players to act
                                         {1.0f, 1.5f, 2.0f}, // 3 players to act
                                         {1.0f, 1.5f, 2.0f}, // 4 players to act
@@ -15,7 +15,7 @@ namespace poker
                                     }},
             {BettingRound::Flop, {
                                         {},
-                                        {},
+                                        {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 1 players to act
                                         {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 2 players to act
                                         {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 3 players to act
                                         {0.5f}, // 4 players to act
@@ -24,7 +24,7 @@ namespace poker
                                     }},
             {BettingRound::Turn, {
                                         {},
-                                        {},
+                                        {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 1 players to act
                                         {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 2 players to act
                                         {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 3 players to act
                                         {0.5f}, // 4 players to act
@@ -33,7 +33,7 @@ namespace poker
                                     }},
             {BettingRound::River, {
                                         {},
-                                        {},
+                                        {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 1 players to act
                                         {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 2 players to act
                                         {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 3 players to act
                                         {0.5f}, // 4 players to act
