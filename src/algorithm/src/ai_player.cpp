@@ -26,6 +26,7 @@ namespace poker
         {
             // use real-time search
             auto trainer = Trainer(0);
+            /// TOOD: make number for iterations more dynamic
             for (int i = 0; i < 10000; i++)
             {
                 /// TODO: change search root to beginning of round
