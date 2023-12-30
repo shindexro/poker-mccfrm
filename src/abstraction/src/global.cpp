@@ -3,7 +3,7 @@
 namespace poker
 {
     // ratios must be sorted in ascending order
-    map<BettingRound, vector<vector<float>>> Global::raiseRatiosByRoundByPlayerCount{
+    const map<BettingRound, vector<vector<float>>> Global::raiseRatiosByRoundByPlayerCount{
             {BettingRound::Preflop, {
                                         {}, // 0 players to act
                                         {1.0f, 1.5f, 2.0f}, // 1 players to act
