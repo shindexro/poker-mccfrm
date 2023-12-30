@@ -190,7 +190,7 @@ namespace poker
 
     string Card::ToString() const
     {
-        char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'};
+        char ranks[] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
         char suits[] = {'s', 'h', 'd', 'c'};
         // char suits[] = {'♠', '♥', '♦', '♣'};
         string s = string({ranks[(int)rank],
