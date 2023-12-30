@@ -20,7 +20,7 @@ namespace poker
     class Global
     {
     public:
-        inline static const int NOF_THREADS = 4;
+        inline static const int NOF_THREADS = 8;
         static const map<BettingRound, vector<vector<float>>> raiseRatiosByRoundByPlayerCount;
         inline static const int buyIn = 10000;
         inline static const int nofPlayers = 6;
@@ -40,7 +40,7 @@ namespace poker
         inline static const int nofTurnBuckets = 200;
         inline static const int nofFlopBuckets = 200;
         // 100k or even 1 million shouldn't take too much time compared to the rest of the information abstraction
-        inline static const int nofMCSimsPerPreflopHand = 100000;
+        inline static const int nofMCSimsPerPreflopHand = 1000000;
         // for the river, determines the river histogram size (in theory could be up to 169 but will be very slow) default 8
         inline static const int nofOpponentClusters = 16;
         inline static const int flopHistogramSize = 50;
@@ -48,7 +48,7 @@ namespace poker
 
         // this is used to create the nofOpponentClusters, it can be increased (default 50)
         // with little time penalty because the clustering for 169 hands is very fast
-        inline static const int preflopHistogramSize = 100;
+        inline static const int preflopHistogramSize = 50;
 
         // dont change
         static HandIndexer indexer_2;
