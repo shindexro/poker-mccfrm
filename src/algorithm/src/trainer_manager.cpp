@@ -8,7 +8,11 @@ TrainerManager::TrainerManager() :
 
 TrainerManager::TrainerManager(int threadCount) :
     threadCount{threadCount},
-    iterations{0}
+    iterations{0},
+    StrategyIntervalCountdown{StrategyInterval},
+    DiscountIntervalCountdown{DiscountInterval},
+    SaveToDiskIntervalCountdown{SaveToDiskInterval},
+    TestGamesIntervalCountdown{TestGamesInterval}
 {
     trainers = vector<Trainer>();
     for (auto i = 0; i < threadCount; i++)
@@ -34,18 +38,6 @@ void TrainerManager::StartTraining()
 void TrainerManager::StartTrainer(int index)
 {
     auto trainer = trainers[index];
-
-    const long StrategyInterval = 10000; // bb rounds before updating player strategy (recursive through tree) 10k
-    const long LCFRThreshold = 20000000;         // bb rounds when to stop discounting old regrets, no clue what it should be
-    const long DiscountInterval = 1000000;       // bb rounds, discount values periodically but not every round, 10 minutes
-    const long SaveToDiskInterval = 100000;
-    const long TestGamesInterval = 100000;
-    const long PruneThreshold = 20000000;  // bb rounds after this time we stop checking all actions, 200 minutes
-
-    atomic<long> StrategyIntervalCountdown = StrategyInterval;
-    atomic<long> DiscountIntervalCountdown = DiscountInterval;
-    atomic<long> SaveToDiskIntervalCountdown = SaveToDiskInterval;
-    atomic<long> TestGamesIntervalCountdown = TestGamesInterval;
 
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
