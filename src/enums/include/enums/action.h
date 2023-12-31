@@ -19,6 +19,9 @@ namespace poker
         Raise4,
         Raise5,
         Raise6,
+        Raise7,
+        Raise8,
+        Raise9,
         Allin
     };
 

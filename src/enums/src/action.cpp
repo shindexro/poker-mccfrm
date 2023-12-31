@@ -21,6 +21,9 @@ namespace poker
                 PROCESS_VAL(Raise4);
                 PROCESS_VAL(Raise5);
                 PROCESS_VAL(Raise6);
+                PROCESS_VAL(Raise7);
+                PROCESS_VAL(Raise8);
+                PROCESS_VAL(Raise9);
                 PROCESS_VAL(Allin);
             }
             return "N/A";

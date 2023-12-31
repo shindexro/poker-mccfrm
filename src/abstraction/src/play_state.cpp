@@ -104,6 +104,12 @@ namespace poker
                     historyStringStream << "5";
                 case poker::Action::Raise6:
                     historyStringStream << "6";
+                case poker::Action::Raise7:
+                    historyStringStream << "7";
+                case poker::Action::Raise8:
+                    historyStringStream << "8";
+                case poker::Action::Raise9:
+                    historyStringStream << "9";
             }
         }
         string historyString = historyStringStream.str();
@@ -219,29 +225,18 @@ namespace poker
             if (raise >= players[community.playerToMove].stack)
                 break;
 
-            switch (i)
-            {
-                case 0:
-                    nextState->history.push_back(Action::Raise1);
-                    break;
-                case 1:
-                    nextState->history.push_back(Action::Raise2);
-                    break;
-                case 2:
-                    nextState->history.push_back(Action::Raise3);
-                    break;
-                case 3:
-                    nextState->history.push_back(Action::Raise4);
-                    break;
-                case 4:
-                    nextState->history.push_back(Action::Raise5);
-                    break;
-                case 5:
-                    nextState->history.push_back(Action::Raise6);
-                    break;
-                default:
-                    throw invalid_argument("Exceed maximum raise size count");
-            }
+            static const vector<Action> raiseRatioIdxToAction{
+                Action::Raise1,
+                Action::Raise2,
+                Action::Raise3,
+                Action::Raise4,
+                Action::Raise5,
+                Action::Raise6,
+                Action::Raise7,
+                Action::Raise8,
+                Action::Raise9,
+            };
+            nextState->history.push_back(raiseRatioIdxToAction[i]);
 
             auto &playerWhoRaised = nextState->players[community.playerToMove];
             playerWhoRaised.stack -= raise;
