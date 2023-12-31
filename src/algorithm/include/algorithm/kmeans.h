@@ -32,28 +32,29 @@ namespace poker
         /// <param name="data"></param>
         /// <param name="k"></param>
         /// <returns></returns>
+        vector<int> Cluster(
+            function<float(vector<vector<float>>&, vector<vector<float>>&, int, int)> distanceFunc,
+            vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
         vector<int> ClusterEMD(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
         vector<int> ClusterL2(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
 
     private:
         vector<vector<float>> CalculateNewCenters(vector<vector<float>> &data, vector<int> &bestCenters, int k);
-        void CalculateClusterDistancesL2(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters);
-        void CalculateClusterDistancesEMD(vector<vector<float>> &distances, vector<vector<float>> &clusterCenters);
 
-        /// <summary>
-        /// Returns a sample of the data
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="nofSamples"></param>
-        /// <returns></returns>
-        vector<vector<float>> GetUniqueRandomNumbers(vector<vector<float>> &data, int nofSamples);
-        vector<vector<float>> FindStartingCentersL2(vector<vector<float>> &data, int k);
-        vector<vector<float>> FindStartingCentersEMD(vector<vector<float>> &data, int k);
+        void CalculateClusterDistances(
+            function<float(vector<vector<float>>&, vector<vector<float>>&, int, int)> distanceFunc,
+            vector<vector<float>> &distances, vector<vector<float>> &clusterCenters);
+
+        vector<vector<float>> FindStartingCenters(
+            function<float(vector<vector<float>>&, vector<vector<float>>&, int, int)> distanceFunc,
+            vector<vector<float>> &data, int k);
+
+        static vector<vector<float>> GetRandomSubset(vector<vector<float>> &data, int nofSamples);
         static void SquareArray(vector<float> &a);
-        void CopyArray(vector<vector<float>> &dataSource, vector<vector<float>> &dataDestination, int indexSource, int indexDestination);
+        static void CopyArray(vector<vector<float>> &dataSource, vector<vector<float>> &dataDestination, int indexSource, int indexDestination);
 
-        float GetEarthMoverDistance(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2);
-        float GetL2DistanceSquared(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2);
+        static float GetEarthMoverDistance(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2);
+        static float GetL2Distance(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2);
     };
 } // namespace poker
 #endif

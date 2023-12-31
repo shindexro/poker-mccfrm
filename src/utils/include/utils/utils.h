@@ -30,6 +30,17 @@ namespace utils
     vector<Hand> GetStartingHandChart();
 
     template <typename T>
+    void normalise(vector<T> &v)
+    {
+        T sum = 0;
+        for (auto i = 0ul; i < v.size(); i++)
+            sum += v[i];
+
+        for (auto &n : v)
+            n /= sum;
+    }
+
+    template <typename T>
     void SaveToFile(T &obj, const string &filename)
     {
         cout << "Saving to file " << filename << endl;
