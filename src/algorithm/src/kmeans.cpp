@@ -158,65 +158,30 @@ namespace poker
                 CalculateClusterDistancesL2(centerCenterDistances, centers);
 
                 // find closest cluster for each element
-                atomic<long> sharedLoopCounter = 0;
-                atomic<double> totalDistance = 0;
+                auto threadDistance = vector<long>(Global::NOF_THREADS);
+                utils::parallelise(data.size(),
+                                   [&](int threadIdx, int itemIdx)
+                                   {
+                                        // assume previous cluster was good, this is better for the triangle inequality
+                                        double distance = GetL2DistanceSquared(data, centers, itemIdx, bestCenters[itemIdx]);
+                                        int bestIndex = bestCenters[itemIdx];
 
-                indicators::show_console_cursor(false);
-                BlockProgressBar bar{
-                    option::BarWidth{80},
-                    option::Start{"["},
-                    option::End{"]"},
-                    option::ForegroundColor{Color::white},
-                    option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},
-                    option::ShowElapsedTime{true},
-                    option::ShowRemainingTime{true},
-                    option::MaxProgress{data.size()}};
-
-                oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
-                                          [&](int i)
-                                          {
-                                              double threadDistance = 0;
-                                              long iter = 0;
-                                              auto [startItemIdx, endItemIdx] = utils::GetWorkItemsIndices(data.size(), Global::NOF_THREADS, i);
-
-                                              for (auto j = startItemIdx; j < endItemIdx; ++j)
-                                              { // go through all data
-                                                  // assume previous cluster was good, this is better for the triangle inequality
-                                                  double distance = GetL2DistanceSquared(data, centers, j, bestCenters[j]);
-                                                  int bestIndex = bestCenters[j];
-
-                                                  for (auto m = 0; m < k; m++) // go through centers
-                                                  {
-                                                      if (centerCenterDistances[bestIndex][m] < 2 * (float)sqrt(distance) && bestIndex != m)
-                                                      {
-                                                          double tempDistance = GetL2DistanceSquared(data, centers, j, m);
-                                                          if (tempDistance < distance)
-                                                          {
-                                                              distance = tempDistance;
-                                                              bestIndex = m;
-                                                          }
-                                                      }
-                                                  }
-                                                  bestCenters[j] = bestIndex;
-                                                  threadDistance += sqrt(distance);
-
-                                                  iter++;
-                                                  if (iter % 100 == 0)
-                                                  {
-                                                      sharedLoopCounter += 100;
-                                                      bar.set_progress(sharedLoopCounter);
-                                                      double expectedTotalDistance = atomic_load(&totalDistance);
-                                                      while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance + threadDistance))
-                                                          ;
-                                                      threadDistance = 0;
-                                                  }
-                                              }
-                                              sharedLoopCounter += iter % 100;
-                                              bar.set_progress(sharedLoopCounter);
-                                              double expectedTotalDistance = atomic_load(&totalDistance);
-                                              while (!totalDistance.compare_exchange_weak(expectedTotalDistance, expectedTotalDistance + threadDistance))
-                                                  ;
-                                          });
+                                        for (auto m = 0; m < k; m++) // go through centers
+                                        {
+                                            if (centerCenterDistances[bestIndex][m] < 2 * (float)sqrt(distance) && bestIndex != m)
+                                            {
+                                                double tempDistance = GetL2DistanceSquared(data, centers, itemIdx, m);
+                                                if (tempDistance < distance)
+                                                {
+                                                    distance = tempDistance;
+                                                    bestIndex = m;
+                                                }
+                                            }
+                                        }
+                                        bestCenters[itemIdx] = bestIndex;
+                                        threadDistance[threadIdx] += sqrt(distance);
+                                    });
+                double totalDistance = accumulate(threadDistance.begin(), threadDistance.end(), 0L);
 
                 centers = CalculateNewCenters(data, bestCenters, k);
                 totalDistance = totalDistance / data.size();
