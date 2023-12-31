@@ -100,7 +100,7 @@ namespace poker
                     recordCenters = vector<int>(bestCenters);
                 }
 
-                distanceChanged = totalDistance != lastDistance;
+                distanceChanged = abs(diff) / lastDistance < stopClusterImprovementThreshold;
                 lastDistance = totalDistance;
             }
         }

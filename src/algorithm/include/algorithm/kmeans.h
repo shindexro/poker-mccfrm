@@ -39,6 +39,8 @@ namespace poker
         vector<int> ClusterL2(vector<vector<float>> &data, int k, int nofRuns, vector<int> &_bestCenters);
 
     private:
+        inline static const float stopClusterImprovementThreshold = 1e-5;
+
         vector<vector<float>> CalculateNewCenters(vector<vector<float>> &data, vector<int> &bestCenters, int k);
 
         void CalculateClusterDistances(
