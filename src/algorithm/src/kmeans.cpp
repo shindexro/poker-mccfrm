@@ -72,7 +72,7 @@ namespace poker
                                     }
                                     bestCenters[itemIdx] = bestIndex;
                                     threadDistance[threadIdx] += distance; });
-                double totalDistance = accumulate(threadDistance.begin(), threadDistance.end(), 0L);
+                double totalDistance = accumulate(threadDistance.begin(), threadDistance.end(), 0.0L);
 
                 centers = CalculateNewCenters(data, bestCenters, k);
                 totalDistance = totalDistance / data.size();
@@ -181,7 +181,7 @@ namespace poker
                                         bestCenters[itemIdx] = bestIndex;
                                         threadDistance[threadIdx] += sqrt(distance);
                                     });
-                double totalDistance = accumulate(threadDistance.begin(), threadDistance.end(), 0L);
+                double totalDistance = accumulate(threadDistance.begin(), threadDistance.end(), 0.0L);
 
                 centers = CalculateNewCenters(data, bestCenters, k);
                 totalDistance = totalDistance / data.size();
@@ -345,7 +345,7 @@ namespace poker
                                             distancesToBestCenter[itemIdx] = tempDistance;
                                         }
                                 } });
-                double sum = accumulate(distancesToBestCenter.begin(), distancesToBestCenter.end(), 0.0);
+                double sum = accumulate(distancesToBestCenter.begin(), distancesToBestCenter.end(), 0.0L);
                 for (auto p = 0UL; p < distancesToBestCenter.size(); ++p)
                 {
                     distancesToBestCenter[p] /= sum;
