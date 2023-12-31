@@ -296,21 +296,21 @@ namespace poker
 
     void OCHSTable::SaveToFile()
     {
-        if (preflopIndices.size())
+        if (preflopIndices.size() && !utils::FileExists(filenameOppClusters))
         {
             cout << "Saving table to file " << filenameOppClusters << endl;
             ofstream file(filenameOppClusters);
             boost::archive::binary_oarchive archive(file);
             archive << preflopIndices;
         }
-        if (histogramsRiver.size())
+        if (histogramsRiver.size() && !utils::FileExists(filenameRiverHistograms))
         {
             cout << "Saving river histograms to file " << filenameRiverHistograms << endl;
             ofstream file(filenameRiverHistograms);
             boost::archive::binary_oarchive archive(file);
             archive << histogramsRiver;
         }
-        if (riverIndices.size())
+        if (riverIndices.size() && !utils::FileExists(filenameRiverClusters))
         {
             cout << "Saving river cluster index to file " << filenameRiverClusters << endl;
             ofstream file(filenameRiverClusters);
