@@ -214,6 +214,7 @@ namespace poker
         std::cout << "handRankMap size: " << handRankMap.size() << endl;
     }
 
+    // Deprecated
     void Evaluator::GenerateMonteCarloMap(int iterations)
     {
         monteCarloMap = unordered_map<ulong, ulong>();
