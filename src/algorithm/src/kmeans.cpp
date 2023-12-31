@@ -29,7 +29,7 @@ namespace poker
             bestCenters = vector<int>(_bestCenters);
             recordCenters = vector<int>(_bestCenters);
         }
-        double recordDistance = DBL_MAX;
+        float recordDistance = FLT_MAX;
 
         for (auto run = 0; run < nofRuns; ++run)
         {
@@ -37,7 +37,7 @@ namespace poker
                 << run << "/" << nofRuns << " runs..." << std::endl;
             
             auto centers = vector<vector<float>>(k, vector<float>(data[0].size()));
-            double lastDistance = DBL_MAX;
+            float lastDistance = FLT_MAX;
             bool distanceChanged = true;
 
             if (!skipInit)
@@ -64,14 +64,14 @@ namespace poker
                 auto threadFunc = [&](int threadIdx, int itemIdx)
                 {
                     // assume previous cluster was good, this is better for the triangle inequality
-                    double distance = distanceFunc(data, centers, itemIdx, bestCenters[itemIdx]);
+                    float distance = distanceFunc(data, centers, itemIdx, bestCenters[itemIdx]);
                     int bestIndex = bestCenters[itemIdx];
 
                     for (auto m = 0; m < k; m++) // go through centers
                     {
                         if (centerCenterDistances[bestIndex][m] < 2 * distance && bestIndex != m)
                         {
-                            double tempDistance = distanceFunc(data, centers, itemIdx, m);
+                            float tempDistance = distanceFunc(data, centers, itemIdx, m);
                             if (tempDistance < distance)
                             {
                                 distance = tempDistance;
@@ -84,11 +84,11 @@ namespace poker
                 };
                 utils::parallelise(data.size(), threadFunc);
 
-                double totalDistance = accumulate(threadDistance.begin(), threadDistance.end(), 0.0L);
+                float totalDistance = accumulate(threadDistance.begin(), threadDistance.end(), 0.0L);
                 totalDistance = totalDistance / data.size();
 
                 centers = CalculateNewCenters(data, bestCenters, k);
-                double diff = lastDistance - totalDistance;
+                float diff = lastDistance - totalDistance;
                 std::cout << "Current average distance: " << totalDistance
                           << " Improvement: " << diff
                           << ", " << 100.0 * (1.0 - totalDistance / lastDistance) << "%"
@@ -184,13 +184,13 @@ namespace poker
         for (auto c = 1; c < k; ++c)
         {
             cout << "Finding center for " << c << "-th cluster" << endl;
-            auto distancesToBestCenter = vector<double>(centerCandidates.size(), DBL_MAX);
+            auto distancesToBestCenter = vector<float>(centerCandidates.size(), FLT_MAX);
 
             auto findDistanceToBestCenter = [&](int /*threadIdx*/, int itemIdx)
             {
                 for (auto m = 0; m < c; ++m)
                 {
-                    double tempDistance = distanceFunc(centerCandidates, centers, itemIdx, m);
+                    float tempDistance = distanceFunc(centerCandidates, centers, itemIdx, m);
                     tempDistance = tempDistance * tempDistance;
                     if (tempDistance < distancesToBestCenter[itemIdx])
                     {
@@ -267,7 +267,7 @@ namespace poker
 
     float Kmeans::GetL2Distance(vector<vector<float>> &data, vector<vector<float>> &centers, int index1, int index2)
     {
-        double totalDistance = 0;
+        float totalDistance = 0;
         for (auto i = 0UL; i < data[0].size(); i++)
         {
             float diff = data[index1][i] - centers[index2][i];
