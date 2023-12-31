@@ -258,7 +258,6 @@ namespace poker
         float emd = 0, totalDistance = 0;
         for (auto i = 0UL; i < data[0].size(); i++)
         {
-            // todo: how is this emd???
             emd = (data[index1][i] + emd) - centers[index2][i];
             totalDistance += abs(emd);
         }
