@@ -78,8 +78,7 @@ namespace utils
             option::MaxProgress{maxCount}};
 
         atomic<long> iterations = 0;
-        const long barUpdateInterval = max(1L, maxCount / 100);
-        chrono::steady_clock::time_point start = chrono::steady_clock::now();
+        const long barUpdateInterval = min(max(1L, maxCount / 100), 1000L);
 
         auto threadFunc = [&](int threadIdx)
         {
@@ -96,18 +95,6 @@ namespace utils
                 }
                 func(threadIdx, i);
                 threadIterations++;
-
-                if (threadIdx != 0)
-                    continue;
-
-                chrono::steady_clock::time_point current = chrono::steady_clock::now();
-                auto elapsed = chrono::duration_cast<std::chrono::seconds>(current - start).count();
-                if (elapsed > 30)
-                {
-                    bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
-                    bar.set_progress(iterations);
-                    start = current;
-                }
             }
             iterations += threadIterations;
             bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
