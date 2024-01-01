@@ -91,8 +91,8 @@ namespace utils
                 {
                     iterations += threadIterations;
                     threadIterations = 0;
-                    bar.set_progress(iterations);
                     bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
+                    bar.set_progress(iterations);
                 }
                 func(threadIdx, i);
                 threadIterations++;
@@ -104,14 +104,14 @@ namespace utils
                 auto elapsed = chrono::duration_cast<std::chrono::seconds>(current - start).count();
                 if (elapsed > 30)
                 {
+                    bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
                     bar.set_progress(iterations);
                     start = current;
-                    bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
                 }
             }
             iterations += threadIterations;
-            bar.set_progress(iterations);
             bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
+            bar.set_progress(iterations);
         };
 
         oneapi::tbb::parallel_for(0, Global::NOF_THREADS, threadFunc);
