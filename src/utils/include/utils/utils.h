@@ -79,6 +79,8 @@ namespace utils
 
         atomic<long> iterations = 0;
         const long barUpdateInterval = max(1L, maxCount / 100);
+        chrono::steady_clock::time_point start = chrono::steady_clock::now();
+
         oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
                                   [&](int threadIdx)
                                   {
@@ -94,6 +96,17 @@ namespace utils
                                           }
                                           func(threadIdx, i);
                                           threadIterations++;
+
+                                        if (threadIdx != 0)
+                                            continue;
+
+                                        chrono::steady_clock::time_point current = chrono::steady_clock::now();
+                                        auto elapsed = chrono::duration_cast<std::chrono::seconds>(current - start).count();
+                                        if (elapsed > 30)
+                                        {
+                                            bar.set_progress(iterations);
+                                            start = current;
+                                        }
                                       }
                                       iterations += threadIterations;
                                       bar.set_progress(iterations);
