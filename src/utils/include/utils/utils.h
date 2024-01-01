@@ -81,39 +81,40 @@ namespace utils
         const long barUpdateInterval = max(1L, maxCount / 100);
         chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
-        oneapi::tbb::parallel_for(0, Global::NOF_THREADS,
-                                  [&](int threadIdx)
-                                  {
-                                      long threadIterations = 0;
-                                      auto [startItemIdx, endItemIdx] = GetWorkItemsIndices(maxCount, Global::NOF_THREADS, threadIdx);
-                                      for (auto i = startItemIdx; i < endItemIdx; i++)
-                                      {
-                                          if (threadIterations == barUpdateInterval)
-                                          {
-                                              iterations += threadIterations;
-                                              threadIterations = 0;
-                                              bar.set_progress(iterations);
-                                              bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
-                                              }
-                                              func(threadIdx, i);
-                                              threadIterations++;
+        auto threadFunc = [&](int threadIdx)
+        {
+            long threadIterations = 0;
+            auto [startItemIdx, endItemIdx] = GetWorkItemsIndices(maxCount, Global::NOF_THREADS, threadIdx);
+            for (auto i = startItemIdx; i < endItemIdx; i++)
+            {
+                if (threadIterations == barUpdateInterval)
+                {
+                    iterations += threadIterations;
+                    threadIterations = 0;
+                    bar.set_progress(iterations);
+                    bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
+                }
+                func(threadIdx, i);
+                threadIterations++;
 
-                                              if (threadIdx != 0)
-                                                  continue;
+                if (threadIdx != 0)
+                    continue;
 
-                                              chrono::steady_clock::time_point current = chrono::steady_clock::now();
-                                              auto elapsed = chrono::duration_cast<std::chrono::seconds>(current - start).count();
-                                              if (elapsed > 30)
-                                              {
-                                                  bar.set_progress(iterations);
-                                                  start = current;
-                                                  bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
-                                              }
-                                      }
-                                      iterations += threadIterations;
-                                      bar.set_progress(iterations);
-                                      bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
-                                  });
+                chrono::steady_clock::time_point current = chrono::steady_clock::now();
+                auto elapsed = chrono::duration_cast<std::chrono::seconds>(current - start).count();
+                if (elapsed > 30)
+                {
+                    bar.set_progress(iterations);
+                    start = current;
+                    bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
+                }
+            }
+            iterations += threadIterations;
+            bar.set_progress(iterations);
+            bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
+        };
+
+        oneapi::tbb::parallel_for(0, Global::NOF_THREADS, threadFunc);
 
         indicators::show_console_cursor(true);
         cout << endl;
