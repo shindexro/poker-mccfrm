@@ -93,23 +93,26 @@ namespace utils
                                               iterations += threadIterations;
                                               threadIterations = 0;
                                               bar.set_progress(iterations);
-                                          }
-                                          func(threadIdx, i);
-                                          threadIterations++;
+                                              bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
+                                              }
+                                              func(threadIdx, i);
+                                              threadIterations++;
 
-                                        if (threadIdx != 0)
-                                            continue;
+                                              if (threadIdx != 0)
+                                                  continue;
 
-                                        chrono::steady_clock::time_point current = chrono::steady_clock::now();
-                                        auto elapsed = chrono::duration_cast<std::chrono::seconds>(current - start).count();
-                                        if (elapsed > 30)
-                                        {
-                                            bar.set_progress(iterations);
-                                            start = current;
-                                        }
+                                              chrono::steady_clock::time_point current = chrono::steady_clock::now();
+                                              auto elapsed = chrono::duration_cast<std::chrono::seconds>(current - start).count();
+                                              if (elapsed > 30)
+                                              {
+                                                  bar.set_progress(iterations);
+                                                  start = current;
+                                                  bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
+                                              }
                                       }
                                       iterations += threadIterations;
                                       bar.set_progress(iterations);
+                                      bar.set_option(option::PostfixText{std::to_string(iterations) + "/" + std::to_string(maxCount)});
                                   });
 
         indicators::show_console_cursor(true);
