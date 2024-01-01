@@ -6,6 +6,7 @@
 #include "utils/random.h"
 #include "utils/utils.h"
 #include "game/hand.h"
+#include "tables/ochs_table.h"
 
 #include <oneapi/tbb.h>
 #include <string>
