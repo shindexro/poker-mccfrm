@@ -224,15 +224,15 @@ namespace poker
                 }
 
                 if (sigma[i] <= 0.2)
-                    std::cout << "\e[38;5;196m%03d";
+                    std::cout << "\e[38;5;196m";
                 else if (sigma[i] <= 0.4)
-                    std::cout << "\e[38;5;202m%03d";
+                    std::cout << "\e[38;5;202m";
                 else if (sigma[i] <= 0.6)
-                    std::cout << "\e[38;5;208m%03d";
+                    std::cout << "\e[38;5;208m";
                 else if (sigma[i] <= 0.8)
-                    std::cout << "\e[38;5;148m%03d";
+                    std::cout << "\e[38;5;148m";
                 else
-                    std::cout << "\e[38;5;154m%03d";
+                    std::cout << "\e[38;5;154m";
 
                 std::cout << fixed << setprecision(2) << sigma[i] << " ";
                 std::cout << "\e[0m";
