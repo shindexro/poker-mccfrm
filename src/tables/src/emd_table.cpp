@@ -95,7 +95,7 @@ namespace poker
                   << " turn hands of length " << Global::turnHistogramSize << " each..." << endl;
         chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
-        histogramsTurn = vector<vector<float>>(Global::indexer_2_4.roundSize[1], vector<float>(Global::turnHistogramSize));
+        histogramsTurn = vector<vector<float>>(Global::indexer_2_4.roundSize[1], vector<float>(Global::nofRiverBuckets));
 
         auto threadFunc = [&](int /*threadIdx*/, int itemIdx)
         {
@@ -133,7 +133,7 @@ namespace poker
                   << " flop hands of length " << Global::flopHistogramSize << " each..." << endl;
         chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
-        histogramsFlop = vector<vector<float>>(Global::indexer_2_3.roundSize[1], vector<float>(Global::flopHistogramSize));
+        histogramsFlop = vector<vector<float>>(Global::indexer_2_3.roundSize[1], vector<float>(Global::nofTurnBuckets));
 
         auto threadFunc = [&](int /*threadIdx*/, int itemIdx)
         {
