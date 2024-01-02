@@ -9,6 +9,7 @@
 
 #include <oneapi/tbb/concurrent_hash_map.h>
 #include <vector>
+#include <thread>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ namespace poker
     class Global
     {
     public:
-        inline static const int NOF_THREADS = 16;
+        inline static const int NOF_THREADS = std::thread::hardware_concurrency();;
         static const map<BettingRound, vector<vector<float>>> raiseRatiosByRoundByPlayerCount;
         inline static const int buyIn = 10000;
         inline static const int nofPlayers = 6;
