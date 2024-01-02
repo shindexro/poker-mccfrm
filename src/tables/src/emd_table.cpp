@@ -22,6 +22,7 @@ namespace poker
     void EMDTable::Init()
     {
         LoadFromFile();
+        SaveToFile();
 
         if (turnIndices.size() == 0)
         {
@@ -50,19 +51,19 @@ namespace poker
     }
     void EMDTable::SaveToFile()
     {
-        if (flopIndices.size())
+        if (flopIndices.size() && !utils::FileExists(filenameEMDFlopTable))
         {
             utils::SaveToFile(flopIndices, filenameEMDFlopTable);
         }
-        if (turnIndices.size())
+        if (turnIndices.size() && !utils::FileExists(filenameEMDTurnTable))
         {
             utils::SaveToFile(turnIndices, filenameEMDTurnTable);
         }
-        if (histogramsFlop.size())
+        if (histogramsFlop.size() && !utils::FileExists(filenameEMDFlopHistogram))
         {
             utils::SaveToFile(histogramsFlop, filenameEMDFlopHistogram);
         }
-        if (histogramsTurn.size())
+        if (histogramsTurn.size() && !utils::FileExists(filenameEMDTurnHistogram))
         {
             utils::SaveToFile(histogramsTurn, filenameEMDTurnHistogram);
         }
