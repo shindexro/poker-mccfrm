@@ -184,32 +184,32 @@ namespace poker
         for (auto c = 1; c < k; ++c)
         {
             cout << "Finding center for " << c << "-th cluster" << endl;
-            auto distancesToBestCenter = vector<float>(centerCandidates.size(), FLT_MAX);
+            auto distancesToNearestCenter = vector<float>(centerCandidates.size(), FLT_MAX);
 
             auto findDistanceToBestCenter = [&](int /*threadIdx*/, int itemIdx)
             {
                 if (usedCenters.contains(itemIdx))
                 {
-                    distancesToBestCenter[itemIdx] = 0;
+                    distancesToNearestCenter[itemIdx] = 0;
                     return;
                 }
 
                 for (auto m = 0; m < c; ++m)
                 {
-                    float tempDistance = distanceFunc(centerCandidates, centers, itemIdx, m);
-                    tempDistance = tempDistance * tempDistance;
-                    if (tempDistance < distancesToBestCenter[itemIdx])
+                    float distanceToCenter = distanceFunc(centerCandidates, centers, itemIdx, m);
+                    distanceToCenter = distanceToCenter * distanceToCenter;
+                    if (distanceToCenter < distancesToNearestCenter[itemIdx])
                     {
-                        distancesToBestCenter[itemIdx] = tempDistance;
+                        distancesToNearestCenter[itemIdx] = distanceToCenter;
                     }
                 }
             };
             utils::parallelise(centerCandidates.size(), findDistanceToBestCenter);
 
             // kmean++, choose next center based on weighted probability on squared distance
-            utils::normalise(distancesToBestCenter);
+            utils::normalise(distancesToNearestCenter);
 
-            int nextCenterIndex = utils::SampleDistribution(distancesToBestCenter);
+            int nextCenterIndex = utils::SampleDistribution(distancesToNearestCenter);
             CopyArray(centerCandidates, centers, nextCenterIndex, c);
             usedCenters.insert(nextCenterIndex);
         }
