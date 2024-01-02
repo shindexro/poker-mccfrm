@@ -251,7 +251,7 @@ namespace poker
         ResetGame();
         auto gs = dynamic_cast<ChanceState *>(rootState.get())->GetFirstActionStates();
 
-        int maxOutput = 5; // todo
+        int maxOutput = Global::RANKS * Global::RANKS;
         for (auto ps : gs)
         {
             if (maxOutput < 0)
