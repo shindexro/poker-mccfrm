@@ -176,10 +176,10 @@ namespace poker
         auto centers = vector<vector<float>>(k, vector<float>(data[0].size()));
 
         // first cluster center is randomly chosen
-        auto centerIndices = vector<int>();
+        auto usedCenters = unordered_set<int>();
         int index = randint(0, centerCandidates.size());
         CopyArray(centerCandidates, centers, index, 0);
-        centerIndices.push_back(index);
+        usedCenters.insert(index);
 
         for (auto c = 1; c < k; ++c)
         {
@@ -188,6 +188,12 @@ namespace poker
 
             auto findDistanceToBestCenter = [&](int /*threadIdx*/, int itemIdx)
             {
+                if (usedCenters.contains(itemIdx))
+                {
+                    distancesToBestCenter[itemIdx] = 0;
+                    return;
+                }
+
                 for (auto m = 0; m < c; ++m)
                 {
                     float tempDistance = distanceFunc(centerCandidates, centers, itemIdx, m);
@@ -204,12 +210,8 @@ namespace poker
             utils::normalise(distancesToBestCenter);
 
             int nextCenterIndex = utils::SampleDistribution(distancesToBestCenter);
-            while (find(centerIndices.begin(), centerIndices.end(), nextCenterIndex) != centerIndices.end())
-            {
-                nextCenterIndex = utils::SampleDistribution(distancesToBestCenter);
-            }
             CopyArray(centerCandidates, centers, nextCenterIndex, c);
-            centerIndices.push_back(nextCenterIndex);
+            usedCenters.insert(nextCenterIndex);
         }
 
         return centers;
