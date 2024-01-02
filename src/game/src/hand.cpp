@@ -187,7 +187,7 @@ namespace poker
         for (auto i = 0UL; i < cards.size(); i++)
         {
             Card card = cards[i];
-            cout << card.ToString();
+            cout << card.PrettyString();
         }
         cout << end;
     }

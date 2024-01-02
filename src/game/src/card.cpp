@@ -200,12 +200,17 @@ namespace poker
 
     string Card::PrettyString(const string_view &end) const
     {
-        static const string colors[] = {"\033[1;31m", "\033[1;32m", "\033[1;33m", "\033[1;34m"};
+        static const string colors[] = {
+            "\e[38;5;249m%03d",
+            "\e[38;5;196m%03d",
+            "\e[38;5;076m%03d",
+            "\e[38;5;111m%03d",
+        };
         string s;
         s.append(colors[(int)suit]);
         s.append(ToString());
         s.append(end);
-        s.append("\033[0m");
+        s.append("\e[0m");
         return s;
     }
 
