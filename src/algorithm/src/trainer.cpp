@@ -223,17 +223,19 @@ namespace poker
                         std::cout << "A ";
                 }
 
-                if (sigma[i] <= 0.25)
-                    std::cout << "\033[1;31m";
-                else if (sigma[i] <= 0.5)
-                    std::cout << "\033[1;32m";
-                else if (sigma[i] <= 0.75)
-                    std::cout << "\033[1;33m";
-                else if (sigma[i] <= 1.0)
-                    std::cout << "\033[1;34m";
+                if (sigma[i] <= 0.2)
+                    std::cout << "\e[38;5;196m%03d";
+                else if (sigma[i] <= 0.4)
+                    std::cout << "\e[38;5;202m%03d";
+                else if (sigma[i] <= 0.6)
+                    std::cout << "\e[38;5;208m%03d";
+                else if (sigma[i] <= 0.8)
+                    std::cout << "\e[38;5;148m%03d";
+                else
+                    std::cout << "\e[38;5;154m%03d";
 
                 std::cout << fixed << setprecision(2) << sigma[i] << " ";
-                std::cout << "\033[0m";
+                std::cout << "\e[0m";
 
                 if ((j + 1) % Global::RANKS == 0)
                     std::cout << endl;
