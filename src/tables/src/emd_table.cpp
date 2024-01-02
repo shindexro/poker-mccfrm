@@ -197,11 +197,9 @@ namespace poker
 
     void EMDTable::ClusterFlop()
     {
-        // k-means clustering
         chrono::steady_clock::time_point start = chrono::steady_clock::now();
         Kmeans kmeans = Kmeans();
         auto indices = vector<int>();
-        // int[] indices = FileHandler.LoadFromFileIndex("EMDTableFlop_temp.txt");
         flopIndices = kmeans.ClusterEMD(histogramsFlop, Global::nofFlopBuckets, 1, indices);
 
         chrono::steady_clock::time_point end = chrono::steady_clock::now();
