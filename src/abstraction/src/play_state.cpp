@@ -69,9 +69,12 @@ namespace poker
         if (!nodeMapEntryExists)
         {
             Infoset infoset = Infoset(GetValidActionsCount(), community.bettingRound);
-            Global::nodeMap.insert({infosetString, infoset});
+            bool inserted = Global::nodeMap.insert({infosetString, infoset});
+            if (!inserted)
+                throw invalid_argument("Failed to insert infoset");
+
+            Global::nodeMap.find(accessor, infosetString);
         }
-        Global::nodeMap.find(accessor, infosetString);
         return accessor->second;
     }
 
