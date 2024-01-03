@@ -37,7 +37,7 @@ void TrainerManager::StartTraining()
 
 void TrainerManager::StartTrainer(int index)
 {
-    auto trainer = trainers[index];
+    auto trainer = &trainers[index];
 
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
@@ -47,7 +47,7 @@ void TrainerManager::StartTrainer(int index)
         for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
         {
             bool pruneEnabled = t > PruneThreshold;
-            trainer.TrainOneIteration(traverser, pruneEnabled);
+            trainer->TrainOneIteration(traverser, pruneEnabled);
         }
 
         if (t % 10000 == 0)
@@ -76,7 +76,7 @@ void TrainerManager::StartTrainer(int index)
         {
             if (StrategyIntervalCountdown <= 0)
             {
-                trainer.UpdateStrategy(traverser);
+                trainer->UpdateStrategy(traverser);
                 StrategyIntervalCountdown = StrategyInterval;
             }
         }
@@ -85,20 +85,20 @@ void TrainerManager::StartTrainer(int index)
         if (t < LCFRThreshold && DiscountIntervalCountdown <= 0)
         {
             float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
-            trainer.DiscountInfosets(d);
+            trainer->DiscountInfosets(d);
             DiscountIntervalCountdown = DiscountInterval;
         }
 
         if (TestGamesIntervalCountdown <= 0) // implement progress bar later
         {
-            trainer.PrintStartingHandsChart();
-            trainer.PrintStatistics(iterations);
+            trainer->PrintStartingHandsChart();
+            trainer->PrintStatistics(iterations);
             TestGamesIntervalCountdown = TestGamesInterval;
 
             // std::cout << "Sample games (against self)" << std::endl;
             // for (auto z = 0; z < 20; z++)
             // {
-            //     trainer.PlayOneGame();
+            //     trainer->PlayOneGame();
             // }
         }
         if (SaveToDiskIntervalCountdown <= 0)
