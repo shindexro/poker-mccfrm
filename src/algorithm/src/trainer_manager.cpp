@@ -26,7 +26,7 @@ void TrainerManager::StartTraining()
     LoadTrainedData();
     std::cout << "Starting Monte Carlo Counterfactual Regret Minimization (MCCFRM)..." << std::endl;
 
-    Global::nodeMap.rehash(999999999);
+    Global::nodeMap.rehash(500000000);
 
     // trainers[0].EnumerateActionSpace(); // just for debugging purpose, I don't think it's necessary to enumeration the entire action space
     oneapi::tbb::parallel_for(0, threadCount,
