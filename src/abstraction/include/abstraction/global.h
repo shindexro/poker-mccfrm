@@ -31,7 +31,7 @@ namespace poker
         inline static const int BB = 100;
         inline static const int SB = 50;
 
-        inline static const int RANKS = 13;
+        inline static const int RANKS = 5;
         inline static const int SUITS = 4;
         inline static const int CARDS = RANKS * SUITS;
 
