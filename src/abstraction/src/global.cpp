@@ -53,7 +53,6 @@ namespace poker
     shared_ptr<Evaluator> Global::handEvaluator = make_shared<Evaluator>();
 
     oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMap = oneapi::tbb::concurrent_hash_map<string, Infoset>();
-    oneapi::tbb::concurrent_hash_map<string, Infoset> Global::nodeMapBaseline = oneapi::tbb::concurrent_hash_map<string, Infoset>();
 
     thread_local Deck Global::deck = Deck(CARDS);
 } // namespace poker

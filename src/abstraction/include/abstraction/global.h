@@ -63,7 +63,6 @@ namespace poker
         static shared_ptr<Evaluator> handEvaluator;
 
         static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMap;
-        static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMapBaseline;
 
         static thread_local Deck deck;
     };
