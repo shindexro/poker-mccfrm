@@ -21,11 +21,11 @@ namespace poker
         void StartTraining();
 
     private:
-        static const long StrategyInterval = 10000; // bb rounds before updating player strategy (recursive through tree) 10k
-        static const long LCFRThreshold = 20000000;         // bb rounds when to stop discounting old regrets, no clue what it should be
-        static const long DiscountInterval = 1000000;       // bb rounds, discount values periodically but not every round, 10 minutes
+        static const long StrategyInterval = 10000;         // bb rounds before updating player strategy (recursive through tree) 10k
+        static const long LCFRThreshold = 60000000;         // bb rounds when to stop discounting regrets, 400 minutes
+        static const long DiscountInterval = 1500000;       // bb rounds, discount values periodically but not every round, 10 minutes
         static const long SaveToDiskInterval = 10000000;
-        static const long TestGamesInterval = 100000;
+        static const long TestGamesInterval = 1000000;
         static const long PruneThreshold = 20000000;  // bb rounds after this time we stop checking all actions, 200 minutes
 
         atomic<long> StrategyIntervalCountdown;
