@@ -83,30 +83,23 @@ void TrainerManager::StartTrainer(int index)
             StrategyIntervalCountdown = StrategyInterval;
         }
 
-        // discount all infosets (for all players)
         if (t < LCFRThreshold && DiscountIntervalCountdown <= 0)
         {
+            DiscountIntervalCountdown = DiscountInterval;
             float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
             trainer->DiscountInfosets(d);
-            DiscountIntervalCountdown = DiscountInterval;
         }
 
-        if (TestGamesIntervalCountdown <= 0) // implement progress bar later
+        if (TestGamesIntervalCountdown <= 0)
         {
+            TestGamesIntervalCountdown = TestGamesInterval;
             trainer->PrintStartingHandsChart();
             trainer->PrintStatistics(iterations);
-            TestGamesIntervalCountdown = TestGamesInterval;
-
-            // std::cout << "Sample games (against self)" << std::endl;
-            // for (auto z = 0; z < 20; z++)
-            // {
-            //     trainer->PlayOneGame();
-            // }
         }
         if (SaveToDiskIntervalCountdown <= 0)
         {
-            SaveTrainedData();
             SaveToDiskIntervalCountdown = SaveToDiskInterval;
+            SaveTrainedData();
         }
     }
 }
