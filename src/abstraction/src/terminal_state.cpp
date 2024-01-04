@@ -26,7 +26,7 @@ namespace poker
 
         auto pot = GetPot();
         int rake = Global::rakePercent * pot;
-        rake = max(rake, Global::SB); // assume rake cap at 1SB
+        rake = min(rake, Global::SB); // assume rake cap at 1SB
         pot -= rake;
 
         if (GetNumberOfActivePlayers() == 1)
