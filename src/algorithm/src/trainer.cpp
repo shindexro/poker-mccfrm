@@ -45,7 +45,7 @@ namespace poker
             Since CFR’s average strategy is not guaranteed to converge to a Nash equilibrium in six player
             poker, there is no theoretical benefit to using the average strategy as opposed to the
             current strategy. */
-        if (gs->BettingRound() > 0 || dynamic_cast<TerminalState *>(gs.get()) || !gs->IsPlayerInHand(traverser))
+        if (gs->BettingRound() > BettingRound::Preflop || dynamic_cast<TerminalState *>(gs.get()) || !gs->IsPlayerInHand(traverser))
             return;
 
         if (ChanceState *cs = dynamic_cast<ChanceState *>(gs.get()))
