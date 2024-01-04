@@ -76,11 +76,11 @@ void TrainerManager::StartTrainer(int index)
 
         if (StrategyIntervalCountdown <= 0)
         {
+            StrategyIntervalCountdown = StrategyInterval;
             for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
             {
                 trainer->UpdateStrategy(traverser);
             }
-            StrategyIntervalCountdown = StrategyInterval;
         }
 
         if (t < LCFRThreshold && DiscountIntervalCountdown <= 0)
