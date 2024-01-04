@@ -24,13 +24,16 @@ namespace poker
             players[i].reward -= players[i].bet; // the bet amounts are considered lost
         }
 
+        auto pot = GetPot();
+        pot = (1.0f - Global::rake) * pot;
+
         if (GetNumberOfActivePlayers() == 1)
         {
             for (auto i = 0; i < Global::nofPlayers; ++i)
             {
                 if (players[i].isStillInGame)
                 {
-                    players[i].reward += GetPot();
+                    players[i].reward += pot;
                 }
             }
         }
@@ -60,7 +63,7 @@ namespace poker
             // winners chop the pot
             for (auto i = 0UL; i < playersWithBestHand.size(); ++i)
             {
-                players[playersWithBestHand[i]].reward += GetPot() / playersWithBestHand.size();
+                players[playersWithBestHand[i]].reward += pot / playersWithBestHand.size();
             }
         }
         rewardGenerated = true;
