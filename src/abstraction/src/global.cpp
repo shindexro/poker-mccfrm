@@ -15,8 +15,8 @@ namespace poker
                                     }},
             {BettingRound::Flop, {
                                         {},
-                                        {0.2f, 0.33f, 0.67f, 1.0f, 1.5f}, // 1 players to act
-                                        {0.2f, 0.33f, 0.67f, 1.0f, 1.5f}, // 2 players to act
+                                        {0.33f, 0.67f, 1.0f, 1.5f}, // 1 players to act
+                                        {0.33f, 0.67f, 1.0f, 1.5f}, // 2 players to act
                                         {0.5f, 1.0f}, // 3 players to act
                                         {0.5f, 1.0f}, // 4 players to act
                                         {0.5f, 1.0f}, // 5 players to act
@@ -24,8 +24,8 @@ namespace poker
                                     }},
             {BettingRound::Turn, {
                                         {},
-                                        {0.2f, 0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 1 players to act
-                                        {0.2f, 0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 2 players to act
+                                        {0.33f, 0.67f, 1.0f, 1.5f}, // 1 players to act
+                                        {0.33f, 0.67f, 1.0f, 1.5f}, // 2 players to act
                                         {0.5f, 1.0f}, // 3 players to act
                                         {0.5f, 1.0f}, // 4 players to act
                                         {0.5f, 1.0f}, // 5 players to act
@@ -35,7 +35,7 @@ namespace poker
                                         {},
                                         {0.1f, 0.22f, 0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 1 players to act
                                         {0.1f, 0.22f, 0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 2 players to act
-                                        {0.33f, 0.67f, 1.0f, 1.5f, 2.0f}, // 3 players to act
+                                        {0.5f, 1.0f}, // 3 players to act
                                         {0.5f, 1.0f}, // 4 players to act
                                         {0.5f, 1.0f}, // 5 players to act
                                         {0.5f, 1.0f}, // 6 players to act
