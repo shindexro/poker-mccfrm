@@ -30,7 +30,7 @@ namespace poker
 
         inline static const int BB = 100;
         inline static const int SB = 50;
-        inline static const float rake = 0.05;
+        inline static const float rakePercent = 0.05;
 
         inline static const int RANKS = 13;
         inline static const int SUITS = 4;
