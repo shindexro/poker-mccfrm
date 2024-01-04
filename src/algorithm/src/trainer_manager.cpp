@@ -74,13 +74,13 @@ void TrainerManager::StartTrainer(int index)
         if (index != 0)
             continue;
 
-        for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
+        if (StrategyIntervalCountdown <= 0)
         {
-            if (StrategyIntervalCountdown <= 0)
+            for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
             {
                 trainer->UpdateStrategy(traverser);
-                StrategyIntervalCountdown = StrategyInterval;
             }
+            StrategyIntervalCountdown = StrategyInterval;
         }
 
         // discount all infosets (for all players)
