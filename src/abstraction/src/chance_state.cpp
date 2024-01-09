@@ -47,11 +47,6 @@ namespace poker
         }
         else
         {
-            //// TODO: move assertion to tests
-            // if (GetNumberOfPlayersThatNeedToAct() == 1)
-            // {
-            //     throw invalid_argument("We just dealt new cards but only 1 player has any actions left");
-            // }
             if (community.bettingRound < BettingRound::River && GetNumberOfAllInPlayers() >= 2)
             {
                 // directly go to next chance node
