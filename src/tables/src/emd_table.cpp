@@ -92,7 +92,7 @@ namespace poker
     void EMDTable::GenerateTurnHistograms()
     {
         std::cout << "Generating histograms for " << Global::indexer_2_4.roundSize[1]
-                  << " turn hands of length " << Global::turnHistogramSize << " each..." << endl;
+                  << " turn hands of length " << Global::nofRiverBuckets << " each..." << endl;
         chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
         histogramsTurn = vector<vector<float>>(Global::indexer_2_4.roundSize[1], vector<float>(Global::nofRiverBuckets));
@@ -130,7 +130,7 @@ namespace poker
     void EMDTable::GenerateFlopHistograms()
     {
         std::cout << "Generating histograms for " << Global::indexer_2_3.roundSize[1]
-                  << " flop hands of length " << Global::flopHistogramSize << " each..." << endl;
+                  << " flop hands of length " << Global::nofTurnBuckets << " each..." << endl;
         chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
         histogramsFlop = vector<vector<float>>(Global::indexer_2_3.roundSize[1], vector<float>(Global::nofTurnBuckets));

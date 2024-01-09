@@ -45,8 +45,8 @@ namespace poker
         inline static const int nofMCSimsPerPreflopHand = 100000;
         // for the river, determines the river histogram size (in theory could be up to 169 but will be very slow) default 8
         inline static const int nofOpponentClusters = 16;
-        inline static const int flopHistogramSize = 50;
-        inline static const int turnHistogramSize = 50;
+        // inline static const int flopHistogramSize = 50;
+        // inline static const int turnHistogramSize = 50;
 
         // this is used to create the nofOpponentClusters, it can be increased (default 50)
         // with little time penalty because the clustering for 169 hands is very fast
