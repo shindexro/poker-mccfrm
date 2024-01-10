@@ -169,8 +169,7 @@ namespace poker
         std::cout << "K-means++ finding good starting centers..." << std::endl;
 
         // first get some samples of all data to speed up the algorithm
-        static const int centerCandidateMultiplier = 10000;
-        int maxSamples = min({k * centerCandidateMultiplier, (int)data.size()});
+        int maxSamples = min({max({(int)sqrt(data.size()), 100000}), (int)data.size()});
         auto centerCandidates = GetRandomSubset(data, maxSamples);
 
         auto centers = vector<vector<float>>(k, vector<float>(data[0].size()));
