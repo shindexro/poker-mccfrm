@@ -308,27 +308,23 @@ namespace poker
 
     void Trainer::EnumerateActionSpace(shared_ptr<State> gs)
     {
+        static atomic<int> count = 0;
+        thread_local static int threadCount = 0;
         if (dynamic_cast<TerminalState *>(gs.get()))
         {
-            std::stringstream outstringStream;
-            for (auto action : gs->history)
+            threadCount++;
+            if (threadCount == 100000)
             {
-                outstringStream << action;
+                count += threadCount;
+                threadCount = 0;
+                std::cout << count << std::endl;
             }
-
-            std::string outstring = outstringStream.str();
-            regex_replace(outstring, regex("RAISE1"), "R0");
-            regex_replace(outstring, regex("RAISE2"), "R1");
-            regex_replace(outstring, regex("RAISE3"), "R2");
-            regex_replace(outstring, regex("ALLIN"), "A");
-            regex_replace(outstring, regex("CALL"), "C");
-            regex_replace(outstring, regex("CHECK"), "C");
-            regex_replace(outstring, regex("FOLD"), "F");
-
-            std::ofstream outfile;
-            outfile.open("actionSpace.txt", std::ios_base::app); // append instead of overwrite
-            outfile << outstring << endl;
-            outfile.close();
+            // std::stringstream outstringStream;
+            // for (auto action : gs->history)
+            // {
+            //     outstringStream << action;
+            // }
+            // std::cout << outstringStream.str() << std::endl;
         }
         else
         {
@@ -337,6 +333,7 @@ namespace poker
             {
                 EnumerateActionSpace(gs->children[i]);
             }
+            gs->children.clear();
         }
     }
 
