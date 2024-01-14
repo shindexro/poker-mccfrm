@@ -255,11 +255,6 @@ namespace poker
             {
                 children.push_back(nextState);
             }
-            //// TODO: move assertion to test
-            // else
-            // {
-            //     throw invalid_argument("Someone raised but there is no one left to play next");
-            // }
         }
     }
 
