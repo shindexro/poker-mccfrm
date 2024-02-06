@@ -35,7 +35,7 @@ namespace poker
                                         {},
                                         {0.2f, 0.6f, 1.25f}, // 1 players to act
                                         {0.2f, 0.6f, 1.25f}, // 2 players to act
-                                        {0.5f, 1.0f}, // 3 players to act
+                                        {0.3f, 0.75f}, // 3 players to act
                                         {0.3f, 0.75f}, // 4 players to act
                                         {0.3f, 0.75f}, // 5 players to act
                                         {0.3f, 0.75f}, // 6 players to act
