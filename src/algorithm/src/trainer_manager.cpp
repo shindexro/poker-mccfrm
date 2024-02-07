@@ -59,17 +59,18 @@ void TrainerManager::StartTrainer(int index)
             trainer->TrainOneIteration(traverser, pruneEnabled);
         }
 
-        if (t % 10000 == 0)
+        static const int CountdownInterval = 10000;
+        if (t % CountdownInterval == 0)
         {
-            iterations += 10000;
+            iterations += CountdownInterval;
             std::cout << "Training steps " << iterations << " "
                 << "thread " << index
                 << std::endl;
 
-            StrategyIntervalCountdown -= 10000;
-            DiscountIntervalCountdown -= 10000;
-            SaveToDiskIntervalCountdown -= 10000;
-            TestGamesIntervalCountdown -= 10000;
+            StrategyIntervalCountdown -= CountdownInterval;
+            DiscountIntervalCountdown -= CountdownInterval;
+            SaveToDiskIntervalCountdown -= CountdownInterval;
+            TestGamesIntervalCountdown -= CountdownInterval;
 
             chrono::steady_clock::time_point end = chrono::steady_clock::now();
             auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
