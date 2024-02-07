@@ -114,8 +114,11 @@ void TrainerManager::StartTrainer(int index)
 
 void TrainerManager::SaveTrainedData()
 {
-    std::cout << "Saving trained data to file nodeMap.txt" << std::endl;
-    utils::SaveToFile(Global::nodeMap, "nodeMap.txt");
+    auto epoch = utils::GetSecondsSinceEpoch();
+    ostringstream filename;
+    filename << "nodeMap-" <<  epoch << ".txt";
+    std::cout << "Saving trained data to file " << filename.str() << std::endl;
+    utils::SaveToFile(Global::nodeMap, filename.str());
     std::cout << "Saved trained data" << std::endl;
 }
 

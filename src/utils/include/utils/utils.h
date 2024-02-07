@@ -9,6 +9,7 @@
 
 #include <tuple>
 #include <vector>
+#include <chrono>
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
@@ -112,6 +113,8 @@ namespace utils
     {
         return dynamic_cast<const Base *>(ptr) != nullptr;
     }
+
+    decltype(std::chrono::seconds().count()) GetSecondsSinceEpoch();
 } // namespace utils
 
 namespace boost

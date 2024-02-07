@@ -160,4 +160,12 @@ namespace utils
     {
         return filename.size() && access(filename.c_str(), F_OK) != -1;
     }
+
+    decltype(std::chrono::seconds().count()) GetSecondsSinceEpoch()
+    {
+        const auto now = std::chrono::system_clock::now();
+        const auto epoch = now.time_since_epoch();
+        const auto seconds = std::chrono::duration_cast<std::chrono::seconds>(epoch);
+        return seconds.count();
+    }
 } // namespace utils
