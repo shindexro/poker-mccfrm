@@ -75,7 +75,11 @@ void TrainerManager::StartTrainer(int index)
             chrono::steady_clock::time_point end = chrono::steady_clock::now();
             auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
             std::cout << "Iterations per second: " << iterations / (elapsed + 1) << " "
-                << "elasped time: " << elapsed << "[s]"
+                << "elasped time: " << elapsed << "[s] "
+                << "strategy countdown" << StrategyIntervalCountdown << " "
+                << "discount countdown" << DiscountIntervalCountdown << " "
+                << "save2disk countdown" << SaveToDiskIntervalCountdown << " "
+                << "test game countdown" << TestGamesIntervalCountdown << " "
                 << std::endl;
         }
 
