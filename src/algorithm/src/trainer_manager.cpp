@@ -96,13 +96,13 @@ void TrainerManager::StartTrainer(int index)
             std::cout << "Updated strategy" << std::endl;
         }
 
-        if (t < LCFRThreshold && DiscountIntervalCountdown <= 0)
-        {
-            DiscountIntervalCountdown = DiscountInterval;
-            float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
-            trainer->DiscountInfosets(d);
-            std::cout << "Discounted infosets" << std::endl;
-        }
+        // if (t < LCFRThreshold && DiscountIntervalCountdown <= 0)
+        // {
+        //     DiscountIntervalCountdown = DiscountInterval;
+        //     float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
+        //     trainer->DiscountInfosets(d);
+        //     std::cout << "Discounted infosets" << std::endl;
+        // }
 
         if (TestGamesIntervalCountdown <= 0)
         {
