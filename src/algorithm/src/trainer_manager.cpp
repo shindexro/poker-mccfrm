@@ -86,15 +86,15 @@ void TrainerManager::StartTrainer(int index)
         if (index != 0)
             continue;
 
-        if (StrategyIntervalCountdown <= 0)
-        {
-            StrategyIntervalCountdown = StrategyInterval;
-            for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
-            {
-                trainer->UpdateStrategy(traverser);
-            }
-            std::cout << "Updated strategy" << std::endl;
-        }
+        // if (StrategyIntervalCountdown <= 0)
+        // {
+        //     StrategyIntervalCountdown = StrategyInterval;
+        //     for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
+        //     {
+        //         trainer->UpdateStrategy(traverser);
+        //     }
+        //     std::cout << "Updated strategy" << std::endl;
+        // }
 
         // if (t < LCFRThreshold && DiscountIntervalCountdown <= 0)
         // {
