@@ -23,9 +23,9 @@ namespace poker
     vector<vector<float>> OCHSTable::histogramsPreflop;
     vector<vector<float>> OCHSTable::histogramsRiver;
 
-    const string OCHSTable::filenameOppClusters = "OCHSOpponentClusters.txt";
-    const string OCHSTable::filenameRiverClusters = "OCHSRiverClusters.txt";
-    const string OCHSTable::filenameRiverHistograms = "OCHSRiverHistograms.txt";
+    const string OCHSTable::filenameOppClusters = "OCHSOpponentClusters.bin";
+    const string OCHSTable::filenameRiverClusters = "OCHSRiverClusters.bin";
+    const string OCHSTable::filenameRiverHistograms = "OCHSRiverHistograms.bin";
 
     void OCHSTable::Init()
     {
@@ -180,12 +180,12 @@ namespace poker
         chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
         Kmeans kmeans = Kmeans();
-        // TODO: vector<int> indices = FileHandler.LoadFromFileIndex("OCHSRiverClusters_temp.txt");
+        // TODO: vector<int> indices = FileHandler.LoadFromFileIndex("OCHSRiverClusters_temp.bin");
 
         vector<int> indices = vector<int>();
 
         // vector<int> indices;
-        // ifstream file("OCHSRiverClusters_temp.txt");
+        // ifstream file("OCHSRiverClusters_temp.bin");
         // boost::archive::binary_iarchive archive(file);
         // archive >> indices;
 

@@ -133,7 +133,7 @@ void TrainerManager::SaveTrainedData()
 {
     auto epoch = utils::GetSecondsSinceEpoch();
     ostringstream filename;
-    filename << "nodeMap-" <<  epoch << ".txt";
+    filename << "nodeMap-" <<  epoch << ".bin";
     std::cout << "Saving trained data to file " << filename.str() << std::endl;
     utils::SaveToFile(Global::nodeMap, filename.str());
     std::cout << "Saved trained data" << std::endl;
@@ -141,9 +141,9 @@ void TrainerManager::SaveTrainedData()
 
 void TrainerManager::LoadTrainedData()
 {
-    if (!utils::FileExists("nodeMap.txt"))
+    if (!utils::FileExists("nodeMap.bin"))
         return;
-    std::cout << "Loading trained data from file nodeMap.txt..." << std::endl;
-    utils::LoadFromFile(Global::nodeMap, "nodeMap.txt");
+    std::cout << "Loading trained data from file nodeMap.bin..." << std::endl;
+    utils::LoadFromFile(Global::nodeMap, "nodeMap.bin");
     std::cout << "Loaded trained data" << std::endl;
 }

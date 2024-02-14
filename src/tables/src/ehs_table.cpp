@@ -2,8 +2,8 @@
 
 namespace poker
 {
-    string EHSTable::EHSTable5Cards = "EHSTable5Cards.txt";
-    string EHSTable::EHSTable6Cards = "EHSTable6Cards.txt";
+    string EHSTable::EHSTable5Cards = "EHSTable5Cards.bin";
+    string EHSTable::EHSTable6Cards = "EHSTable6Cards.bin";
 
     EHSTable::EHSTable() : tableFlop{},
                            tableTurn{}

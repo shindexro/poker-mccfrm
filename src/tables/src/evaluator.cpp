@@ -4,7 +4,7 @@ namespace poker
 {
     void Evaluator::Initialise()
     {
-        string fileName = "HandValueTable.txt";
+        string fileName = "HandValueTable.bin";
         double loadFactor = 6.0;
 
         if (loaded)

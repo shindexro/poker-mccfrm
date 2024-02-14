@@ -14,10 +14,10 @@ namespace poker
     vector<vector<float>> EMDTable::histogramsFlop;
     vector<vector<float>> EMDTable::histogramsTurn;
 
-    const string EMDTable::filenameEMDTurnTable = "EMDTurnTable.txt";
-    const string EMDTable::filenameEMDFlopTable = "EMDFlopTable.txt";
-    const string EMDTable::filenameEMDFlopHistogram = "EMDFlopHistogram.txt";
-    const string EMDTable::filenameEMDTurnHistogram = "EMDTurnHistogram.txt";
+    const string EMDTable::filenameEMDTurnTable = "EMDTurnTable.bin";
+    const string EMDTable::filenameEMDFlopTable = "EMDFlopTable.bin";
+    const string EMDTable::filenameEMDFlopHistogram = "EMDFlopHistogram.bin";
+    const string EMDTable::filenameEMDTurnHistogram = "EMDTurnHistogram.bin";
 
     void EMDTable::Init()
     {
