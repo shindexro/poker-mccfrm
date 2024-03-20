@@ -86,6 +86,7 @@ void TrainerManager::StartTrainer(int index)
 
         if (index == 0)
         {
+            /* experimenting with performance when skipping strategy update
             if (StrategyIntervalCountdown <= 0)
             {
                 StrategyIntervalCountdown = StrategyInterval;
@@ -95,6 +96,7 @@ void TrainerManager::StartTrainer(int index)
                 }
                 std::cout << "Updated strategy" << std::endl;
             }
+            */
         }
 
         if (index == 1)
