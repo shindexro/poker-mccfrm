@@ -59,7 +59,7 @@ void TrainerManager::StartTrainer(int index)
             trainer->TrainOneIteration(traverser, pruneEnabled);
         }
 
-        static const int CountdownInterval = 10000;
+        static const int CountdownInterval = 100000;
         if (t % CountdownInterval == 0)
         {
             iterations += CountdownInterval;
