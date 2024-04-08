@@ -59,7 +59,6 @@ void TrainerManager::StartTrainer(int index)
             trainer->TrainOneIteration(traverser, pruneEnabled);
         }
 
-        static const int CountdownInterval = 100000;
         if (t % CountdownInterval == 0)
         {
             iterations += CountdownInterval;
@@ -83,50 +82,57 @@ void TrainerManager::StartTrainer(int index)
                 << std::endl;
         }
 
+        RunSingleThreadTasks(index, t);
+    }
+}
 
-        if (index == 0)
-        {
-            if (StrategyIntervalCountdown <= 0)
-            {
-                StrategyIntervalCountdown = StrategyInterval;
-                for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
-                {
-                    trainer->UpdateStrategy(traverser);
-                }
-                std::cout << "Updated strategy" << std::endl;
-            }
-        }
+void TrainerManager::RunSingleThreadTasks(int index, int current_iteration)
+{
+    auto trainer = &trainers[index];
 
-        if (index == 1)
+    if (index == 0)
+    {
+        if (StrategyIntervalCountdown <= 0)
         {
-            if (t < LCFRThreshold && DiscountIntervalCountdown <= 0)
+            StrategyIntervalCountdown = StrategyInterval;
+            for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
             {
-                DiscountIntervalCountdown = DiscountInterval;
-                float d = ((float)t / DiscountInterval) / ((float)t / DiscountInterval + 1);
-                trainer->DiscountInfosets(d);
-                std::cout << "Discounted infosets" << std::endl;
+                trainer->UpdateStrategy(traverser);
             }
-        }
-
-        if (index == 2)
-        {
-            if (TestGamesIntervalCountdown <= 0)
-            {
-                TestGamesIntervalCountdown = TestGamesInterval;
-                trainer->PrintStartingHandsChart();
-                trainer->PrintStatistics(iterations);
-            }
-        }
-
-        if (index == 3)
-        {
-            if (SaveToDiskIntervalCountdown <= 0)
-            {
-                SaveToDiskIntervalCountdown = SaveToDiskInterval;
-                SaveTrainedData();
-            }
+            std::cout << "Updated strategy" << std::endl;
         }
     }
+
+    if (index == 1)
+    {
+        if (current_iteration < LCFRThreshold && DiscountIntervalCountdown <= 0)
+        {
+            DiscountIntervalCountdown = DiscountInterval;
+            float d = ((float)current_iteration / DiscountInterval) / ((float)current_iteration / DiscountInterval + 1);
+            trainer->DiscountInfosets(d);
+            std::cout << "Discounted infosets" << std::endl;
+        }
+    }
+
+    if (index == 2)
+    {
+        if (TestGamesIntervalCountdown <= 0)
+        {
+            TestGamesIntervalCountdown = TestGamesInterval;
+            trainer->PrintStartingHandsChart();
+            trainer->PrintStatistics(iterations);
+        }
+    }
+
+    if (index == 3)
+    {
+        if (SaveToDiskIntervalCountdown <= 0)
+        {
+            SaveToDiskIntervalCountdown = SaveToDiskInterval;
+            SaveTrainedData();
+        }
+    }
+
 }
 
 void TrainerManager::SaveTrainedData()
