@@ -34,6 +34,9 @@ void TrainerManager::StartTraining()
     // };
     // oneapi::tbb::parallel_for(0, Global::NOF_THREADS, threadFunc);
 
+    // TODO: find out whether this line is the bottleneck?
+    // although the size of the nodeMap will gradually approach 500M during training?
+    // is 500M a good estimate?
     Global::nodeMap.rehash(500000000);
 
     oneapi::tbb::parallel_for(0, threadCount,
