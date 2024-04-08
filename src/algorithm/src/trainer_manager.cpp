@@ -59,30 +59,30 @@ void TrainerManager::StartTrainer(int index)
             trainer->TrainOneIteration(traverser, pruneEnabled);
         }
 
-        if (t % CountdownInterval == 0)
-        {
-            iterations += CountdownInterval;
-            std::cout << "Training steps " << iterations << " "
-                << "thread " << index
-                << std::endl;
-
-            StrategyIntervalCountdown -= CountdownInterval;
-            DiscountIntervalCountdown -= CountdownInterval;
-            SaveToDiskIntervalCountdown -= CountdownInterval;
-            TestGamesIntervalCountdown -= CountdownInterval;
-
-            chrono::steady_clock::time_point end = chrono::steady_clock::now();
-            auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
-            std::cout << "Iterations per second: " << iterations / (elapsed + 1) << " "
-                << "elasped time: " << elapsed << "[s] "
-                << "strategy countdown" << StrategyIntervalCountdown << " "
-                << "discount countdown" << DiscountIntervalCountdown << " "
-                << "save2disk countdown" << SaveToDiskIntervalCountdown << " "
-                << "test game countdown" << TestGamesIntervalCountdown << " "
-                << std::endl;
-        }
-
-        RunSingleThreadTasks(index, t);
+//        if (t % CountdownInterval == 0)
+//        {
+//            iterations += CountdownInterval;
+//            std::cout << "Training steps " << iterations << " "
+//                << "thread " << index
+//                << std::endl;
+//
+//            StrategyIntervalCountdown -= CountdownInterval;
+//            DiscountIntervalCountdown -= CountdownInterval;
+//            SaveToDiskIntervalCountdown -= CountdownInterval;
+//            TestGamesIntervalCountdown -= CountdownInterval;
+//
+//            chrono::steady_clock::time_point end = chrono::steady_clock::now();
+//            auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
+//            std::cout << "Iterations per second: " << iterations / (elapsed + 1) << " "
+//                << "elasped time: " << elapsed << "[s] "
+//                << "strategy countdown" << StrategyIntervalCountdown << " "
+//                << "discount countdown" << DiscountIntervalCountdown << " "
+//                << "save2disk countdown" << SaveToDiskIntervalCountdown << " "
+//                << "test game countdown" << TestGamesIntervalCountdown << " "
+//                << std::endl;
+//        }
+//
+//        RunSingleThreadTasks(index, t);
     }
 }
 
