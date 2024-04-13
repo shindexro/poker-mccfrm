@@ -21,7 +21,7 @@ namespace poker
         void StartTraining();
 
     private:
-        static const int CountdownInterval = 100000;
+        static const int CountdownInterval = 10000;
 
         static const long StrategyInterval = 10000;         // bb rounds before updating player strategy (recursive through tree) 10k
         static const long LCFRThreshold = 60000000;         // bb rounds when to stop discounting regrets, 400 minutes
