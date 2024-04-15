@@ -152,7 +152,7 @@ namespace poker
 
     void Trainer::DiscountInfosets(float d)
     {
-        for (auto [infosetString, infoset] : Global::nodeMap)
+        for (auto &[infosetString, infoset] : Global::nodeMap)
         {
             for (auto &r : infoset.regret)
                 r *= d;

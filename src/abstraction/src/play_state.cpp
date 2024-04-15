@@ -64,18 +64,12 @@ namespace poker
             GenerateUniqueStringIdentifier();
         }
 
-        NodeMapAccessor accessor;
-        bool nodeMapEntryExists = Global::nodeMap.find(accessor, infosetString);
-        if (!nodeMapEntryExists)
+        if (Global::nodeMap.find(infosetString) == Global::nodeMap.end())
         {
             Infoset infoset = Infoset(GetValidActionsCount(), community.bettingRound);
-            bool inserted = Global::nodeMap.insert({infosetString, infoset});
-            if (!inserted)
-                throw invalid_argument("Failed to insert infoset");
-
-            Global::nodeMap.find(accessor, infosetString);
+            Global::nodeMap.insert(phmap::parallel_flat_hash_map<string, Infoset>::value_type(infosetString, infoset));
         }
-        return accessor->second;
+        return Global::nodeMap[infosetString];
     }
 
     void PlayState::GenerateUniqueStringIdentifier()
@@ -152,9 +146,7 @@ namespace poker
 
     void PlayState::UpdateInfoset(Infoset &infoset)
     {
-        NodeMapAccessor accessor;
-        Global::nodeMap.insert(accessor, infosetString);
-        accessor->second = infoset;
+        Global::nodeMap.insert(phmap::parallel_flat_hash_map<string, Infoset>::value_type(infosetString, infoset));
     }
 
     void PlayState::CreateChildren()

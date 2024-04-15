@@ -1,5 +1,12 @@
 #include "algorithm/trainer_manager.h"
 #include "utils/utils.h"
+#include "cereal/types/vector.hpp"
+#include "cereal/types/unordered_map.hpp"
+#include "cereal/types/memory.hpp"
+#include "cereal/types/bitset.hpp"
+#include "cereal/archives/binary.hpp"
+#include <fstream>
+
 
 TrainerManager::TrainerManager() :
     TrainerManager(1)
@@ -138,13 +145,54 @@ void TrainerManager::RunSingleThreadTasks(int index, int current_iteration)
 
 }
 
+namespace cereal
+{
+  template <class Archive, class K, class V, class Hash, class Eq, class A, size_t N, class Mtx_> inline
+  void save( Archive &ar,
+          phmap::parallel_flat_hash_map<K, V, Hash, Eq, A, N, Mtx_> const &hmap)
+  {
+    ar(hmap.size());
+    for( const auto & i : hmap )
+      ar( i.first, i.second );
+  }
+
+  template <class Archive, class K, class V, class Hash, class Eq, class A, size_t N, class Mtx_> inline
+  void load( Archive &ar,
+          phmap::parallel_flat_hash_map<K, V, Hash, Eq, A, N, Mtx_> &hmap)
+  {
+    hmap.clear();
+
+    size_t sz;
+    ar(sz);
+
+    for (size_t i = 0; i < sz; i++)
+    {
+      K k;
+      V v;
+      ar( k, v );
+      hmap.insert({k, v});
+    }
+  }
+
+  template <class Archive> inline
+  void serialize( Archive &ar,
+          Infoset &infoset)
+  {
+      ar( infoset.regret, infoset.actionCounter );
+  }
+} // namespace cereal
+
+
 void TrainerManager::SaveTrainedData()
 {
     auto epoch = utils::GetSecondsSinceEpoch();
     ostringstream filename;
     filename << "nodeMap-" <<  epoch << ".bin";
     std::cout << "Saving trained data to file " << filename.str() << std::endl;
-    utils::SaveToFile(Global::nodeMap, filename.str());
+
+    std::ofstream os(filename.str(), std::ios::binary);
+    cereal::BinaryOutputArchive ar(os);
+    ar(CEREAL_NVP(Global::nodeMap));
     std::cout << "Saved trained data" << std::endl;
 }
 
@@ -153,6 +201,8 @@ void TrainerManager::LoadTrainedData()
     if (!utils::FileExists("nodeMap.bin"))
         return;
     std::cout << "Loading trained data from file nodeMap.bin..." << std::endl;
-    utils::LoadFromFile(Global::nodeMap, "nodeMap.bin");
+    std::ifstream is("nodeMap.bin", std::ios::binary);
+    cereal::BinaryInputArchive ar(is);
+    ar(CEREAL_NVP(Global::nodeMap));
     std::cout << "Loaded trained data" << std::endl;
 }

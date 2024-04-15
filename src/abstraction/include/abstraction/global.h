@@ -7,6 +7,8 @@
 #include "game/deck.h"
 #include "enums/betting_round.h"
 
+#include "parallel_hashmap/phmap.h"
+
 #include <oneapi/tbb/concurrent_hash_map.h>
 #include <vector>
 #include <thread>
@@ -63,7 +65,7 @@ namespace poker
 
         static shared_ptr<Evaluator> handEvaluator;
 
-        static oneapi::tbb::concurrent_hash_map<string, Infoset> nodeMap;
+        static phmap::parallel_flat_hash_map<string, Infoset> nodeMap;
 
         static thread_local Deck deck;
     };

@@ -21,8 +21,6 @@ using namespace std;
 
 namespace poker
 {
-    typedef tbb::concurrent_hash_map<string, Infoset>::accessor NodeMapAccessor;
-
     class State
     {
     public:
