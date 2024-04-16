@@ -8,6 +8,7 @@
 #include "enums/betting_round.h"
 
 #include "parallel_hashmap/phmap.h"
+#include <mutex>
 
 #include <oneapi/tbb/concurrent_hash_map.h>
 #include <vector>
@@ -65,7 +66,10 @@ namespace poker
 
         static shared_ptr<Evaluator> handEvaluator;
 
-        static phmap::parallel_flat_hash_map<string, Infoset> nodeMap;
+        static phmap::parallel_flat_hash_map<string, Infoset,
+            phmap::priv::hash_default_hash<string>,
+            phmap::priv::hash_default_eq<string>,
+            std::allocator<std::pair<const string, Infoset>>, 4, std::mutex> nodeMap;
 
         static thread_local Deck deck;
     };

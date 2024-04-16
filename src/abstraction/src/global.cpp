@@ -52,7 +52,10 @@ namespace poker
 
     shared_ptr<Evaluator> Global::handEvaluator = make_shared<Evaluator>();
 
-    phmap::parallel_flat_hash_map<string, Infoset> Global::nodeMap = {};
+    phmap::parallel_flat_hash_map<string, Infoset,
+        phmap::priv::hash_default_hash<string>,
+        phmap::priv::hash_default_eq<string>,
+        std::allocator<std::pair<const string, Infoset>>, 4, std::mutex> Global::nodeMap = {};
 
     thread_local Deck Global::deck = Deck(CARDS);
 } // namespace poker
