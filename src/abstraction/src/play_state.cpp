@@ -67,7 +67,8 @@ namespace poker
         if (Global::nodeMap.find(infosetString) == Global::nodeMap.end())
         {
             Infoset infoset = Infoset(GetValidActionsCount(), community.bettingRound);
-            Global::nodeMap.insert(phmap::parallel_flat_hash_map<string, Infoset>::value_type(infosetString, infoset));
+            Global::nodeMap[infosetString] = infoset;
+            return infoset;
         }
         return Global::nodeMap[infosetString];
     }
@@ -146,7 +147,7 @@ namespace poker
 
     void PlayState::UpdateInfoset(Infoset &infoset)
     {
-        Global::nodeMap.insert(phmap::parallel_flat_hash_map<string, Infoset>::value_type(infosetString, infoset));
+        Global::nodeMap[infosetString] = infoset;
     }
 
     void PlayState::CreateChildren()
