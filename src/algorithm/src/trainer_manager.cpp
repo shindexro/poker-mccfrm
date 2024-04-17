@@ -62,11 +62,6 @@ void TrainerManager::StartTrainer(int index)
 
     for (auto t = 1;; t++)
     {
-        while (SaveToDiskIntervalCountdown <= 0)
-        {
-            sleep(1);
-        }
-
         for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
         {
             bool pruneEnabled = t > PruneThreshold;
