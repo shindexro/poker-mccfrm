@@ -11,7 +11,7 @@ add_library(${PROJECT_NAME}
     src/terminal_state.cpp
 )
 
-find_package(absl REQUIRED)
+# find_package(absl REQUIRED)
 
 add_library(sub::abstraction ALIAS ${PROJECT_NAME})
 
