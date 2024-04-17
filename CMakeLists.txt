@@ -18,6 +18,7 @@ set(TBB_DIR "/opt/intel/oneapi/tbb/latest/lib/cmake/tbb")
 
 add_subdirectory(src)
 add_subdirectory(test)
+add_subdirectory(include/abseil-cpp)
 
 include(FetchContent)
 FetchContent_Declare(
