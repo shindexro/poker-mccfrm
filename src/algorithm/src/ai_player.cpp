@@ -22,20 +22,18 @@ namespace poker
             auto actionIdx = utils::SampleDistribution(phi);
             return validActions[actionIdx];
         }
-        else
-        {
-            // use real-time search based on blue-print strategy
-            auto trainer = Trainer(0);
-            /// TOOD: make number for iterations more dynamic?
-            for (int i = 0; i < 10000; i++)
-            {
-                trainer.TraverseMCCFR(roundStartState, id, false);
-            }
 
-            auto infoset = state->GetInfoset();
-            auto sigma = infoset.CalculateStrategy();
-            auto actionIdx = utils::SampleDistribution(sigma);
-            return validActions[actionIdx];
+        // use real-time search based on blue-print strategy
+        auto trainer = Trainer(0);
+        /// TOOD: make number for iterations more dynamic?
+        for (int i = 0; i < 10000; i++)
+        {
+            trainer.TraverseMCCFR(roundStartState, id, false);
         }
+
+        auto infoset = state->GetInfoset();
+        auto sigma = infoset.CalculateStrategy();
+        auto actionIdx = utils::SampleDistribution(sigma);
+        return validActions[actionIdx];
     }
 } // namespace poker
