@@ -17,6 +17,7 @@ namespace poker
 
         // the whole state is passed for simlicity but a player should not access other player's hand
         virtual Action NextAction(shared_ptr<PlayState> /*state*/) { throw invalid_argument("Not implemented"); };
+        virtual Action NextAction(shared_ptr<PlayState> /*state*/, shared_ptr<PlayState> /**/) { throw invalid_argument("Not implemented"); };
     };
 } // namespace poker
 

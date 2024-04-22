@@ -16,6 +16,7 @@ namespace poker
         InteractivePlayer(int id, int stack);
 
         Action NextAction(shared_ptr<PlayState> state) override;
+        Action NextAction(shared_ptr<PlayState> state, shared_ptr<PlayState>) override;
 
     private:
         Action TranslateAction(shared_ptr<PlayState> state, int actualBet);

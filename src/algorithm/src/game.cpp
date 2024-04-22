@@ -9,6 +9,7 @@ namespace poker
 
     void Game::Start()
     {
+        shared_ptr<PlayState> roundStartState = nullptr;
         while (!(dynamic_cast<TerminalState *>(state.get())))
         {
             if (dynamic_cast<ChanceState *>(state.get()))
@@ -17,9 +18,15 @@ namespace poker
             }
             else if (dynamic_cast<PlayState *>(state.get()))
             {
+                auto playState = std::dynamic_pointer_cast<PlayState>(state);
+                if (roundStartState == nullptr || roundStartState->BettingRound() < playState->BettingRound())
+                {
+                    roundStartState = playState;
+                }
+
                 state->CreateChildren();
                 auto playerToMove = state->community.playerToMove;
-                auto action = players[playerToMove]->NextAction(std::dynamic_pointer_cast<PlayState>(state));
+                auto action = players[playerToMove]->NextAction(playState, roundStartState);
 
                 std::cout << "Player " << playerToMove << " " << action << std::endl;
 

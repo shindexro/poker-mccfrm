@@ -24,6 +24,11 @@ namespace poker
         return action;
     }
 
+    Action InteractivePlayer::NextAction(shared_ptr<PlayState> state, shared_ptr<PlayState>)
+    {
+        return NextAction(state);
+    }
+
     Action InteractivePlayer::TranslateAction(shared_ptr<PlayState> state, int actualBet)
     {
         auto abstractActions = state->GetValidActions();

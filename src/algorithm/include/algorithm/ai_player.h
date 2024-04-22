@@ -16,7 +16,7 @@ namespace poker
     public:
         AIPlayer(int id, int stack);
 
-        Action NextAction(shared_ptr<PlayState> state) override;
+        Action NextAction(shared_ptr<PlayState> state, shared_ptr<PlayState> roundStartState) override;
     };
 } // namespace poker
 
