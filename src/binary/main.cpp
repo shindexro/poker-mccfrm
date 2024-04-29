@@ -48,7 +48,7 @@ namespace poker
             auto aiPlayer = make_shared<AIPlayer>(1, Global::buyIn);
             auto players = vector<shared_ptr<Player>>();
             players.push_back(humanPlayer);
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i < Global::nofPlayers; i++)
             {
                 players.push_back(make_shared<AIPlayer>(i, Global::buyIn));
             }
