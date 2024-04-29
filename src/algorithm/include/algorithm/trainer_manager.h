@@ -19,6 +19,8 @@ namespace poker
         TrainerManager(int threadCount);
 
         void StartTraining();
+        void SaveTrainedData();
+        void LoadTrainedData();
 
     private:
         static const int CountdownInterval = 10000;
@@ -37,10 +39,6 @@ namespace poker
 
         void StartTrainer(int index);
         void RunSingleThreadTasks(int index, int current_iterations);
-
-        void SaveTrainedData();
-        void LoadTrainedData();
-
     };
 } // namespace poker
 
