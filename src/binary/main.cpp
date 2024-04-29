@@ -33,6 +33,8 @@ namespace poker
 
         static void StartGameForever()
         {
+            auto trainerManager = TrainerManager();
+            trainerManager.LoadTrainedData();
             while (true)
             {
                 StartGame();
