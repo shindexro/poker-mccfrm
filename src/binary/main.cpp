@@ -45,7 +45,6 @@ namespace poker
         static void StartGame()
         {
             auto humanPlayer = make_shared<InteractivePlayer>(0, Global::buyIn);
-            auto aiPlayer = make_shared<AIPlayer>(1, Global::buyIn);
             auto players = vector<shared_ptr<Player>>();
             players.push_back(humanPlayer);
             for (int i = 1; i < Global::nofPlayers; i++)
