@@ -40,7 +40,7 @@ namespace poker
         {
             if (community.bettingRound > BettingRound::Preflop)
             {
-                newCommunity.playerToMove = 0;
+                newCommunity.playerToMove = FirstActivePlayer();
                 newCommunity.lastPlayer = Global::nofPlayers - 1;
             }
             children.push_back(make_shared<PlayState>(newCommunity, newPlayers, history));

@@ -36,6 +36,7 @@ namespace poker
 
         int NextActivePlayer();
         int PrevActivePlayer();
+        int FirstActivePlayer();
 
         int GetNumberOfPlayersThatNeedToAct();
         int GetPot() const;

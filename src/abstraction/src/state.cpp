@@ -50,6 +50,19 @@ namespace poker
         return last;
     }
 
+    // The first player to act in the round, starting from SB
+    int State::FirstActivePlayer()
+    {
+        for (int i = 0; i < Global::nofPlayers; i++)
+        {
+            if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     // Number of players still in the game and didn't all in
     int State::GetNumberOfPlayersThatNeedToAct()
     {
