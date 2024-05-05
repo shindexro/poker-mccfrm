@@ -122,11 +122,11 @@ namespace poker
     };
 } // namespace poker
 
-int main()
+int main(int argc, char** argv)
 {
     poker::Program program;
 
-    program.Main();
+    program.Main(argc, argv);
 
     return 0;
 }
