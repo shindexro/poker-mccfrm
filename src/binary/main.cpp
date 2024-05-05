@@ -18,7 +18,7 @@ namespace poker
     class Program
     {
     public:
-        static void Main()
+        static void Main(int argc, char** argv)
         {
             // auto state = ChanceState();
             // StateDFS(state);
@@ -28,7 +28,12 @@ namespace poker
             Global::handEvaluator->Initialise();
             CalculateInformationAbstraction();
 
-            Train();
+            if (argc > 1 && strcmp(argv[1], "play"))
+            {
+                StartGameForever();
+            } else {
+                Train();
+            }
         }
 
         static void StartGameForever()
