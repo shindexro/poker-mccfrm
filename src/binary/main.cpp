@@ -28,7 +28,7 @@ namespace poker
             Global::handEvaluator->Initialise();
             CalculateInformationAbstraction();
 
-            if (argc > 1 && strcmp(argv[1], "play"))
+            if (argc > 1 && strcmp(argv[1], "play") == 0)
             {
                 StartGameForever();
             } else {
