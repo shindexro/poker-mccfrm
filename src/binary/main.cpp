@@ -28,8 +28,6 @@ namespace poker
             Global::handEvaluator->Initialise();
             CalculateInformationAbstraction();
 
-            StartGameForever();
-
             Train();
         }
 
