@@ -17,28 +17,28 @@ namespace poker
                                         {},
                                         {0.3f, 0.75f, 1.4f}, // 1 players to act
                                         {0.3f, 0.75f, 1.4f}, // 2 players to act
-                                        {0.3f, 0.75f}, // 3 players to act
-                                        {0.3f}, // 4 players to act
-                                        {0.3f}, // 5 players to act
-                                        {0.3f}, // 6 players to act
+                                        {0.3f, 0.75f, 1.4f}, // 3 players to act
+                                        {0.3f, 0.75f, 1.4f}, // 4 players to act
+                                        {0.3f, 0.75f, 1.4f}, // 5 players to act
+                                        {0.3f, 0.75f, 1.4f}, // 6 players to act
                                     }},
             {BettingRound::Turn, {
                                         {},
                                         {0.3f, 0.75f, 1.4f}, // 1 players to act
                                         {0.3f, 0.75f, 1.4f}, // 2 players to act
-                                        {0.3f, 0.75f}, // 3 players to act
-                                        {0.3f}, // 4 players to act
-                                        {0.3f}, // 5 players to act
-                                        {0.3f}, // 6 players to act
+                                        {0.3f, 0.75f, 1.4f}, // 3 players to act
+                                        {0.3f, 0.75f, 1.4f}, // 4 players to act
+                                        {0.3f, 0.75f, 1.4f}, // 5 players to act
+                                        {0.3f, 0.75f, 1.4f}, // 6 players to act
                                     }},
             {BettingRound::River, {
                                         {},
                                         {0.2f, 0.6f, 1.25f}, // 1 players to act
                                         {0.2f, 0.6f, 1.25f}, // 2 players to act
-                                        {0.3f, 0.75f}, // 3 players to act
-                                        {0.3f, 0.75f}, // 4 players to act
-                                        {0.3f, 0.75f}, // 5 players to act
-                                        {0.3f, 0.75f}, // 6 players to act
+                                        {0.2f, 0.6f, 1.25f}, // 3 players to act
+                                        {0.2f, 0.6f, 1.25f}, // 4 players to act
+                                        {0.2f, 0.6f, 1.25f}, // 5 players to act
+                                        {0.2f, 0.6f, 1.25f}, // 6 players to act
                                     }},
     };
 
