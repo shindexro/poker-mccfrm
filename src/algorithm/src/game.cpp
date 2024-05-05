@@ -9,6 +9,7 @@ namespace poker
 
     void Game::Start()
     {
+        std::cout << "===== Game start =====" << std::endl;
         shared_ptr<PlayState> roundStartState = nullptr;
         while (!(dynamic_cast<TerminalState *>(state.get())))
         {
@@ -28,7 +29,8 @@ namespace poker
                 auto playerToMove = state->community.playerToMove;
                 auto action = players[playerToMove]->NextAction(playState, roundStartState);
 
-                std::cout << "Player " << playerToMove << " " << action << std::endl;
+                std::cout << std::endl;
+                std::cout << ">> Player " << playerToMove << " " << action << std::endl;
 
                 for (auto child : state->children)
                 {
@@ -54,6 +56,6 @@ namespace poker
         {
             std::cout << "Player " << i << ": $" << players[i]->stack << "\t";
         }
-        std::cout << std::endl;
+        std::cout << std::endl << "====== Game end ======" << std::endl;
     }
 } // namespace poker

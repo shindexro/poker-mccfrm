@@ -9,6 +9,7 @@ namespace poker
     Action InteractivePlayer::NextAction(shared_ptr<PlayState> state)
     {
         auto validActions = state->GetValidActions();
+        std::cout << "No. of valid actions: " << validActions.size() << std::endl;
 
         std::cout << "Enter a integer bet size or fold (-1): ";
         int bet;
