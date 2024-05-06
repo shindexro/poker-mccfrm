@@ -58,10 +58,10 @@ void TrainerManager::StartTrainer(int index)
 {
     auto trainer = &trainers[index];
 
-    chrono::steady_clock::time_point start = chrono::steady_clock::now();
 
     for (auto t = 1;; t++)
     {
+        chrono::steady_clock::time_point start = chrono::steady_clock::now();
         for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
         {
             bool pruneEnabled = t > PruneThreshold;
@@ -82,13 +82,14 @@ void TrainerManager::StartTrainer(int index)
 
             chrono::steady_clock::time_point end = chrono::steady_clock::now();
             auto elapsed = chrono::duration_cast<std::chrono::seconds>(end - start).count();
-            std::cout << "Iterations per second: " << iterations / (elapsed + 1) << " "
-                << "elasped time: " << elapsed << "[s] "
-                << "strategy countdown" << StrategyIntervalCountdown << " "
-                << "discount countdown" << DiscountIntervalCountdown << " "
-                << "save2disk countdown" << SaveToDiskIntervalCountdown << " "
-                << "test game countdown" << TestGamesIntervalCountdown << " "
+            std::cout << "Thread it/s: " << CountdownInterval / (elapsed + 1) << " "
+                << "elasped:" << elapsed << "[s] "
+                << "strategyCD:" << StrategyIntervalCountdown << " "
+                << "discountCD:" << DiscountIntervalCountdown << " "
+                << "save2diskCD:" << SaveToDiskIntervalCountdown << " "
+                << "testGameCD:" << TestGamesIntervalCountdown << " "
                 << std::endl;
+            start = end;
         }
 
         RunSingleThreadTasks(index, t);
