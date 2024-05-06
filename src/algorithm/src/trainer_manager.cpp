@@ -59,9 +59,9 @@ void TrainerManager::StartTrainer(int index)
     auto trainer = &trainers[index];
 
 
+    chrono::steady_clock::time_point start = chrono::steady_clock::now();
     for (auto t = 1;; t++)
     {
-        chrono::steady_clock::time_point start = chrono::steady_clock::now();
         for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
         {
             bool pruneEnabled = t > PruneThreshold;
