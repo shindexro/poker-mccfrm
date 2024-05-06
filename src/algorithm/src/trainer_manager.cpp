@@ -109,7 +109,6 @@ void TrainerManager::RunSingleThreadTasks(int index, int current_iteration)
             {
                 trainer->UpdateStrategy(traverser);
             }
-            std::cout << "Updated strategy" << std::endl;
         }
     }
 
