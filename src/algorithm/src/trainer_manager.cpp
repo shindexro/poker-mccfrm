@@ -21,6 +21,8 @@ TrainerManager::TrainerManager(int threadCount) :
     SaveToDiskIntervalCountdown{SaveToDiskInterval},
     TestGamesIntervalCountdown{TestGamesInterval}
 {
+    threadCount = 1; // TEMP line for benchmark
+
     trainers = vector<Trainer>();
     for (auto i = 0; i < threadCount; i++)
     {
