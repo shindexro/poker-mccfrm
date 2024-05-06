@@ -69,7 +69,7 @@ namespace poker
         static phmap::parallel_flat_hash_map<string, Infoset,
             phmap::priv::hash_default_hash<string>,
             phmap::priv::hash_default_eq<string>,
-            std::allocator<std::pair<const string, Infoset>>, 12, phmap::NullMutex> nodeMap;
+            std::allocator<std::pair<const string, Infoset>>, 12, phmap::AbslMutex> nodeMap;
 
         static thread_local Deck deck;
     };
