@@ -14,15 +14,13 @@ TrainerManager::TrainerManager() :
 }
 
 TrainerManager::TrainerManager(int threadCount) :
-    threadCount{threadCount},
+    threadCount{1}, // TEMP change for benchmark
     iterations{0},
     StrategyIntervalCountdown{StrategyInterval},
     DiscountIntervalCountdown{DiscountInterval},
     SaveToDiskIntervalCountdown{SaveToDiskInterval},
     TestGamesIntervalCountdown{TestGamesInterval}
 {
-    threadCount = 1; // TEMP line for benchmark
-
     trainers = vector<Trainer>();
     for (auto i = 0; i < threadCount; i++)
     {
