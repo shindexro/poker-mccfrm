@@ -29,7 +29,7 @@ namespace poker
         static const long LCFRThreshold = 60000000;         // bb rounds when to stop discounting regrets, 400 minutes
         static const long DiscountInterval = 1500000;       // bb rounds, discount values periodically but not every round, 10 minutes
         static const long SaveToDiskInterval = 5000000L;
-        static const long TestGamesInterval = 2500000;
+        static const long TestGamesInterval = 100000;
         static const long PruneThreshold = 20000000;  // bb rounds after this time we stop checking all actions, 200 minutes
 
         atomic<long> StrategyIntervalCountdown;
