@@ -37,8 +37,6 @@ namespace poker
         atomic<long> SaveToDiskIntervalCountdown;
         atomic<long> TestGamesIntervalCountdown;
 
-        atomic<int> remainingFlushes;
-
         void StartTrainer(int index);
         void RunSingleThreadTasks(int index, int current_iterations);
     };
