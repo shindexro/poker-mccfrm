@@ -40,11 +40,8 @@ namespace poker
         void EnumerateActionSpace(shared_ptr<State> gs);
         void EnumerateActionSpace();
 
-        void FlushNodeMap();
-
     private:
         int threadIndex = 0;
-        NodeMap nodeMapBuffer;
     };
 } // namespace poker
 

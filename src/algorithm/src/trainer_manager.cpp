@@ -19,8 +19,7 @@ TrainerManager::TrainerManager(int threadCount) :
     StrategyIntervalCountdown{StrategyInterval},
     DiscountIntervalCountdown{DiscountInterval},
     SaveToDiskIntervalCountdown{SaveToDiskInterval},
-    TestGamesIntervalCountdown{TestGamesInterval},
-    remainingFlushes{0}
+    TestGamesIntervalCountdown{TestGamesInterval}
 {
     trainers = vector<Trainer>();
     for (auto i = 0; i < threadCount; i++)
@@ -59,10 +58,10 @@ void TrainerManager::StartTrainer(int index)
 {
     auto trainer = &trainers[index];
 
+
     chrono::steady_clock::time_point start = chrono::steady_clock::now();
     for (auto t = 1;; t++)
     {
-
         for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
         {
             bool pruneEnabled = t > PruneThreshold;
@@ -71,23 +70,6 @@ void TrainerManager::StartTrainer(int index)
 
         if (t % CountdownInterval == 0)
         {
-            if (index != 0)
-            {
-                while (remainingFlushes)
-                {
-                    std::cout << "thread " << index << " waiting for flushes: " << remainingFlushes << std::endl;
-                    sleep(30);
-                }
-            }
-            else if (remainingFlushes)
-            {
-                for (auto &otherTrainer : trainers)
-                {
-                    otherTrainer.FlushNodeMap();
-                }
-                remainingFlushes = 0;
-            }
-
             iterations += CountdownInterval;
             std::cout << "Training steps " << iterations << " "
                 << "thread " << index
@@ -148,8 +130,6 @@ void TrainerManager::RunSingleThreadTasks(int index, int current_iteration)
             TestGamesIntervalCountdown = TestGamesInterval;
             trainer->PrintStartingHandsChart();
             trainer->PrintStatistics(iterations);
-
-            remainingFlushes = trainers.size();
         }
     }
 

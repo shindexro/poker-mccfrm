@@ -6,7 +6,6 @@ namespace poker
     Trainer::Trainer(int threadIndex) : rootState{make_shared<ChanceState>()},
                                         threadIndex{threadIndex}
     {
-        nodeMapBuffer = {};
     }
 
     /// <summary>
@@ -60,8 +59,7 @@ namespace poker
             int randomIndex = utils::SampleDistribution(sigma);
             gs->CreateChildren();
             infoset.actionCounter[randomIndex]++;
-
-            gs->UpdateInfoset(infoset, nodeMapBuffer);
+            gs->UpdateInfoset(infoset);
 
             gs = gs->children[randomIndex];
             UpdateStrategy(gs, traverser);
@@ -135,7 +133,7 @@ namespace poker
                     infoset.regret[i] = max({Global::regretFloor, infoset.regret[i]});
                 }
             }
-            gs->UpdateInfoset(infoset, nodeMapBuffer);
+            gs->UpdateInfoset(infoset);
             ret = expectedVal;
         }
         else
@@ -401,19 +399,5 @@ namespace poker
         //     std::cout << gs->GetReward(i) << " ";
         // }
         // std::cout << endl;
-    }
-
-    void Trainer::FlushNodeMap()
-    {
-        for (auto &[k, v] : nodeMapBuffer)
-        {
-            auto &infoset = Global::nodeMap[k];
-            for (auto i = 0UL; i < infoset.regret.size(); i++)
-            {
-                infoset.regret[i] = infoset.regret[i] + v.regret[i];
-                infoset.regret[i] = max({Global::regretFloor, infoset.regret[i]});
-            }
-        }
-        nodeMapBuffer.clear();
     }
 } // namespace poker
