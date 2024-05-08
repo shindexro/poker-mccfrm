@@ -145,9 +145,9 @@ namespace poker
         infosetStringGenerated = true;
     }
 
-    void PlayState::UpdateInfoset(Infoset &infoset)
+    void PlayState::UpdateInfoset(Infoset &infoset, NodeMap &nodeMap)
     {
-        Global::nodeMap[infosetString] = infoset;
+        nodeMap[infosetString] = infoset;
     }
 
     void PlayState::CreateChildren()
