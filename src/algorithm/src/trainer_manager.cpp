@@ -102,14 +102,14 @@ void TrainerManager::RunSingleThreadTasks(int index, int current_iteration)
 
     if (index == 0)
     {
-        //if (StrategyIntervalCountdown <= 0)
-        //{
-        //    StrategyIntervalCountdown = StrategyInterval;
-        //    for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
-        //    {
-        //        trainer->UpdateStrategy(traverser);
-        //    }
-        //}
+        if (StrategyIntervalCountdown <= 0)
+        {
+            StrategyIntervalCountdown = StrategyInterval;
+            for (auto traverser = 0; traverser < Global::nofPlayers; traverser++)
+            {
+                trainer->UpdateStrategy(traverser);
+            }
+        }
     }
 
     if (index == 1)
