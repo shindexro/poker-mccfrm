@@ -129,7 +129,7 @@ void TrainerManager::RunSingleThreadTasks(int index, int current_iteration)
         {
             TestGamesIntervalCountdown = TestGamesInterval;
             trainer->PrintStartingHandsChart();
-            trainer->PrintStatistics(iterations);
+            // trainer->PrintStatistics(iterations);
         }
     }
 
