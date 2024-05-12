@@ -49,7 +49,7 @@ namespace poker
 
     bool PlayState::IsPlayerInHand(int player)
     {
-        return players[player].isStillInGame;
+        return players[player].lastAction != Action::Fold;
     }
 
     Infoset PlayState::GetInfoset()
@@ -297,7 +297,6 @@ namespace poker
 
         nextState->history.push_back(Action::Fold);
         nextState->players[community.playerToMove].lastAction = Action::Fold;
-        nextState->players[community.playerToMove].isStillInGame = false;
 
         int nextPlayer = NextActivePlayer();
         nextState->community.playerToMove = nextPlayer;

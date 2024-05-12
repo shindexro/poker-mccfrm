@@ -33,7 +33,7 @@ namespace poker
         {
             for (auto i = 0; i < Global::nofPlayers; ++i)
             {
-                if (players[i].isStillInGame)
+                if (players[i].IsAlive())
                 {
                     players[i].reward += pot;
                 }
@@ -45,7 +45,7 @@ namespace poker
             auto handValues = vector<int>(Global::nofPlayers, -1);
             for (auto i = 0; i < Global::nofPlayers; ++i)
             {
-                if (!players[i].isStillInGame)
+                if (!players[i].IsAlive())
                     continue;
 
                 ulong cardsBitmask = players[i].GetCardBitmask() | community.GetCardBitmask();

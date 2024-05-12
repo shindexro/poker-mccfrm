@@ -25,7 +25,7 @@ namespace poker
              i != (community.lastPlayer + 1) % Global::nofPlayers;
              i = (i + 1) % Global::nofPlayers)
         {
-            if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
+            if (players[i].IsAlive() && players[i].lastAction != Action::Allin)
             {
                 return i;
             }
@@ -41,7 +41,7 @@ namespace poker
              i != community.playerToMove;
              i = (i + 1) % Global::nofPlayers)
         {
-            if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
+            if (players[i].IsAlive() && players[i].lastAction != Action::Allin)
             {
                 last = i;
             }
@@ -54,7 +54,7 @@ namespace poker
     {
         for (int i = 0; i < Global::nofPlayers; i++)
         {
-            if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
+            if (players[i].IsAlive() && players[i].lastAction != Action::Allin)
             {
                 return i;
             }
@@ -68,7 +68,7 @@ namespace poker
         int count = 0;
         for (auto i = 0; i < Global::nofPlayers; i++)
         {
-            if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
+            if (players[i].IsAlive() && players[i].lastAction != Action::Allin)
                 count++;
         }
         return count;
@@ -77,7 +77,7 @@ namespace poker
     int State::GetNumberOfActivePlayers()
     {
         return count_if(players.begin(), players.end(), [](PlayerInfo &p)
-                        { return p.isStillInGame; });
+                        { return p.IsAlive(); });
     }
 
     int State::GetNumberOfAllInPlayers()

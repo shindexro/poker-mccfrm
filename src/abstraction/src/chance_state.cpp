@@ -6,7 +6,6 @@ namespace poker
     {
         for (auto i = 0; i < Global::nofPlayers; ++i)
         {
-            players[i].isStillInGame = true;
             players[i].stack = Global::buyIn;
             players[i].lastAction = Action::None;
         }
@@ -111,7 +110,7 @@ namespace poker
         {
             for (auto i = 2 % Global::nofPlayers;; i = (i + 1) % Global::nofPlayers)
             {
-                if (players[i].isStillInGame && players[i].lastAction != Action::Allin)
+                if (players[i].IsAlive() && players[i].lastAction != Action::Allin)
                 {
                     lastToMoveTemp = i;
                 }
@@ -123,7 +122,7 @@ namespace poker
         {
             for (auto i = 0; i < Global::nofPlayers; ++i)
             {
-                if (players[i].isStillInGame && players[i].stack != 0)
+                if (players[i].IsAlive() && players[i].stack != 0)
                 {
                     lastToMoveTemp = i;
                 }
@@ -148,7 +147,7 @@ namespace poker
 
     bool ChanceState::IsPlayerInHand(int player)
     {
-        return players[player].isStillInGame;
+        return players[player].IsAlive();
     }
 
     ostream &ChanceState::Print(ostream &out) const

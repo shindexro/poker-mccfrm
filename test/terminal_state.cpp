@@ -45,7 +45,6 @@ TEST(TerminalStateTest, OnePlayerRemaining)
         Card("6c").Bitmask(),
     };
 
-    state.players[1].isStillInGame = false;
     state.players[1].bet = 2000;
     state.players[1].cards = {
         Card("5s").Bitmask(),
@@ -54,7 +53,6 @@ TEST(TerminalStateTest, OnePlayerRemaining)
 
     for (int i = 2; i < 6; i++)
     {
-        state.players[i].isStillInGame = false;
         state.players[i].bet = 0;
     }
 
@@ -76,7 +74,6 @@ TEST(TerminalStateTest, TwoPlayersShowDownWithWinner)
 
     for (int i = 2; i < 6; i++)
     {
-        state.players[i].isStillInGame = false;
         state.players[i].bet = 0;
     }
 
@@ -92,7 +89,6 @@ TEST(TerminalStateTest, MultiplePlayersClop)
 
     for (int i = 0; i < 6; i++)
     {
-        state.players[i].isStillInGame = true;
         state.players[i].bet = 1000;
         state.players[i].cards = {0, 0};
     }
