@@ -29,7 +29,6 @@ namespace poker
         vector<Action> history;
         vector<shared_ptr<State>> children;
         string infosetString;
-        bool infosetStringGenerated;
 
         State();
         State(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);

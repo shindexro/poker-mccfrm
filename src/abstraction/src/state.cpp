@@ -14,8 +14,7 @@ namespace poker
                                             players(players),
                                             history(history),
                                             children(),
-                                            infosetString(),
-                                            infosetStringGenerated{false}
+                                            infosetString()
     {
     }
 

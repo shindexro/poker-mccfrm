@@ -59,7 +59,7 @@ namespace poker
         // Cards of player whose turn it is
         // community cards
 
-        if (!infosetStringGenerated)
+        if (!infosetString.size())
         {
             GenerateUniqueStringIdentifier();
         }
@@ -142,7 +142,6 @@ namespace poker
             cardString += "R" + to_string(index);
         }
         infosetString = historyString + cardString;
-        infosetStringGenerated = true;
     }
 
     void PlayState::UpdateInfoset(Infoset &infoset)
@@ -163,7 +162,7 @@ namespace poker
 
     void PlayState::CreateCallChildren()
     {
-        // call possible if needed chips is LESS (otherwise its all in), if same its a check
+        // call possible if needed chips is fewer than owned stack (otherwise its all in)
         int call = MinimumCall();
         int additionBet = call - players[community.playerToMove].bet;
         if (additionBet >= players[community.playerToMove].stack)
