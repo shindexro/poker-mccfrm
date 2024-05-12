@@ -71,23 +71,7 @@ void TrainerManager::StartTrainer(int index)
 
         if (t % CountdownInterval == 0)
         {
-            if (index != 0)
-            {
-                while (remainingFlushes)
-                {
-                    std::cout << "thread " << index << " waiting for flushes: " << remainingFlushes << std::endl;
-                    sleep(10);
-                }
-            }
-            else if (remainingFlushes)
-            {
-                for (auto &otherTrainer : trainers)
-                {
-                    otherTrainer.FlushNodeMap();
-                }
-                remainingFlushes = 0;
-            }
-
+            trainer->FlushNodeMap();
             iterations += CountdownInterval;
             std::cout << "Training steps " << iterations << " "
                 << "thread " << index
@@ -147,7 +131,7 @@ void TrainerManager::RunSingleThreadTasks(int index, int current_iteration)
         {
             TestGamesIntervalCountdown = TestGamesInterval;
             trainer->PrintStartingHandsChart();
-            trainer->PrintStatistics(iterations);
+            // trainer->PrintStatistics(iterations);
 
             remainingFlushes = trainers.size();
         }
