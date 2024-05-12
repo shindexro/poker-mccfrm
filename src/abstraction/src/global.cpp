@@ -6,40 +6,40 @@ namespace poker
     const map<BettingRound, vector<vector<float>>> Global::raiseRatiosByRoundByPlayerCount{
             {BettingRound::Preflop, {
                                         {}, // 0 players to act
-                                        {2.0f}, // 1 players to act
-                                        {2.0f}, // 2 players to act
-                                        {2.0f}, // 3 players to act
-                                        {2.0f}, // 4 players to act
-                                        {2.0f}, // 5 players to act
-                                        {2.0f}, // 6 players to act
+                                        {1.5f, 2.0f}, // 1 players to act
+                                        {1.5f, 2.0f}, // 2 players to act
+                                        {1.5f, 2.0f}, // 3 players to act
+                                        {1.5f, 2.0f}, // 4 players to act
+                                        {1.5f, 2.0f}, // 5 players to act
+                                        {1.5f, 2.0f}, // 6 players to act
                                     }},
             {BettingRound::Flop, {
                                         {},
-                                        {0.3f, 0.75f, 1.4f}, // 1 players to act
-                                        {0.3f, 0.75f, 1.4f}, // 2 players to act
-                                        {0.3f, 0.75f, 1.4f}, // 3 players to act
-                                        {0.3f, 0.6f},        // 4 players to act
-                                        {0.3f, 0.6f},        // 5 players to act
-                                        {0.3f, 0.6f},        // 6 players to act
-                                    }},
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 1 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 2 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 3 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 4 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 5 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 6 players to act
+                                 }},
             {BettingRound::Turn, {
                                         {},
-                                        {0.3f, 0.75f, 1.4f}, // 1 players to act
-                                        {0.3f, 0.75f, 1.4f}, // 2 players to act
-                                        {0.3f, 0.75f, 1.4f}, // 3 players to act
-                                        {0.3f, 0.6f},        // 4 players to act
-                                        {0.3f, 0.6f},        // 5 players to act
-                                        {0.3f, 0.6f},        // 6 players to act
-                                    }},
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 1 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 2 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 3 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 4 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 5 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 6 players to act
+                                 }},
             {BettingRound::River, {
                                         {},
-                                        {0.2f, 0.6f, 1.25f}, // 1 players to act
-                                        {0.2f, 0.6f, 1.25f}, // 2 players to act
-                                        {0.2f, 0.6f, 1.25f}, // 3 players to act
-                                        {0.3f, 0.6f},        // 4 players to act
-                                        {0.3f, 0.6f},        // 5 players to act
-                                        {0.3f, 0.6f},        // 6 players to act
-                                    }},
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 1 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 2 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 3 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 4 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 5 players to act
+                                        {0.27f, 0.5f, 0.75f, 1.0f, 1.4f, 2.0f}, // 6 players to act
+                                  }},
     };
 
     HandIndexer Global::indexer_2;
