@@ -37,7 +37,8 @@ namespace poker
             players.push_back(humanPlayer);
             for (int i = 1; i < Global::nofPlayers; i++)
             {
-                players.push_back(make_shared<AIPlayer>(i, Global::buyIn));
+                // players.push_back(make_shared<AIPlayer>(i, Global::buyIn));
+                players.push_back(make_shared<InteractivePlayer>(i, Global::buyIn));
             }
             auto game = Game(players);
 
