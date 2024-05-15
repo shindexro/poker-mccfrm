@@ -2,28 +2,11 @@
 
 namespace poker
 {
-    void StateDFS(State &state, int depth = 0)
-    {
-        state.CreateChildren();
-        // for (auto &child : state.children)
-        // {
-        //     StateDFS(*child, depth + 1);
-        // }
-        if (state.children.size())
-        {
-            StateDFS(*state.children[randint(0, state.children.size())], depth + 1);
-        }
-    }
-
     class Program
     {
     public:
         static void Main(int argc, char** argv)
         {
-            // auto state = ChanceState();
-            // StateDFS(state);
-            // state.PrettyPrintTree();
-
             CreateIndexers();
             Global::handEvaluator->Initialise();
             CalculateInformationAbstraction();
