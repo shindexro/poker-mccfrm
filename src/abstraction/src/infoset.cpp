@@ -65,7 +65,12 @@ namespace poker
         return moveProbs;
     }
 
-    int Infoset::SampleAction(bool final=false)
+    int Infoset::SampleAction()
+    {
+        return SampleAction(false);
+    }
+
+    int Infoset::SampleAction(bool final)
     {
         auto sigma = final ? GetFinalStrategy() : CalculateStrategy();
         auto actionIdx = SampleDistribution(sigma);

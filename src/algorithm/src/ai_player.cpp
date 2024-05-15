@@ -18,9 +18,7 @@ namespace poker
         {
             // use average strategy
             auto infoset = state->GetInfoset();
-            auto phi = infoset.GetFinalStrategy();
-            auto actionIdx = SampleDistribution(phi);
-            return validActions[actionIdx];
+            return validActions[infoset.SampleAction(true)];
         }
 
         // use real-time search based on blue-print strategy
@@ -32,8 +30,6 @@ namespace poker
         }
 
         auto infoset = state->GetInfoset();
-        auto sigma = infoset.CalculateStrategy();
-        auto actionIdx = SampleDistribution(sigma);
-        return validActions[actionIdx];
+        return validActions[infoset.SampleAction()];
     }
 } // namespace poker

@@ -55,8 +55,7 @@ namespace poker
         else if (gs->IsPlayerTurn(traverser))
         {
             Infoset infoset = gs->GetInfoset();
-            auto sigma = infoset.CalculateStrategy();
-            int randomIndex = SampleDistribution(sigma);
+            int randomIndex = infoset.SampleAction();
             gs->CreateChildren();
             infoset.actionCounter[randomIndex]++;
             gs->UpdateInfoset(infoset);
@@ -139,9 +138,7 @@ namespace poker
         else
         {
             Infoset infoset = gs->GetInfoset();
-            auto sigma = infoset.CalculateStrategy();
-
-            int randomIndex = SampleDistribution(sigma);
+            int randomIndex = infoset.SampleAction();
             gs->CreateChildren();
 
             ret = TraverseMCCFR(gs->children[randomIndex], traverser, pruned);
@@ -384,9 +381,7 @@ namespace poker
                 // std::cout << endl;
                 // std::cout << "Player " << gs->community.playerToMove << "'s turn : ";
                 Infoset infoset = gs->GetInfoset();
-                auto sigma = infoset.CalculateStrategy();
-
-                int randomIndex = SampleDistribution(sigma);
+                int randomIndex = infoset.SampleAction();
                 gs->CreateChildren();
                 gs = gs->children[randomIndex];
                 // std::cout << gs->history[gs->history.size() - 1];

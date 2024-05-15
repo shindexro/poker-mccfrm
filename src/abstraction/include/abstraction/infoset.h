@@ -23,6 +23,7 @@ namespace poker
 
         vector<float> CalculateStrategy();
         vector<float> GetFinalStrategy();
+        int SampleAction();
         int SampleAction(bool final);
     };
 } // namespace poker
