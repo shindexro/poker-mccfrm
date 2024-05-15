@@ -3,6 +3,9 @@
 
 #include <random>
 #include <iostream>
+#include <vector>
+
+using namespace std;
 
 // random integer in range [low, high)
 inline int randint(int low, int high)
@@ -23,4 +26,33 @@ inline double randDouble()
     return unif(re);
 }
 
+inline int SampleDistribution(vector<float> &probabilities)
+{
+    double rand = randDouble();
+    double sum = 0.0;
+    for (auto i = 0UL; i < probabilities.size(); ++i)
+    {
+        sum += probabilities[i];
+        if (sum >= rand)
+        {
+            return i;
+        }
+    }
+    return probabilities.size() - 1;
+}
+
+inline int SampleDistribution(vector<double> &probabilities)
+{
+    double rand = randDouble();
+    double sum = 0.0;
+    for (auto i = 0UL; i < probabilities.size(); ++i)
+    {
+        sum += probabilities[i];
+        if (sum >= rand)
+        {
+            return i;
+        }
+    }
+    return probabilities.size() - 1;
+}
 #endif

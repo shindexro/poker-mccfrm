@@ -208,7 +208,7 @@ namespace poker
             // kmean++, choose next center based on weighted probability on squared distance
             utils::normalise(distancesToNearestCenter);
 
-            int nextCenterIndex = utils::SampleDistribution(distancesToNearestCenter);
+            int nextCenterIndex = SampleDistribution(distancesToNearestCenter);
             CopyArray(centerCandidates, centers, nextCenterIndex, c);
             usedCenters.insert(nextCenterIndex);
         }

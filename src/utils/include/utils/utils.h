@@ -5,7 +5,6 @@
 #include "game/hand.h"
 #include "game/card.h"
 #include "abstraction/global.h"
-#include "abstraction/infoset.h"
 
 #include <tuple>
 #include <vector>

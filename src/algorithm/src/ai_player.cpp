@@ -19,7 +19,7 @@ namespace poker
             // use average strategy
             auto infoset = state->GetInfoset();
             auto phi = infoset.GetFinalStrategy();
-            auto actionIdx = utils::SampleDistribution(phi);
+            auto actionIdx = SampleDistribution(phi);
             return validActions[actionIdx];
         }
 
@@ -33,7 +33,7 @@ namespace poker
 
         auto infoset = state->GetInfoset();
         auto sigma = infoset.CalculateStrategy();
-        auto actionIdx = utils::SampleDistribution(sigma);
+        auto actionIdx = SampleDistribution(sigma);
         return validActions[actionIdx];
     }
 } // namespace poker

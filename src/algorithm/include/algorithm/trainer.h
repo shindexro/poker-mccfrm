@@ -6,6 +6,7 @@
 #include "abstraction/chance_state.h"
 #include "abstraction/terminal_state.h"
 #include "utils/utils.h"
+#include "utils/random.h"
 #include "enums/action.h"
 #include "enums/betting_round.h"
 

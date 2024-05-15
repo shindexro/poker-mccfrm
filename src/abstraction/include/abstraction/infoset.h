@@ -2,6 +2,7 @@
 #define __CLASS_INFOSET_H__
 
 #include "enums/betting_round.h"
+#include "utils/random.h"
 #include <vector>
 #include <string>
 #include <cereal/archives/binary.hpp>
@@ -22,6 +23,7 @@ namespace poker
 
         vector<float> CalculateStrategy();
         vector<float> GetFinalStrategy();
+        int SampleAction(bool final);
     };
 } // namespace poker
 #endif

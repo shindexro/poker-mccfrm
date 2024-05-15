@@ -64,4 +64,11 @@ namespace poker
         }
         return moveProbs;
     }
+
+    int Infoset::SampleAction(bool final=false)
+    {
+        auto sigma = final ? GetFinalStrategy() : CalculateStrategy();
+        auto actionIdx = SampleDistribution(sigma);
+        return actionIdx;
+    }
 } // namespace poker

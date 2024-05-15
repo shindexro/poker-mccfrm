@@ -56,7 +56,7 @@ namespace poker
         {
             Infoset infoset = gs->GetInfoset();
             auto sigma = infoset.CalculateStrategy();
-            int randomIndex = utils::SampleDistribution(sigma);
+            int randomIndex = SampleDistribution(sigma);
             gs->CreateChildren();
             infoset.actionCounter[randomIndex]++;
             gs->UpdateInfoset(infoset);
@@ -141,7 +141,7 @@ namespace poker
             Infoset infoset = gs->GetInfoset();
             auto sigma = infoset.CalculateStrategy();
 
-            int randomIndex = utils::SampleDistribution(sigma);
+            int randomIndex = SampleDistribution(sigma);
             gs->CreateChildren();
 
             ret = TraverseMCCFR(gs->children[randomIndex], traverser, pruned);
@@ -386,7 +386,7 @@ namespace poker
                 Infoset infoset = gs->GetInfoset();
                 auto sigma = infoset.CalculateStrategy();
 
-                int randomIndex = utils::SampleDistribution(sigma);
+                int randomIndex = SampleDistribution(sigma);
                 gs->CreateChildren();
                 gs = gs->children[randomIndex];
                 // std::cout << gs->history[gs->history.size() - 1];

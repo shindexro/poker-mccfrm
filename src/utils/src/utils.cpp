@@ -16,35 +16,6 @@ namespace utils
         return {(minItems * threadIndex) + extraItems, (minItems * threadIndex) + extraItems + minItems};
     }
 
-    int SampleDistribution(vector<float> &probabilities)
-    {
-        double rand = randDouble();
-        double sum = 0.0;
-        for (auto i = 0UL; i < probabilities.size(); ++i)
-        {
-            sum += probabilities[i];
-            if (sum >= rand)
-            {
-                return i;
-            }
-        }
-        return probabilities.size() - 1;
-    }
-
-    int SampleDistribution(vector<double> &probabilities)
-    {
-        double rand = randDouble();
-        double sum = 0.0;
-        for (auto i = 0UL; i < probabilities.size(); ++i)
-        {
-            sum += probabilities[i];
-            if (sum >= rand)
-            {
-                return i;
-            }
-        }
-        return probabilities.size() - 1;
-    }
 
     vector<Hand> GetStartingHandChart()
     {
