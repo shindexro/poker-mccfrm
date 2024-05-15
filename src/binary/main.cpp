@@ -69,21 +69,6 @@ namespace poker
             cardsPerRound = vector<int>({2, 5});
             Global::indexer_2_5.Construct(cardsPerRound);
             std::cout << Global::indexer_2_5.roundSize[1] << " non-isomorphic hands found" << std::endl;
-
-            // std::cout << "Creating 2 & 5 & 2 card index... " << std::endl;
-            // cardsPerRound = vector<int>({2, 5, 2});
-            // Global::indexer_2_5_2.Construct(cardsPerRound);
-            // std::cout << Global::indexer_2_5_2.roundSize[2] << " non-isomorphic hands found" << std::endl;
-
-            // std::cout << "Creating 2 & 3 & 1 card index... " << std::endl;
-            // cardsPerRound = vector<int>({2, 3, 1});
-            // Global::indexer_2_3_1.Construct(cardsPerRound);
-            // std::cout << Global::indexer_2_3_1.roundSize[2] << " non-isomorphic hands found" << std::endl;
-
-            // std::cout << "Creating 2 & 3 & 1 & 1 card index... " << std::endl;
-            // cardsPerRound = vector<int>({2, 3, 1, 1});
-            // Global::indexer_2_3_1_1.Construct(cardsPerRound);
-            // std::cout << Global::indexer_2_3_1_1.roundSize[3] << " non-isomorphic hands found" << std::endl;
         }
 
         static void CalculateInformationAbstraction()
