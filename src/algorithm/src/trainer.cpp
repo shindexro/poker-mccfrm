@@ -112,25 +112,24 @@ namespace poker
             auto expectedValsChildren = vector<int>(gs->children.size());
             auto explored = vector<bool>(gs->children.size(), true);
 
+            // calculate value of the current node
+            // based on weighted average value of children
             for (auto i = 0UL; i < gs->children.size(); ++i)
             {
-                if (!pruned || (pruned && infoset.regret[i] > Global::regretPrunedThreshold))
-                {
-                    expectedValsChildren[i] = TraverseMCCFR(gs->children[i], traverser, pruned);
-                    expectedVal += sigma[i] * expectedValsChildren[i];
-                }
-                else
+                if (pruned && infoset.regret[i] < Global::regretPrunedThreshold)
                 {
                     explored[i] = false;
+                    continue;
                 }
+                expectedValsChildren[i] = TraverseMCCFR(gs->children[i], traverser, pruned);
+                expectedVal += sigma[i] * expectedValsChildren[i];
             }
             for (auto i = 0UL; i < gs->children.size(); ++i)
             {
-                if (explored[i])
-                {
-                    infoset.regret[i] += expectedValsChildren[i] - expectedVal;
-                    infoset.regret[i] = max({Global::regretFloor, infoset.regret[i]});
-                }
+                if (!explored[i])
+                    continue;
+                infoset.regret[i] += expectedValsChildren[i] - expectedVal;
+                infoset.regret[i] = max({Global::regretFloor, infoset.regret[i]});
             }
             gs->UpdateInfoset(infoset);
             ret = expectedVal;
