@@ -24,7 +24,7 @@ namespace poker
     public:
         shared_ptr<State> rootState;
 
-        Trainer(int threadIndex);
+        Trainer();
 
         void ResetGame();
         void TrainOneIteration(int traverser, bool pruneEnabled);
@@ -39,9 +39,6 @@ namespace poker
         void PrintStatistics(long iterations);
         void EnumerateActionSpace(shared_ptr<State> gs);
         void EnumerateActionSpace();
-
-    private:
-        int threadIndex = 0;
     };
 } // namespace poker
 

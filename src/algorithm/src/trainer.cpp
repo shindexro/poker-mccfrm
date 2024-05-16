@@ -3,8 +3,7 @@
 namespace poker
 {
 
-    Trainer::Trainer(int threadIndex) : rootState{make_shared<ChanceState>()},
-                                        threadIndex{threadIndex}
+    Trainer::Trainer() : rootState{make_shared<ChanceState>()}
     {
     }
 

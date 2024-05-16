@@ -24,7 +24,7 @@ TrainerManager::TrainerManager(int threadCount) :
     trainers = vector<Trainer>();
     for (auto i = 0; i < threadCount; i++)
     {
-        trainers.push_back(Trainer(i));
+        trainers.push_back(Trainer());
     }
 }
 
