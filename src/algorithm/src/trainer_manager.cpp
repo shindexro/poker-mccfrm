@@ -33,19 +33,6 @@ void TrainerManager::StartTraining()
     LoadTrainedData();
     std::cout << "Starting Monte Carlo Counterfactual Regret Minimization (MCCFRM)..." << std::endl;
 
-    // just for debugging purpose, I don't think it's necessary to enumeration the entire action space
-    // auto threadFunc = [&](int idx) {
-    //     trainers[idx].rootState->CreateChildren();
-    //     trainers[idx].rootState->children[0]->CreateChildren();
-    //     trainers[idx].EnumerateActionSpace(trainers[idx].rootState->children[0]->children[idx]);
-    // };
-    // oneapi::tbb::parallel_for(0, Global::NOF_THREADS, threadFunc);
-
-    // TODO: find out whether this line is the bottleneck?
-    // although the size of the nodeMap will gradually approach 500M during training?
-    // is 500M a good estimate?
-    // Global::nodeMap.rehash(500000000);
-
     oneapi::tbb::parallel_for(0, threadCount,
             [&](int index)
             {
