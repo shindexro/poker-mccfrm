@@ -32,7 +32,6 @@ namespace poker
         void UpdateStrategy(int traverser);
         int TraverseMCCFR(int traverser, bool pruned);
         int TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned);
-        void PlayOneGame();
 
         void DiscountInfosets(float d);
 
