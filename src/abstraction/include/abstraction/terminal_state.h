@@ -6,27 +6,26 @@
 
 using namespace std;
 
-namespace poker
-{
-    class TerminalState : public State
-    {
-    public:
-        static const string type;
-        shared_ptr<Evaluator> evaluator;
+namespace poker {
+class TerminalState : public State {
+public:
+  static const string type;
+  shared_ptr<Evaluator> evaluator;
 
-        TerminalState();
-        TerminalState(CommunityInfo &community, vector<PlayerInfo> &players, vector<Action> &history);
+  TerminalState();
+  TerminalState(CommunityInfo &community, vector<PlayerInfo> &players,
+                vector<Action> &history);
 
-        float GetReward(int player) override;
-        void CreateChildren() override;
+  float GetReward(int player) override;
+  void CreateChildren() override;
 
-        ostream& Print(ostream &out) const override;
+  ostream &Print(ostream &out) const override;
 
-    private:
-        bool rewardGenerated;
+private:
+  bool rewardGenerated;
 
-        void CreateRewards();
-    };
-}
+  void CreateRewards();
+};
+} // namespace poker
 
 #endif

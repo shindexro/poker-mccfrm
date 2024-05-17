@@ -10,24 +10,22 @@ typedef unsigned long ulong;
 
 using namespace std;
 
-namespace poker
-{
-    class CommunityInfo
-    {
-    public:
-        BettingRound bettingRound;
-        int playerToMove;
-        int lastPlayer;
-        int minRaise;
-        vector<ulong> cards;
+namespace poker {
+class CommunityInfo {
+public:
+  BettingRound bettingRound;
+  int playerToMove;
+  int lastPlayer;
+  int minRaise;
+  vector<ulong> cards;
 
-        CommunityInfo();
+  CommunityInfo();
 
-        ulong GetCardBitmask() const;
-    };
+  ulong GetCardBitmask() const;
+};
 
-    ostream &operator<<(ostream &out, const CommunityInfo &info);
+ostream &operator<<(ostream &out, const CommunityInfo &info);
 
-}
+} // namespace poker
 
 #endif

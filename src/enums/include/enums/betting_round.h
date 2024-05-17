@@ -3,17 +3,10 @@
 
 #include <string>
 
-namespace poker
-{
-    enum BettingRound
-    {
-        Preflop = 0,
-        Flop,
-        Turn,
-        River
-    };
+namespace poker {
+enum BettingRound { Preflop = 0, Flop, Turn, River };
 
-    std::ostream &operator<<(std::ostream &out, const BettingRound &value);
-    BettingRound &operator++(BettingRound &round);
+std::ostream &operator<<(std::ostream &out, const BettingRound &value);
+BettingRound &operator++(BettingRound &round);
 } // namespace poker
 #endif
