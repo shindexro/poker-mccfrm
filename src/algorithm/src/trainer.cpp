@@ -3,7 +3,8 @@
 namespace poker
 {
 
-    Trainer::Trainer() : rootState{make_shared<ChanceState>()}
+    Trainer::Trainer() : rootState{make_shared<ChanceState>()},
+                         nodeMapBuffer()
     {
     }
 
@@ -53,11 +54,11 @@ namespace poker
         }
         else if (gs->IsPlayerTurn(traverser))
         {
-            Infoset infoset = gs->GetInfoset();
+            Infoset infoset = GetInfoset(gs);
             int randomIndex = infoset.SampleAction();
             gs->CreateChildren();
             infoset.actionCounter[randomIndex]++;
-            gs->UpdateInfoset(infoset);
+            UpdateInfoset(gs, infoset);
 
             gs = gs->children[randomIndex];
             UpdateStrategy(gs, traverser);
@@ -103,7 +104,7 @@ namespace poker
         else if (gs->IsPlayerTurn(traverser))
         {
             // according to supp. mat. page 3, we do full MCCFR on the last betting round, otherwise skip low regret
-            Infoset infoset = gs->GetInfoset();
+            Infoset infoset = GetInfoset(gs);
             auto sigma = infoset.CalculateStrategy();
             int expectedVal = 0;
 
@@ -130,12 +131,12 @@ namespace poker
                 infoset.regret[i] += expectedValsChildren[i] - expectedVal;
                 infoset.regret[i] = max({Global::regretFloor, infoset.regret[i]});
             }
-            gs->UpdateInfoset(infoset);
+            UpdateInfoset(gs, infoset);
             ret = expectedVal;
         }
         else
         {
-            Infoset infoset = gs->GetInfoset();
+            Infoset infoset = GetInfoset(gs);
             int randomIndex = infoset.SampleAction();
             gs->CreateChildren();
 
@@ -147,7 +148,7 @@ namespace poker
 
     void Trainer::DiscountInfosets(float d)
     {
-        for (auto &[infosetString, infoset] : Global::nodeMap)
+        for (auto &[stateId, infoset] : Global::nodeMap)
         {
             for (auto &r : infoset.regret)
                 r *= d;
@@ -155,6 +156,43 @@ namespace poker
             for (auto &a : infoset.actionCounter)
                 a *= d;
         }
+    }
+
+    void Trainer::UpdateInfoset(shared_ptr<State> state, Infoset &infoset)
+    {
+        auto stateId = state->StringId();
+        nodeMapBuffer[stateId] = infoset;
+
+        // TODO: change this arbitrary number
+        if (nodeMapBuffer.size() < 10000)
+            return;
+
+        for (auto &[k, v] : nodeMapBuffer)
+        {
+            Global::nodeMap.try_emplace_l(k, [&](auto globalv) {
+                    for (auto i = 0UL; i < v.regret.size(); i++)
+                    {
+                    globalv.second.regret[i] += v.regret[i];
+                    }
+                    }, v);
+        }
+        nodeMapBuffer.clear();
+    }
+
+    Infoset Trainer::GetInfoset(shared_ptr<State> state)
+    {
+        auto stateId = state->StringId();
+
+        Infoset infoset;
+        Global::nodeMap.if_contains(stateId, [&](auto v){
+                infoset = v.second;
+                });
+
+        for (auto i = 0UL; i < infoset.regret.size(); i++)
+        {
+            infoset.regret[i] += nodeMapBuffer[stateId].regret[i];
+        }
+        return infoset;
     }
 
     void Trainer::PrintStartingHandsChart()
@@ -198,7 +236,7 @@ namespace poker
             for (auto j = 0UL; j < states.size(); ++j)
             {
                 auto state = states[j];
-                Infoset infoset = state->GetInfoset();
+                Infoset infoset = GetInfoset(state);
                 auto sigma = infoset.CalculateStrategy();
                 // auto phi = infoset.GetFinalStrategy();
 
@@ -254,7 +292,7 @@ namespace poker
                 break;
             maxOutput--;
 
-            Infoset infoset = ps->GetInfoset();
+            Infoset infoset = GetInfoset(ps);
 
             auto [card1, card2] = ps->players[ps->community.playerToMove].cards;
             Hand hand = Hand();

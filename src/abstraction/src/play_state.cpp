@@ -52,25 +52,12 @@ namespace poker
         return players[player].lastAction != Action::Fold;
     }
 
-    Infoset PlayState::GetInfoset()
+    string PlayState::StringId()
     {
-        // Betting history R, A, CH, C, F
-        // Player whose turn it is // not needed?
-        // Cards of player whose turn it is
-        // community cards
-
         if (!infosetString.size())
-        {
             GenerateUniqueStringIdentifier();
-        }
 
-        if (Global::nodeMap.find(infosetString) == Global::nodeMap.end())
-        {
-            Infoset infoset = Infoset(GetValidActionsCount(), community.bettingRound);
-            Global::nodeMap[infosetString] = infoset;
-            return infoset;
-        }
-        return Global::nodeMap[infosetString];
+        return infosetString;
     }
 
     void PlayState::GenerateUniqueStringIdentifier()
@@ -142,11 +129,6 @@ namespace poker
             cardString += "R" + to_string(index);
         }
         infosetString = historyString + cardString;
-    }
-
-    void PlayState::UpdateInfoset(Infoset &infoset)
-    {
-        Global::nodeMap[infosetString] = infoset;
     }
 
     void PlayState::CreateChildren()

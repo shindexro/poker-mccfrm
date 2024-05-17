@@ -30,8 +30,7 @@ namespace poker
 
         bool IsPlayerTurn(int player) override;
         bool IsPlayerInHand(int player) override;
-        Infoset GetInfoset() override;
-        void UpdateInfoset(Infoset &infoset) override;
+        string StringId();
 
         ostream &Print(ostream &out) const override;
 

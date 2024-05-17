@@ -34,11 +34,16 @@ namespace poker
         int TraverseMCCFR(shared_ptr<State> gs, int traverser, bool pruned);
 
         void DiscountInfosets(float d);
+        void UpdateInfoset(shared_ptr<State> state, Infoset &infoset);
+        Infoset GetInfoset(shared_ptr<State> state);
 
         void PrintStartingHandsChart();
         void PrintStatistics(long iterations);
         void EnumerateActionSpace(shared_ptr<State> gs);
         void EnumerateActionSpace();
+
+    private:
+        NodeMap nodeMapBuffer;
     };
 } // namespace poker
 

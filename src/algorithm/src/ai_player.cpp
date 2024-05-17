@@ -14,22 +14,22 @@ namespace poker
             throw invalid_argument("There are no valid actions.");
         }
 
+        auto trainer = Trainer();
         if (state->BettingRound() == BettingRound::Preflop)
         {
             // use average strategy
-            auto infoset = state->GetInfoset();
+            auto infoset = trainer.GetInfoset(state);
             return validActions[infoset.SampleAction(true)];
         }
 
         // use real-time search based on blue-print strategy
-        auto trainer = Trainer(0);
         /// TOOD: make number for iterations more dynamic?
         for (int i = 0; i < 10000; i++)
         {
             trainer.TraverseMCCFR(roundStartState, id, false);
         }
 
-        auto infoset = state->GetInfoset();
+        auto infoset = trainer.GetInfoset(state);
         return validActions[infoset.SampleAction()];
     }
 } // namespace poker
