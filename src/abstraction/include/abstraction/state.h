@@ -42,6 +42,7 @@ public:
   int GetNumberOfActivePlayers();
   int GetNumberOfAllInPlayers();
   virtual void CreateChildren() { throw invalid_argument("Not implemented"); };
+  virtual int GetValidActionsCount() { throw invalid_argument("Not implemented"); };
   virtual bool IsPlayerInHand(int /*traverser*/) {
     throw invalid_argument("Not implemented");
   };

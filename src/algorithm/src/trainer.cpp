@@ -136,7 +136,7 @@ void Trainer::UpdateInfoset(shared_ptr<State> state, Infoset &infoset) {
   for (auto &[k, v] : nodeMapBuffer) {
     Global::nodeMap.try_emplace_l(
         k,
-        [&](auto globalv) {
+        [&v](auto globalv) {
           for (auto i = 0UL; i < v.regret.size(); i++) {
             globalv.second.regret[i] += v.regret[i];
           }
@@ -150,10 +150,21 @@ Infoset Trainer::GetInfoset(shared_ptr<State> state) {
   auto stateId = state->StringId();
 
   Infoset infoset;
-  Global::nodeMap.if_contains(stateId, [&](auto v) { infoset = v.second; });
+  bool found = Global::nodeMap.if_contains(stateId, [&infoset](auto v) { infoset = v.second; });
+
+  if (!found) {
+      infoset = Infoset(state->GetValidActionsCount(), state->community.bettingRound);
+  }
+
+  if (nodeMapBuffer.find(stateId) == nodeMapBuffer.end()) {
+      return infoset;
+  }
 
   for (auto i = 0UL; i < infoset.regret.size(); i++) {
     infoset.regret[i] += nodeMapBuffer[stateId].regret[i];
+  }
+  for (auto i = 0UL; i < infoset.actionCounter.size(); i++) {
+    infoset.actionCounter[i] += nodeMapBuffer[stateId].actionCounter[i];
   }
   return infoset;
 }

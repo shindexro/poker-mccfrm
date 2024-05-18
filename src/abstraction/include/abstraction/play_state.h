@@ -21,7 +21,7 @@ public:
             vector<Action> &history);
 
   void CreateChildren() override;
-  int GetValidActionsCount();
+  int GetValidActionsCount() override;
 
   // Require actions to be in increasing order of bet size, and fold at the end
   // (if legal)
@@ -30,7 +30,7 @@ public:
 
   bool IsPlayerTurn(int player) override;
   bool IsPlayerInHand(int player) override;
-  string StringId();
+  string StringId() override;
 
   ostream &Print(ostream &out) const override;
 
