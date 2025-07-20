@@ -120,10 +120,6 @@ terraform apply
 
 This sets up an r6a.xlarge EC2 instance optimized for memory-intensive MCCFR training.
 
-## License
-
-[Add your license information here]
-
 ## References
 - C# implementation https://github.com/ozzi7/Poker-MCCFRM
 - Lanctot et al., "Monte Carlo Sampling for Regret Minimization in Extensive Games"
