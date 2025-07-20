@@ -10,6 +10,13 @@ This project implements MCCFR with various optimizations for training competitiv
 - Multi-threaded training with Intel TBB
 - Interactive gameplay against trained AI
 
+The trained model records the probability of each action at any given game state.
+<img width="860" height="1079" alt="image" src="https://github.com/user-attachments/assets/cc499953-a59d-4913-969d-93bbdb619fe0" />
+
+
+
+
+
 ## Features
 
 - **Monte Carlo CFR Algorithm**: Efficient sampling-based CFR implementation with regret pruning
@@ -118,6 +125,6 @@ This sets up an r6a.xlarge EC2 instance optimized for memory-intensive MCCFR tra
 [Add your license information here]
 
 ## References
-
+- C# implementation https://github.com/ozzi7/Poker-MCCFRM
 - Lanctot et al., "Monte Carlo Sampling for Regret Minimization in Extensive Games"
 - Johanson et al., "Accelerating Best Response Calculation in Large Extensive Games"
